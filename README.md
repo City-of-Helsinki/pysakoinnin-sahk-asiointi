@@ -17,7 +17,7 @@ ALLOWED_HOSTS="localhost"
 DB_PASSWORD="root"
 DB_NAME="parking-service"
 DB_USER="parking-user"
-DB_HOST="db"
+DB_HOST="localhost"
 DB_PORT=5432
 ```
 
