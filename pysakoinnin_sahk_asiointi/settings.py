@@ -9,6 +9,11 @@ env = environ.Env(
     DEBUG=(bool, True),
     SECRET_KEY=(str, ""),
     ALLOWED_HOSTS=(list, []),
+    DB_PASSWORD=(str, ""),
+    DB_NAME=(str, ""),
+    DB_USER=(str, ""),
+    DB_HOST=(str, ""),
+    DB_PORT=(int, 0)
 )
 
 environ.Env.read_env(str(BASE_DIR / "config.env"))
@@ -22,16 +27,16 @@ SECRET_KEY = env('SECRET_KEY')
 if DEBUG and not SECRET_KEY:
     SECRET_KEY = 'XXX'
 
-
 # Application definition
 
 INSTALLED_APPS = [
-    "django.contrib.admin",
+    'helusers.apps.HelusersConfig',
+    'helusers.apps.HelusersAdminConfig',
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
-    "django.contrib.staticfiles",
+    "django.contrib.staticfiles"
 ]
 
 MIDDLEWARE = [
@@ -64,17 +69,19 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "pysakoinnin_sahk_asiointi.wsgi.application"
 
-
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": env("DB_NAME"),
+        "USER": env("DB_USER"),
+        "PASSWORD": env("DB_PASSWORD"),
+        "HOST": env("DB_HOST"),
+        "PORT": env("DB_PORT")
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -94,7 +101,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
@@ -105,7 +111,6 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
