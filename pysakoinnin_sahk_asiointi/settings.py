@@ -1,6 +1,8 @@
 from pathlib import Path
 
 import environ
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -13,7 +15,9 @@ env = environ.FileAwareEnv(
     DB_NAME=(str, ""),
     DB_USER=(str, ""),
     DB_HOST=(str, ""),
-    DB_PORT=(int, 0)
+    DB_PORT=(int, 0),
+    SENTRY_DSN=(str, ""),
+    SENTRY_TRACE_SAMPLE_RATE=(int, 0)
 )
 
 environ.Env.read_env(str(BASE_DIR / "config.env"))
@@ -26,6 +30,14 @@ ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
 SECRET_KEY = env('SECRET_KEY')
 if DEBUG and not SECRET_KEY:
     SECRET_KEY = 'XXX'
+
+# Sentry config
+sentry_sdk.init(
+    dsn=env('SENTRY_DSN'),
+    integrations=[DjangoIntegration()],
+
+    traces_sample_rate=env('SENTRY_TRACE_SAMPLE_RATE'),
+)
 
 # Application definition
 
