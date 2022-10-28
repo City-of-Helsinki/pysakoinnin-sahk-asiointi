@@ -53,17 +53,19 @@ volumes:
 
 Then simply run `docker-compose up` and Docker will build PostgreSQL database and Django server instances
 
-## Running the application without Docker (hot-reload enabled)
+## Running the application with hot-reload (recommended for active development)
 
-- Install Python pre-requisites: virtual environment of your choice (e.g. Virtual Environment running in .venv folder)
+- Install a Python virtual environment of your choice (for example [venv](https://docs.python.org/3/tutorial/venv.html))
   with Python 3.x
 - In a new terminal window start a local database instance with
   `docker run --name parking-service-db -p 5432:5432 -e POSTGRES_USER=parking-user -e POSTGRES_PASSWORD=root -e POSTGRES_DB=parking-service postgres:alpine`
 - Insert `config.env` file from above to your root directory
 - Activate virtual environment
-- install dependencies with `pip install -r requirements.in`
+- Install dependencies with `pip install -r requirements.in`
 - Run migrations `python manage.py migrate`
 - Run server `python manage.py runserver`
+
+Note: psycopg2 may require a local installation of PostgreSQL. Install for macOS with Homebrew `brew install postgresql`
 
 ## Generating requirements.txt
 
