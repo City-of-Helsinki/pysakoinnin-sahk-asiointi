@@ -1,26 +1,22 @@
 from pathlib import Path
 
-import environ
 import sentry_sdk
+from environ import Env
 from sentry_sdk.integrations.django import DjangoIntegration
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-env = environ.FileAwareEnv(
+env = Env(
     DEBUG=(bool, True),
     SECRET_KEY=(str, ""),
     ALLOWED_HOSTS=(list, []),
-    DB_PASSWORD=(str, ""),
-    DB_NAME=(str, ""),
-    DB_USER=(str, ""),
-    DB_HOST=(str, ""),
-    DB_PORT=(int, 0),
+    DATABASE_URL=(str, "postgres://parking-user:root@localhost:5432/parking-service"),
     SENTRY_DSN=(str, ""),
     SENTRY_TRACE_SAMPLE_RATE=(int, 0)
 )
 
-environ.Env.read_env(str(BASE_DIR / "config.env"))
+Env.read_env(str(BASE_DIR / "config.env"))
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env("DEBUG")
@@ -84,16 +80,8 @@ WSGI_APPLICATION = "pysakoinnin_sahk_asiointi.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": env("DB_NAME"),
-        "USER": env("DB_USER"),
-        "PASSWORD": env("DB_PASSWORD"),
-        "HOST": env("DB_HOST"),
-        "PORT": env("DB_PORT")
-    }
-}
+
+DATABASES = {"default": env.db()}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
