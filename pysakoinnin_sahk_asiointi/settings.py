@@ -14,7 +14,8 @@ env = Env(
     DATABASE_URL=(str, "postgres://parking-user:root@localhost:5432/parking-service"),
     SENTRY_DSN=(str, ""),
     SENTRY_TRACE_SAMPLE_RATE=(float, 0.0),
-    ATV_API_KEY=(str, "")
+    ATV_API_KEY=(str, ""),
+    ATV_ENDPOINT=(str, "")
 )
 
 Env.read_env(str(BASE_DIR / "config.env"))
