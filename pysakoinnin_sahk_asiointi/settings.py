@@ -16,8 +16,7 @@ env = Env(
     SENTRY_DSN=(str, ""),
     SENTRY_TRACE_SAMPLE_RATE=(float, 0.0),
     ATV_API_KEY=(str, ""),
-    ATV_ENDPOINT=(str, ""),
-    AUDIT_LOG_TO_DB_ENABLED=(bool, False)
+    ATV_ENDPOINT=(str, "")
 )
 
 Env.read_env(str(BASE_DIR / "config.env"))
@@ -30,8 +29,6 @@ ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
 SECRET_KEY = env('SECRET_KEY')
 if DEBUG and not SECRET_KEY:
     SECRET_KEY = 'XXX'
-
-AUDIT_LOG_TO_DB_ENABLED = env.bool('AUDIT_LOG_TO_DB_ENABLED')
 
 # Sentry config
 sentry_sdk.init(
