@@ -1,4 +1,5 @@
 from pathlib import Path
+from sys import stdout
 
 import sentry_sdk
 from environ import Env
@@ -15,7 +16,8 @@ env = Env(
     SENTRY_DSN=(str, ""),
     SENTRY_TRACE_SAMPLE_RATE=(float, 0.0),
     ATV_API_KEY=(str, ""),
-    ATV_ENDPOINT=(str, "")
+    ATV_ENDPOINT=(str, ""),
+    AUDIT_LOG_TO_DB_ENABLED=(bool, False)
 )
 
 Env.read_env(str(BASE_DIR / "config.env"))
@@ -28,6 +30,8 @@ ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
 SECRET_KEY = env('SECRET_KEY')
 if DEBUG and not SECRET_KEY:
     SECRET_KEY = 'XXX'
+
+AUDIT_LOG_TO_DB_ENABLED = env.bool('AUDIT_LOG_TO_DB_ENABLED')
 
 # Sentry config
 sentry_sdk.init(
@@ -47,7 +51,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "rectification"
+    "rectification",
+    "ninja"
 ]
 
 MIDDLEWARE = [
@@ -58,6 +63,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "rectification.audit_log.AuditLogMiddleware"
 ]
 
 ROOT_URLCONF = "pysakoinnin_sahk_asiointi.urls"
@@ -124,3 +130,16 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+_audit_log_handler = {
+    "level": "INFO",
+    "class": "logging.StreamHandler",
+    "stream": stdout,
+}
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {"audit": _audit_log_handler},
+    "loggers": {"audit": {"handlers": ["audit"], "level": "INFO", "propagate": True}},
+}
