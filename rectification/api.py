@@ -17,6 +17,6 @@ def test_data(request):
 @router.post('/sendDocument')
 def test_send(request):
     req = ATVHandler.add_document(request)
-    if req.status_code != 200:
+    if req.status_code != 201:
         raise HttpError(req.status_code, req.json())
-    return req
+    return req.json()
