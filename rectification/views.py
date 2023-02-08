@@ -11,7 +11,7 @@ class ATVHandler:
         try:
             req = request("GET", url=f"{env('ATV_ENDPOINT')}?user_id=35513524-486D-4C0D-AE80-E263DBAEE4DC",
                           headers={"x-api-key": env('ATV_API_KEY')})
-            return req.json()
+            return req
         except Exception as error:
             return str(error)
 
@@ -29,6 +29,6 @@ class ATVHandler:
                     "user_id": "35513524-486D-4C0D-AE80-E263DBAEE4DC"
                 },
                           files={'attachments': None})
-            return req.json()
+            return req
         except Exception as error:
             return str(error)

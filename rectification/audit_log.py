@@ -3,7 +3,7 @@ from typing import Optional
 
 from django.db.models import Model
 
-from rectification.enums import Operation
+from rectification.enums import Operation, Status
 from rectification.models import AuditLog
 
 ORIGIN = "PARKING_E-SERVICE"
@@ -19,7 +19,7 @@ def _iso8601_date(time: datetime) -> str:
     return f"{time.replace(tzinfo=None).isoformat(sep='T', timespec='milliseconds')}Z"
 
 
-def _commit_to_audit_log(request
+def _commit_to_audit_log(request, response
                          ):
     """
     Write an event to the audit log.
@@ -33,7 +33,7 @@ def _commit_to_audit_log(request
     message = {
         "audit_event": {
             "origin": ORIGIN,
-            "status": "TEST",
+            "status": _get_status(response),
             "date_time_epoch": int(current_time.timestamp() * 1000),
             "date_time": _iso8601_date(current_time),
             "actor": {
@@ -63,10 +63,19 @@ def _get_operation_name(request):
         return Operation.READ.value
     elif request.method == 'POST':
         return Operation.CREATE.value
-    elif request.method == 'PUT' | 'PATCH':
+    elif request.method == 'PUT' or 'PATCH':
         return Operation.UPDATE.value
     elif request.method == 'DELETE':
         return Operation.DELETE.value
+
+
+def _get_status(response):
+    if response.status_code == 200 or response.status_code == 201:
+        return Status.SUCCESS.value
+    elif response.status_code == 401 or response.status_code == 403:
+        return Status.FORBIDDEN.value
+    else:
+        return Status.FAILED.value
 
 
 class AuditLogMiddleware:
@@ -76,6 +85,6 @@ class AuditLogMiddleware:
     def __call__(self, request):
         response = self.get_response(request)
 
-        _commit_to_audit_log(request)
+        _commit_to_audit_log(request, response)
 
         return response

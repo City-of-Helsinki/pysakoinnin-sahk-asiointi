@@ -17,4 +17,5 @@ class Role(Enum):
 
 class Status(Enum):
     SUCCESS = "SUCCESS"
+    FAILED = "FAILED"
     FORBIDDEN = "FORBIDDEN"
