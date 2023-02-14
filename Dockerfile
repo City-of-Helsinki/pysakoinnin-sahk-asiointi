@@ -5,6 +5,7 @@ RUN chmod g+w /usr/src/app
 
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
+RUN apt-get update && apt-get install -y telnet
 
 COPY manage.py ./
 COPY pysakoinnin_sahk_asiointi/ pysakoinnin_sahk_asiointi/
