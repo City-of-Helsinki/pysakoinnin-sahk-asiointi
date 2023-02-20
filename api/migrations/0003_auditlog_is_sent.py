@@ -4,9 +4,8 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('rectification', '0002_auto_20230202_1237'),
+        ('api', '0002_auto_20230202_1237'),
     ]
 
     operations = [

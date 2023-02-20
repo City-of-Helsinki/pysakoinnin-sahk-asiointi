@@ -4,11 +4,11 @@ from django.contrib import admin
 from django.urls import path
 from ninja import NinjaAPI
 
-from rectification.api import router as rectification_router
+from api.api import router as api_router
 
 api = NinjaAPI()
 
-api.add_router('/rectification/', rectification_router)
+api.add_router('/api/v1', api_router)
 
 
 @api.get("/helloworld")
@@ -18,5 +18,5 @@ def helloworld(request):
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("api/", api.urls)
+    path("api/v1/", api.urls)
 ]

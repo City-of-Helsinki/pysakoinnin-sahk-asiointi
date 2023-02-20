@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "rectification",
+    "api",
     "ninja"
 ]
 
@@ -60,7 +60,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "rectification.audit_log.AuditLogMiddleware"
+    "api.audit_log.AuditLogMiddleware"
 ]
 
 ROOT_URLCONF = "pysakoinnin_sahk_asiointi.urls"

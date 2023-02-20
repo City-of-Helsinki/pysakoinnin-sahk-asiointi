@@ -3,8 +3,8 @@ from typing import Optional
 
 from django.db.models import Model
 
-from rectification.enums import Operation, Status
-from rectification.models import AuditLog
+from api.enums import Operation, Status
+from api.models import AuditLog
 
 ORIGIN = "PARKING_E-SERVICE"
 
@@ -41,13 +41,14 @@ def _commit_to_audit_log(request, response
                 "profile_id": profile_id,
             },
             "operation": _get_operation_name(request),
-            "target": {
-                "id": "TEST",
-                "type": None
-            },
+            "target": _get_target_uri(request)
         },
     }
     AuditLog.objects.create(message=message)
+
+
+def _get_target_uri(request):
+    return request.path
 
 
 def _get_target_id(instance: Optional[Model]) -> Optional[str]:

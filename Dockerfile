@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y telnet traceroute
 
 COPY manage.py ./
 COPY pysakoinnin_sahk_asiointi/ pysakoinnin_sahk_asiointi/
-COPY rectification/ rectification/
+COPY api/ api/
 COPY docker-entrypoint.sh ./
 
 RUN ["chmod", "+x", "/usr/src/app/docker-entrypoint.sh"]

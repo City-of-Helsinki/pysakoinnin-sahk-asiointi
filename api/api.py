@@ -2,7 +2,7 @@ from ninja import Router
 from ninja.errors import HttpError
 from requests import request as HTTPRequest
 
-from rectification.views import *
+from api.views import *
 
 router = Router()
 
@@ -17,7 +17,7 @@ def test_data(request):
 
 @router.get('/testPasi')
 def test_pasi(request):
-    req = HTTPRequest("GET", url="https://10.182.254.208:8443")
+    req = HTTPRequest("POST", url="http://10.182.254.208:8443/api/fouls/GetFoulData")
     return req.json()
 
 
