@@ -32,3 +32,29 @@ class ATVHandler:
             return req
         except Exception as error:
             return str(error)
+
+
+class PASIHandler:
+
+    def getFoulData(self, foul_number, register_number):
+        print(foul_number, register_number)
+        try:
+            req = request("POST", url=f"{env('PASI_ENDPOINT')}/api/v1/fouls/GetFoulData",
+                          verify=False,
+                          headers={'content-type': 'application/json', 'x-api-version': '1.0'},
+                          json={
+
+                              "username": "string",
+                              "password": "string",
+                              "customerID": {
+                                  "id": "string",
+                                  "type": 0
+                              },
+                              "customerLanguage": 0,
+                              "customerIPAddress": "string",
+                              "foulNumber": foul_number,
+                              "registerNumber": f"{register_number}"
+                          })
+            return req
+        except Exception as error:
+            return str(error)

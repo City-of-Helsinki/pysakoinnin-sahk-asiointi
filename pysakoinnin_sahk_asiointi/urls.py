@@ -8,15 +8,9 @@ from api.api import router as api_router
 
 api = NinjaAPI()
 
-api.add_router('/api/v1', api_router)
-
-
-@api.get("/helloworld")
-def helloworld(request):
-    return {"msg": 'Hello world'}
-
+api.add_router('/v1/', api_router)
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("api/v1/", api.urls)
+    path("api/", api.urls)
 ]

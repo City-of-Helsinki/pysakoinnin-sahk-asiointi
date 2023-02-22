@@ -1,10 +1,22 @@
 from ninja import Router
 from ninja.errors import HttpError
-from requests import request as HTTPRequest
 
 from api.views import *
 
 router = Router()
+
+
+@router.get("/helloworld")
+def helloworld(request):
+    return {"msg": 'Hello world'}
+
+
+@router.get('/getFoulData')
+def test_pasi(request, foul_number: int = 113148427, register_number: str = "HKR-999"):
+    req = PASIHandler.getFoulData(request, foul_number, register_number)
+    if req.status_code != 200:
+        raise HttpError(req.status_code, req.json())
+    return req.json()
 
 
 @router.get('/getDocuments')
@@ -12,12 +24,6 @@ def test_data(request):
     req = ATVHandler.get_documents(request)
     if req.status_code != 200:
         raise HttpError(req.status_code, req.json())
-    return req.json()
-
-
-@router.get('/testPasi')
-def test_pasi(request):
-    req = HTTPRequest("POST", url="http://10.182.254.208:8443/api/fouls/GetFoulData")
     return req.json()
 
 
