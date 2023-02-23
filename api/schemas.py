@@ -42,6 +42,15 @@ class FoulDataResponse(Schema):
     responseCode: int
 
 
+class ExtendDueDateResponse(Schema):
+    success: bool
+    errorcode: str or None
+    internalErrorDescription: str or None
+    dueDate: str
+    dueDateExtendableReason: int
+    responseCode: int
+
+
 # ATV related
 class ATVDocumentSchema(Schema):
     id: str

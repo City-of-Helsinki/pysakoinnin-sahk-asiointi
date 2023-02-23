@@ -1,10 +1,15 @@
-from ninja import Router
+from ninja import Router, Schema
 from ninja.errors import HttpError
 
-from api.schemas import FoulDataResponse, ATVDocumentResponse
+from api.schemas import FoulDataResponse, ATVDocumentResponse, ExtendDueDateResponse
 from api.views import *
 
 router = Router()
+
+
+class FoulRequest(Schema):
+    foul_number: int = 113148427
+    register_number: str = "HKR-999"
 
 
 @router.get("/helloworld")
@@ -18,6 +23,17 @@ def get_foul_data(request, foul_number: int = 113148427, register_number: str = 
     Retrieve foul data from PASI by foul number and register number
     """
     req = PASIHandler.get_foul_data(foul_number, register_number)
+    if req.status_code != 200:
+        raise HttpError(req.status_code, req.json())
+    return req.json()
+
+
+@router.post('/extendDueDate', response={200: ExtendDueDateResponse}, tags=['PASI'])
+def extend_due_date(request, foul_data: FoulRequest):
+    """
+    Extend foul due date by 30 days
+    """
+    req = PASIHandler.extend_foul_due_date(foul_data)
     if req.status_code != 200:
         raise HttpError(req.status_code, req.json())
     return req.json()
