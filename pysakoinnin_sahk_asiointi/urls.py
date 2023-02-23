@@ -6,11 +6,11 @@ from ninja import NinjaAPI
 
 from api.api import router as api_router
 
-api = NinjaAPI()
+api = NinjaAPI(title='Pysaköinnin Sähköinen Asiointi', version='1.0.0')
 
-api.add_router('/v1/', api_router)
+api.add_router('/', api_router)
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("api/", api.urls)
+    path("api/v1/", api.urls)
 ]

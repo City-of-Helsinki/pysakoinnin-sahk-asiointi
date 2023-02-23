@@ -7,7 +7,8 @@ env = Env()
 
 
 class ATVHandler:
-    def get_documents(self):
+    @staticmethod
+    def get_documents():
         try:
             req = request("GET", url=f"{env('ATV_ENDPOINT')}?user_id=35513524-486D-4C0D-AE80-E263DBAEE4DC",
                           headers={"x-api-key": env('ATV_API_KEY')})
@@ -15,7 +16,8 @@ class ATVHandler:
         except Exception as error:
             return str(error)
 
-    def add_document(self):
+    @staticmethod
+    def add_document():
         try:
             req = request('POST', f"{env('ATV_ENDPOINT')}",
                           headers={"x-api-key": env('ATV_API_KEY')}, data={
@@ -36,14 +38,13 @@ class ATVHandler:
 
 class PASIHandler:
 
-    def getFoulData(self, foul_number, register_number):
-        print(foul_number, register_number)
+    @staticmethod
+    def get_foul_data(foul_number, register_number):
         try:
             req = request("POST", url=f"{env('PASI_ENDPOINT')}/api/v1/fouls/GetFoulData",
                           verify=False,
                           headers={'content-type': 'application/json', 'x-api-version': '1.0'},
                           json={
-
                               "username": "string",
                               "password": "string",
                               "customerID": {
@@ -57,4 +58,4 @@ class PASIHandler:
                           })
             return req
         except Exception as error:
-            return str(error)
+            return {"status_code": 500, "error": error}
