@@ -6,7 +6,7 @@ from ninja import NinjaAPI
 
 from api.api import router as api_router
 
-api = NinjaAPI(title='Pysaköinnin Sähköinen Asiointi', version='1.0.0')
+api = NinjaAPI(title='Pysäköinnin asiointi', version='1.0.0')
 
 api.add_router('/', api_router)
 
