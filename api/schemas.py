@@ -1,3 +1,5 @@
+from typing import Optional
+
 from ninja import Schema
 
 
@@ -44,8 +46,8 @@ class FoulDataResponse(Schema):
 
 class ExtendDueDateResponse(Schema):
     success: bool
-    errorcode: str or None
-    internalErrorDescription: str or None
+    errorcode: Optional[str]
+    internalErrorDescription: Optional[str]
     dueDate: str
     dueDateExtendableReason: int
     responseCode: int
@@ -69,13 +71,13 @@ class ATVDocumentSchema(Schema):
     metadata: dict
     content: dict
     draft: bool
-    locked_after: str or None
+    locked_after: Optional[str]
     deletable: bool
     attachments: list
 
 
 class ATVDocumentResponse(Schema):
     count: int
-    next: int or None
-    previous: int or None
+    next: Optional[int]
+    previous: Optional[int]
     results: list[ATVDocumentSchema]
