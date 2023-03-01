@@ -10,10 +10,13 @@ class FoulSchema(Schema):
 
 
 class AttachmentSchema(Schema):
-    attachmentType: int
     fileName: str
     mimeType: str
     data: str
+
+
+class AttachmentWithType(AttachmentSchema):
+    attachmentType: int
 
 
 class FoulDataResponse(Schema):
@@ -37,8 +40,8 @@ class FoulDataResponse(Schema):
     referenceNumber: str
     iban: str
     barCode: str
-    foulMakerAddress: str
-    attachments: list[AttachmentSchema]
+    foulMakerAddress: Optional[str]
+    attachments: list[AttachmentWithType]
     dueDateExtendable: bool
     dueDateExtendableReason: int
     responseCode: int
@@ -51,6 +54,34 @@ class ExtendDueDateResponse(Schema):
     dueDate: str
     dueDateExtendableReason: int
     responseCode: int
+
+
+class AddressField(Schema):
+    addressLine1: str
+    addressLine2: str
+    streetAddress: str
+    postCode: str
+    postOffice: str
+    countryName: str
+
+
+class Objection(Schema):
+    foulNumber: int
+    transferNumber: int
+    folderID: str
+    ssn: str
+    firstName: str
+    lastName: str
+    email: str
+    mobilePhone: str
+    bic: str
+    iban: str
+    authorRole: int
+    address: AddressField
+    description: str
+    attachments: list[AttachmentSchema]
+    type: int
+    sendDecisionViaEService: bool
 
 
 # ATV related

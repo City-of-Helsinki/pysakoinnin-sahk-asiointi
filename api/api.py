@@ -39,6 +39,15 @@ def extend_due_date(request, foul_data: FoulRequest):
     return req.json()
 
 
+@router.post('/saveObjection', tags=['PASI'])
+def save_objection(request, objection: Objection):
+    """
+    Send a new objection to PASI
+    """
+    req = PASIHandler.save_objection(objection)
+    return req.status_code
+
+
 @router.get('/getDocuments', response={200: ATVDocumentResponse}, tags=['ATV'])
 def get_atv_documents(request):
     """

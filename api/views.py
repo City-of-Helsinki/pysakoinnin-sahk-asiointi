@@ -1,9 +1,22 @@
 import json
 
+import ninja.errors
 from environ import Env
 from requests import request
 
+from api.schemas import Objection
+
 env = Env()
+
+BASE_DETAILS = {"username": "string",
+                "password": "string",
+                "customerID": {
+                    "id": "string",
+                    "type": 0
+                },
+                "customerLanguage": 0,
+                "customerIPAddress": "string",
+                }
 
 
 class ATVHandler:
@@ -14,7 +27,7 @@ class ATVHandler:
                           headers={"x-api-key": env('ATV_API_KEY')})
             return req
         except Exception as error:
-            return str(error)
+            raise ninja.errors.HttpError(500, message=str(error))
 
     @staticmethod
     def add_document():
@@ -33,7 +46,7 @@ class ATVHandler:
                           files={'attachments': None})
             return req
         except Exception as error:
-            return str(error)
+            raise ninja.errors.HttpError(500, message=str(error))
 
 
 class PASIHandler:
@@ -45,12 +58,7 @@ class PASIHandler:
                           verify=False,
                           headers={'content-type': 'application/json', 'x-api-version': '1.0'},
                           json={
-                              "username": "string",
-                              "password": "string",
-                              "customerID": {
-                                  "id": "string",
-                                  "type": 0
-                              },
+                              **BASE_DETAILS,
                               "customerLanguage": 0,
                               "customerIPAddress": "string",
                               "foulNumber": foul_number,
@@ -58,7 +66,7 @@ class PASIHandler:
                           })
             return req
         except Exception as error:
-            return {"status_code": 500, "error": error}
+            raise ninja.errors.HttpError(500, message=str(error))
 
     @staticmethod
     def extend_foul_due_date(foul_data):
@@ -67,12 +75,7 @@ class PASIHandler:
                           verify=False,
                           headers={'content-type': 'application/json', 'x-api-version': '1.0'},
                           json={
-                              "username": "string",
-                              "password": "string",
-                              "customerID": {
-                                  "id": "string",
-                                  "type": 0
-                              },
+                              **BASE_DETAILS,
                               "customerLanguage": 0,
                               "customerIPAddress": "string",
                               "foulNumber": foul_data.foul_number,
@@ -80,4 +83,16 @@ class PASIHandler:
                           })
             return req
         except Exception as error:
-            return {"status_code": 500, "error": error}
+            raise ninja.errors.HttpError(500, message=str(error))
+
+    @staticmethod
+    def save_objection(objection: Objection):
+        try:
+            req = request("POST", url=f"{env('PASI_ENDPOINT')}/api/v1/Objections/SaveObjection",
+                          verify=False,
+                          headers={'content-type': 'application/json', 'x-api-version': '1.0'},
+                          json={**BASE_DETAILS, **Objection.dict(objection)}
+                          )
+            return req
+        except Exception as error:
+            raise ninja.errors.HttpError(500, message=str(error))
