@@ -59,9 +59,22 @@ class PASIHandler:
                           headers={'content-type': 'application/json', 'x-api-version': '1.0'},
                           json={
                               **BASE_DETAILS,
-                              "customerLanguage": 0,
-                              "customerIPAddress": "string",
                               "foulNumber": foul_number,
+                              "registerNumber": f"{register_number}"
+                          })
+            return req
+        except Exception as error:
+            raise ninja.errors.HttpError(500, message=str(error))
+
+    @staticmethod
+    def get_transfer_data(transfer_number: int, register_number: str):
+        try:
+            req = request("POST", url=f"{env('PASI_ENDPOINT')}/api/v1/Transfers/GetTransferData",
+                          verify=False,
+                          headers={'content-type': 'application/json', 'x-api-version': '1.0'},
+                          json={
+                              **BASE_DETAILS,
+                              "transferReferenceNumber": transfer_number,
                               "registerNumber": f"{register_number}"
                           })
             return req
@@ -76,8 +89,6 @@ class PASIHandler:
                           headers={'content-type': 'application/json', 'x-api-version': '1.0'},
                           json={
                               **BASE_DETAILS,
-                              "customerLanguage": 0,
-                              "customerIPAddress": "string",
                               "foulNumber": foul_data.foul_number,
                               "registerNumber": f"{foul_data.register_number}"
                           })

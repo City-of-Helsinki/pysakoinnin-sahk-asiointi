@@ -84,6 +84,40 @@ class Objection(Schema):
     sendDecisionViaEService: bool
 
 
+class TransferDataResponse(Schema):
+    transferNumber: int
+    transferDate: str
+    registerNumber: str
+    vehicleType: str
+    vehicleModel: str
+    vehicleBrand: str
+    vehicleColor: str
+    startAddress: str
+    startAddressAdditionalInfo: str
+    endAddress: str
+    endAddressAdditionalInfo: str
+    x_Coordinate: str
+    y_Coordinate: str
+    description: str
+    fouls: list
+    invoiceSumText: str
+    openAmountText: str
+    dueDate: str
+    referenceNumber: Optional[str]
+    iban: Optional[str]
+    barCode: str
+    vehicleOwnerAddress: Optional[str]
+    attachments: list
+    vehicleChassisNumber: str
+    transferStartDate: str
+    transferEndDate: str
+    transferType: str
+    transferStatus: str
+    transferReason: str
+    foulTypes: list
+    responseCode: int
+
+
 # ATV related
 class ATVDocumentSchema(Schema):
     id: str
