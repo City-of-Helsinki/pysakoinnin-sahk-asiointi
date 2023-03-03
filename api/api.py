@@ -1,5 +1,3 @@
-from typing import Any
-
 from ninja import Router, Schema
 from ninja.errors import HttpError
 
@@ -19,7 +17,7 @@ def helloworld(request):
     return {"msg": 'Hello world'}
 
 
-@router.get('/getFoulData', response={200: FoulDataResponse}, tags=['PASI'])
+@router.get('/getFoulData', response={200: FoulDataResponse, 404: None}, tags=['PASI'])
 def get_foul_data(request, foul_number: int = 113148427, register_number: str = "HKR-999"):
     """
     Retrieve foul data from PASI by foul number and register number
@@ -52,13 +50,13 @@ def extend_due_date(request, foul_data: FoulRequest):
     return req.json()
 
 
-@router.post('/saveObjection', tags=['PASI'])
+@router.post('/saveObjection', response={204: None, 422: None}, tags=['PASI'])
 def save_objection(request, objection: Objection):
     """
     Send a new objection to PASI
     """
     req = PASIHandler.save_objection(objection)
-    return req.status_code
+    return int(req.status_code), None
 
 
 @router.get('/getDocuments', response={200: ATVDocumentResponse}, tags=['ATV'])
@@ -72,7 +70,7 @@ def get_atv_documents(request):
     return req.json()
 
 
-@router.post('/sendDocument', tags=['ATV'])
+@router.post('/sendDocument', response={201: ATVDocumentResponse, 400: None, 401: None}, tags=['ATV'])
 def send_atv_document(request):
     """
     Upload new user document to ATV
