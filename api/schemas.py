@@ -1,3 +1,4 @@
+from enum import Enum
 from typing import Optional
 
 from ninja import Schema
@@ -146,3 +147,16 @@ class ATVDocumentResponse(Schema):
     next: Optional[int]
     previous: Optional[int]
     results: list[ATVDocumentSchema]
+
+
+class DocumentStatusEnum(str, Enum):
+    sent = "sent"
+    received = "received"
+    handling = "handling"
+    resolvedViaEService = "resolvedViaEService"
+    resolvedViaMail = "resolvedViaMail"
+
+
+class DocumentStatusRequest(Schema):
+    id: str
+    status: DocumentStatusEnum

@@ -79,3 +79,12 @@ def send_atv_document(request):
     if req.status_code != 201:
         raise HttpError(req.status_code, req.json())
     return req.json()
+
+
+@router.patch('/setDocumentStatus', response={200: None, 401: None, 404: None, 422: None},
+              tags=['Pysaköinnin asiointi'])
+def set_document_status(request, status_request: DocumentStatusRequest):
+    """
+    Update document status with ID and status
+    """
+    return DocumentHandler.set_document_status(status_request)

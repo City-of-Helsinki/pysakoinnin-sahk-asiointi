@@ -4,7 +4,7 @@ import ninja.errors
 from environ import Env
 from requests import request
 
-from api.schemas import Objection
+from api.schemas import Objection, DocumentStatusRequest
 
 env = Env()
 
@@ -107,3 +107,10 @@ class PASIHandler:
             return req
         except Exception as error:
             raise ninja.errors.HttpError(500, message=str(error))
+
+
+class DocumentHandler:
+
+    @staticmethod
+    def set_document_status(status_request: DocumentStatusRequest):
+        print(status_request)
