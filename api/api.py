@@ -12,6 +12,10 @@ class FoulRequest(Schema):
     register_number: str = "HKR-999"
 
 
+class NotFoundError(Schema):
+    detail: str = "Resource not found"
+
+
 @router.get("/helloworld")
 def helloworld(request):
     return {"msg": 'Hello world'}
@@ -70,12 +74,22 @@ def get_atv_documents(request):
     return req.json()
 
 
-@router.post('/sendDocument', response={201: ATVDocumentResponse, 400: None, 401: None}, tags=['ATV'])
-def send_atv_document(request):
+@router.get('/getDocumentByTransactionId/{id}', response={200: None, 404: NotFoundError, 500: None}, tags=["ATV"])
+def get_document_by_transaction_id(request, id):
+    """
+    Get document from ATV by foul ID
+    """
+    req = ATVHandler.get_document_by_transaction_id(id)
+    return req
+
+
+@router.post('/sendObjection/{foul_id}', response={200: None, 201: ATVDocumentResponse, 400: None, 401: None},
+             tags=['ATV'])
+def send_objection_to_atv(request, objection: Objection, foul_id: str):
     """
     Upload new user document to ATV
     """
-    req = ATVHandler.add_document()
+    req = ATVHandler.add_document(objection, foul_id)
     if req.status_code != 201:
         raise HttpError(req.status_code, req.json())
     return req.json()

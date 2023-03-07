@@ -30,19 +30,27 @@ class ATVHandler:
             raise ninja.errors.HttpError(500, message=str(error))
 
     @staticmethod
-    def add_document():
+    def get_document_by_transaction_id(foul_id):
+        try:
+            req = request("GET", url=f"{env('ATV_ENDPOINT')}?transaction_id={foul_id}",
+                          headers={"x-api-key": env('ATV_API_KEY')})
+            response_json = req.json()
+            if len(response_json["results"]) <= 0:
+                raise ninja.errors.HttpError(404, message="Resource not found")
+            return response_json
+        except ninja.errors.HttpError as error:
+            raise error
+
+    @staticmethod
+    def add_document(objection: Objection, foul_id: str):
         try:
             req = request('POST', f"{env('ATV_ENDPOINT')}",
                           headers={"x-api-key": env('ATV_API_KEY')}, data={
                     "draft": False,
+                    "transaction_id": f"{foul_id}",
                     "tos_record_id": 12345,
                     "tos_function_id": 12345,
-                    "content": json.dumps({
-                        "title": "Just testing",
-                        "body": "Written text in json object"
-                    }),
-                    "user_id": "35513524-486D-4C0D-AE80-E263DBAEE4DC"
-                },
+                    "content": json.dumps({**Objection.dict(objection)})},
                           files={'attachments': None})
             return req
         except Exception as error:
