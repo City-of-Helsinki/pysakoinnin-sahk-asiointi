@@ -129,7 +129,7 @@ class ATVDocumentSchema(Schema):
     type: str
     human_readable_type: dict
     service: str
-    user_id: str
+    user_id: Optional[str]
     transaction_id: str
     business_id: str
     tos_function_id: str

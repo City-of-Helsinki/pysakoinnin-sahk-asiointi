@@ -1,7 +1,7 @@
 import json
 
-import ninja.errors
 from environ import Env
+from ninja.errors import HttpError
 from requests import request
 
 from api.schemas import Objection, DocumentStatusRequest
@@ -21,13 +21,16 @@ BASE_DETAILS = {"username": "string",
 
 class ATVHandler:
     @staticmethod
-    def get_documents():
+    def get_documents(user_id: str):
         try:
-            req = request("GET", url=f"{env('ATV_ENDPOINT')}?user_id=35513524-486D-4C0D-AE80-E263DBAEE4DC",
+            req = request("GET", url=f"{env('ATV_ENDPOINT')}?user_id={user_id}",
                           headers={"x-api-key": env('ATV_API_KEY')})
-            return req
-        except Exception as error:
-            raise ninja.errors.HttpError(500, message=str(error))
+            response_json = req.json()
+            if len(response_json['results']) <= 0:
+                raise HttpError(404, message="Resource not found")
+            return response_json
+        except HttpError as error:
+            raise error
 
     @staticmethod
     def get_document_by_transaction_id(foul_id):
@@ -36,9 +39,9 @@ class ATVHandler:
                           headers={"x-api-key": env('ATV_API_KEY')})
             response_json = req.json()
             if len(response_json["results"]) <= 0:
-                raise ninja.errors.HttpError(404, message="Resource not found")
+                raise HttpError(404, message="Resource not found")
             return response_json
-        except ninja.errors.HttpError as error:
+        except HttpError as error:
             raise error
 
     @staticmethod
@@ -52,9 +55,9 @@ class ATVHandler:
                     "tos_function_id": 12345,
                     "content": json.dumps({**Objection.dict(objection)})},
                           files={'attachments': None})
-            return req
+            return req.json()
         except Exception as error:
-            raise ninja.errors.HttpError(500, message=str(error))
+            raise HttpError(500, message=str(error))
 
 
 class PASIHandler:
@@ -72,7 +75,7 @@ class PASIHandler:
                           })
             return req
         except Exception as error:
-            raise ninja.errors.HttpError(500, message=str(error))
+            raise HttpError(500, message=str(error))
 
     @staticmethod
     def get_transfer_data(transfer_number: int, register_number: str):
@@ -87,7 +90,7 @@ class PASIHandler:
                           })
             return req
         except Exception as error:
-            raise ninja.errors.HttpError(500, message=str(error))
+            raise HttpError(500, message=str(error))
 
     @staticmethod
     def extend_foul_due_date(foul_data):
@@ -102,7 +105,7 @@ class PASIHandler:
                           })
             return req
         except Exception as error:
-            raise ninja.errors.HttpError(500, message=str(error))
+            raise HttpError(500, message=str(error))
 
     @staticmethod
     def save_objection(objection: Objection):
@@ -114,7 +117,7 @@ class PASIHandler:
                           )
             return req
         except Exception as error:
-            raise ninja.errors.HttpError(500, message=str(error))
+            raise HttpError(500, message=str(error))
 
 
 class DocumentHandler:
