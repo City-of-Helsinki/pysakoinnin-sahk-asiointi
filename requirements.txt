@@ -6,13 +6,63 @@
 #
 asgiref==3.5.2
     # via django
-django==4.1.2
+cachetools==5.2.0
+    # via django-helusers
+certifi==2022.9.24
+    # via
+    #   requests
+    #   sentry-sdk
+charset-normalizer==2.1.1
+    # via requests
+deprecation==2.1.0
+    # via django-helusers
+django==3.2.16
     # via
     #   -r requirements.in
     #   django-cors-headers
+    #   django-helusers
+    #   django-ninja
 django-cors-headers==3.13.0
     # via -r requirements.in
 django-environ==0.9.0
     # via -r requirements.in
+django-helusers==0.7.1
+    # via -r requirements.in
+django-ninja==0.19.1
+    # via -r requirements.in
+ecdsa==0.18.0
+    # via python-jose
+idna==3.4
+    # via requests
+packaging==21.3
+    # via deprecation
+psycopg2==2.9.5
+    # via -r requirements.in
+pyasn1==0.4.8
+    # via
+    #   python-jose
+    #   rsa
+pydantic==1.10.2
+    # via django-ninja
+pyparsing==3.0.9
+    # via packaging
+python-jose==3.3.0
+    # via django-helusers
+pytz==2022.5
+    # via django
+requests==2.28.1
+    # via django-helusers
+rsa==4.9
+    # via python-jose
+sentry-sdk==1.10.1
+    # via -r requirements.in
+six==1.16.0
+    # via ecdsa
 sqlparse==0.4.3
     # via django
+typing-extensions==4.4.0
+    # via pydantic
+urllib3==1.26.12
+    # via
+    #   requests
+    #   sentry-sdk

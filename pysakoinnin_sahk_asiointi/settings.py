@@ -1,17 +1,25 @@
 from pathlib import Path
+from sys import stdout
 
-import environ
+import sentry_sdk
+from environ import Env
+from sentry_sdk.integrations.django import DjangoIntegration
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-env = environ.Env(
-    DEBUG=(bool, True),
+env = Env(
+    DEBUG=(bool, False),
     SECRET_KEY=(str, ""),
     ALLOWED_HOSTS=(list, []),
+    DATABASE_URL=(str, "postgres://parking-user:root@localhost:5432/parking-service"),
+    SENTRY_DSN=(str, ""),
+    SENTRY_TRACE_SAMPLE_RATE=(float, 0.0),
+    ATV_API_KEY=(str, ""),
+    ATV_ENDPOINT=(str, "")
 )
 
-environ.Env.read_env(str(BASE_DIR / "config.env"))
+Env.read_env(str(BASE_DIR / "config.env"))
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env("DEBUG")
@@ -22,16 +30,26 @@ SECRET_KEY = env('SECRET_KEY')
 if DEBUG and not SECRET_KEY:
     SECRET_KEY = 'XXX'
 
+# Sentry config
+sentry_sdk.init(
+    dsn=env('SENTRY_DSN'),
+    integrations=[DjangoIntegration()],
+
+    traces_sample_rate=env('SENTRY_TRACE_SAMPLE_RATE'),
+)
 
 # Application definition
 
 INSTALLED_APPS = [
-    "django.contrib.admin",
+    'helusers.apps.HelusersConfig',
+    'helusers.apps.HelusersAdminConfig',
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "api",
+    "ninja"
 ]
 
 MIDDLEWARE = [
@@ -42,6 +60,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "api.audit_log.AuditLogMiddleware"
 ]
 
 ROOT_URLCONF = "pysakoinnin_sahk_asiointi.urls"
@@ -64,17 +83,11 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "pysakoinnin_sahk_asiointi.wsgi.application"
 
-
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
 
+DATABASES = {"default": env.db()}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -94,7 +107,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
@@ -106,7 +118,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
@@ -116,3 +127,16 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+_audit_log_handler = {
+    "level": "INFO",
+    "class": "logging.StreamHandler",
+    "stream": stdout,
+}
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {"audit": _audit_log_handler},
+    "loggers": {"audit": {"handlers": ["audit"], "level": "INFO", "propagate": True}},
+}
