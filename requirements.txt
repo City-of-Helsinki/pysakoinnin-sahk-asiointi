@@ -30,6 +30,8 @@ django-helusers==0.7.1
     # via -r requirements.in
 django-ninja==0.19.1
     # via -r requirements.in
+django-pytest==0.2.0
+    # via -r requirements.in
 ecdsa==0.18.0
     # via python-jose
 idna==3.4
