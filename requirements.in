@@ -3,7 +3,7 @@ django-cors-headers
 django-environ
 django-ninja
 django-helusers
-django-pytest
+pytest-django
 pytest-cov
 psycopg2
 sentry-sdk
