@@ -6,6 +6,8 @@
 #
 asgiref==3.5.2
     # via django
+attrs==22.2.0
+    # via pytest
 cachetools==5.2.0
     # via django-helusers
 certifi==2022.9.24
@@ -14,6 +16,8 @@ certifi==2022.9.24
     #   sentry-sdk
 charset-normalizer==2.1.1
     # via requests
+coverage[toml]==7.2.1
+    # via pytest-cov
 deprecation==2.1.0
     # via django-helusers
 django==3.2.16
@@ -34,10 +38,18 @@ django-pytest==0.2.0
     # via -r requirements.in
 ecdsa==0.18.0
     # via python-jose
+exceptiongroup==1.1.1
+    # via pytest
 idna==3.4
     # via requests
+iniconfig==2.0.0
+    # via pytest
 packaging==21.3
-    # via deprecation
+    # via
+    #   deprecation
+    #   pytest
+pluggy==1.0.0
+    # via pytest
 psycopg2==2.9.5
     # via -r requirements.in
 pyasn1==0.4.8
@@ -48,6 +60,10 @@ pydantic==1.10.2
     # via django-ninja
 pyparsing==3.0.9
     # via packaging
+pytest==7.2.2
+    # via pytest-cov
+pytest-cov==4.0.0
+    # via -r requirements.in
 python-jose==3.3.0
     # via django-helusers
 pytz==2022.5
@@ -62,6 +78,10 @@ six==1.16.0
     # via ecdsa
 sqlparse==0.4.3
     # via django
+tomli==2.0.1
+    # via
+    #   coverage
+    #   pytest
 typing-extensions==4.4.0
     # via pydantic
 urllib3==1.26.12

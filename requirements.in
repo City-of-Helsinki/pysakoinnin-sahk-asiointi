@@ -4,5 +4,6 @@ django-environ
 django-ninja
 django-helusers
 django-pytest
+pytest-cov
 psycopg2
 sentry-sdk

@@ -73,7 +73,11 @@ class PASIHandler:
                               "foulNumber": foul_number,
                               "registerNumber": f"{register_number}"
                           })
+            if req.status_code == 404:
+                raise HttpError(404, message="Resource not found")
             return req
+        except HttpError as error:
+            raise error
         except Exception as error:
             raise HttpError(500, message=str(error))
 
@@ -88,7 +92,11 @@ class PASIHandler:
                               "transferReferenceNumber": transfer_number,
                               "registerNumber": f"{register_number}"
                           })
+            if req.status_code == 404:
+                raise HttpError(404, message="Resource not found")
             return req
+        except HttpError as error:
+            raise error
         except Exception as error:
             raise HttpError(500, message=str(error))
 
@@ -115,7 +123,11 @@ class PASIHandler:
                           headers={'content-type': 'application/json', 'x-api-version': '1.0'},
                           json={**BASE_DETAILS, **Objection.dict(objection)}
                           )
+            if req.status_code == 422:
+                raise HttpError(422, message=req.json())
             return req
+        except HttpError as error:
+            raise error
         except Exception as error:
             raise HttpError(500, message=str(error))
 

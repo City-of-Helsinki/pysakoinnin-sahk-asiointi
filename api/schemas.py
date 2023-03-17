@@ -26,7 +26,7 @@ class FoulDataResponse(Schema):
     monitoringStart: str
     registerNumber: str
     vehicleType: str
-    vehicleModel: str
+    vehicleModel: Optional[str]
     vehicleBrand: str
     vehicleColor: str
     address: str
@@ -38,9 +38,9 @@ class FoulDataResponse(Schema):
     invoiceSumText: str
     openAmountText: str
     dueDate: str
-    referenceNumber: str
-    iban: str
-    barCode: str
+    referenceNumber: Optional[str]
+    iban: Optional[str]
+    barCode: Optional[str]
     foulMakerAddress: Optional[str]
     attachments: list[AttachmentWithType]
     dueDateExtendable: bool
