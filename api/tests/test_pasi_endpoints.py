@@ -5,7 +5,7 @@ from django.test import TestCase
 from ninja import NinjaAPI
 from ninja.testing import TestClient
 
-from api.tests.mocks import *
+from api.tests.mocks import MockResponse, MOCK_FOUL, MOCK_TRANSFER
 
 test_api = NinjaAPI()
 

@@ -1,9 +1,25 @@
+from django.http import HttpRequest
+from helusers.oidc import RequestJWTAuthentication
 from ninja import Router, Schema
+from ninja.errors import HttpError
+from ninja.security import HttpBearer
 
-from api.schemas import FoulDataResponse, ATVDocumentResponse, ExtendDueDateResponse, TransferDataResponse
-from api.views import *
+from api.schemas import FoulDataResponse, ATVDocumentResponse, ExtendDueDateResponse, TransferDataResponse, Objection, \
+    DocumentStatusRequest
+from api.views import PASIHandler, ATVHandler, DocumentHandler
 
 router = Router()
+
+
+class AuthBearer(HttpBearer):
+    def authenticate(self, request: HttpRequest, token: str):
+        try:
+            authenticator = RequestJWTAuthentication()
+            user_auth = authenticator.authenticate(request=request)
+            if user_auth is not None:
+                return True
+        except Exception as error:
+            raise HttpError(401, message=str(error))
 
 
 class FoulRequest(Schema):
@@ -18,6 +34,11 @@ class NotFoundError(Schema):
 @router.get("/helloworld")
 def helloworld(request):
     return {"msg": 'Hello world'}
+
+
+@router.get('/tryAuth', auth=AuthBearer())
+def try_auth(request):
+    return "ping!"
 
 
 @router.get('/getFoulData', response={200: FoulDataResponse, 404: NotFoundError}, tags=['PASI'])
