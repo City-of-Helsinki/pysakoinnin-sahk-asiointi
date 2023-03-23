@@ -1,4 +1,5 @@
 from django.http import HttpRequest
+from environ import Env
 from helusers.oidc import RequestJWTAuthentication
 from ninja import Router, Schema
 from ninja.errors import HttpError
@@ -9,6 +10,7 @@ from api.schemas import FoulDataResponse, ATVDocumentResponse, ExtendDueDateResp
 from api.views import PASIHandler, ATVHandler, DocumentHandler
 
 router = Router()
+env = Env()
 
 
 class AuthBearer(HttpBearer):
@@ -20,6 +22,12 @@ class AuthBearer(HttpBearer):
                 return True
         except Exception as error:
             raise HttpError(401, message=str(error))
+
+
+class ApiKeyAuth(HttpBearer):
+    def authenticate(self, request: HttpRequest, token: str):
+        if token == env("PASI_API_KEY"):
+            return True
 
 
 class FoulRequest(Schema):
@@ -108,7 +116,7 @@ def send_objection_to_atv(request, objection: Objection, foul_id: str):
 
 
 @router.patch('/setDocumentStatus', response={200: None, 401: None, 404: NotFoundError, 422: None},
-              tags=['Pysaköinnin asiointi'])
+              tags=['Pysaköinnin asiointi'], auth=ApiKeyAuth())
 def set_document_status(request, status_request: DocumentStatusRequest):
     """
     Update document status with ID and status
