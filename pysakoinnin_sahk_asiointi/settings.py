@@ -2,6 +2,7 @@ from pathlib import Path
 from sys import stdout
 
 import sentry_sdk
+from corsheaders.defaults import default_headers
 from environ import Env
 from sentry_sdk.integrations.django import DjangoIntegration
 
@@ -20,7 +21,8 @@ env = Env(
     TOKEN_AUTH_AUDIENCE=(str, ""),
     TOKEN_AUTH_ISSUER=(str, ""),
     TOKEN_AUTH_AUTHORIZATION_FIELD=(str, ""),
-    TOKEN_AUTH_SCOPE_PREFIX=(str, "")
+    TOKEN_AUTH_SCOPE_PREFIX=(str, ""),
+    CORS_ALLOWED_ORIGINS=(list, [])
 )
 
 Env.read_env(str(BASE_DIR / "config.env"))
@@ -54,19 +56,24 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "pysakoinnin_sahk_asiointi",
     "api",
-    "ninja"
+    "ninja",
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "api.audit_log.AuditLogMiddleware"
+    "api.audit_log.AuditLogMiddleware",
 ]
+
+CORS_ALLOWED_ORIGINS = env.list('CORS_ALLOWED_ORIGINS')
+CORS_ALLOW_HEADERS = list(default_headers) + ['baggage', 'sentry-trace']
 
 ROOT_URLCONF = "pysakoinnin_sahk_asiointi.urls"
 
