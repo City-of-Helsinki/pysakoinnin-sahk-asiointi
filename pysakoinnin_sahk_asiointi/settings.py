@@ -72,8 +72,6 @@ MIDDLEWARE = [
     "api.audit_log.AuditLogMiddleware",
 ]
 
-print(env.list('CORS_ALLOWED_ORIGINS'))
-
 CORS_ALLOWED_ORIGINS = env.list('CORS_ALLOWED_ORIGINS')
 CORS_ALLOW_HEADERS = list(default_headers) + ['baggage', 'sentry-trace']
 
