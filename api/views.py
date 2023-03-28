@@ -22,6 +22,7 @@ BASE_DETAILS = {"username": "string",
 class ATVHandler:
     @staticmethod
     def get_documents(user_id: str):
+
         try:
             req = request("GET", url=f"{env('ATV_ENDPOINT')}?user_id={user_id}",
                           headers={"x-api-key": env('ATV_API_KEY')})
@@ -45,10 +46,11 @@ class ATVHandler:
             raise error
 
     @staticmethod
-    def add_document(objection: Objection, foul_id: str):
+    def add_document(objection: Objection, foul_id: str, user_id: str):
         try:
             req = request('POST', f"{env('ATV_ENDPOINT')}",
                           headers={"x-api-key": env('ATV_API_KEY')}, data={
+                    "user_id": user_id,
                     "draft": False,
                     "transaction_id": f"{foul_id}",
                     "tos_record_id": 12345,
