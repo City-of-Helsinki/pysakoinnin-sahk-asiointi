@@ -19,6 +19,7 @@ class AuthBearer(HttpBearer):
             authenticator = RequestJWTAuthentication()
             user_auth = authenticator.authenticate(request=request)
             if user_auth is not None:
+                request.user = user_auth.user
                 return True
         except Exception as error:
             raise HttpError(401, message=str(error))
@@ -85,13 +86,13 @@ def save_objection(request, objection: Objection):
     return req.json()
 
 
-@router.get('/getDocuments/{user_id}', response={200: ATVDocumentResponse}, tags=['ATV'])
-def get_atv_documents(request, user_id: str):
+@router.get('/getDocuments/', response={200: ATVDocumentResponse}, tags=['ATV'], auth=AuthBearer())
+def get_atv_documents(request):
     """
     Retrieve all user documents from ATV with UUID
     """
-    req = ATVHandler.get_documents(user_id)
-    return req.json()
+    req = ATVHandler.get_documents(request.user.uuid)
+    return req
 
 
 @router.get('/getDocumentByTransactionId/{id}', response={200: ATVDocumentResponse, 404: NotFoundError, 500: None},
@@ -101,18 +102,19 @@ def get_document_by_transaction_id(request, id):
     Get document from ATV by foul ID
     """
     req = ATVHandler.get_document_by_transaction_id(id)
-    return req.json()
+    return req
 
 
 @router.post('/sendObjection/{foul_id}',
              response={200: None, 201: ATVDocumentResponse, 400: None, 401: None},
-             tags=['ATV'])
+             tags=['ATV'],
+             auth=AuthBearer())
 def send_objection_to_atv(request, objection: Objection, foul_id: str):
     """
     Upload new user document to ATV
     """
-    req = ATVHandler.add_document(objection, foul_id)
-    return req.json()
+    req = ATVHandler.add_document(objection, foul_id, user_id=request.user.uuid)
+    return req
 
 
 @router.patch('/setDocumentStatus', response={200: None, 401: None, 404: NotFoundError, 422: None},
