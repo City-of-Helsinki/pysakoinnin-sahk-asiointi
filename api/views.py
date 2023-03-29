@@ -51,7 +51,7 @@ class ATVHandler:
             req = request('POST', f"{env('ATV_ENDPOINT')}",
                           headers={"x-api-key": env('ATV_API_KEY')}, data={
                     "user_id": user_id,
-                    "draft": True,
+                    "draft": False,
                     "transaction_id": f"{foul_id}",
                     "tos_record_id": 12345,
                     "tos_function_id": 12345,
