@@ -55,6 +55,7 @@ class ATVHandler:
                     "transaction_id": f"{foul_id}",
                     "tos_record_id": 12345,
                     "tos_function_id": 12345,
+                    "status": "sent",
                     "content": json.dumps({**Objection.dict(objection)})},
                           files={'attachments': None})
             return req.json()
@@ -138,4 +139,19 @@ class DocumentHandler:
 
     @staticmethod
     def set_document_status(status_request: DocumentStatusRequest):
-        print(status_request)
+        find_document_by_id = ATVHandler.get_document_by_transaction_id(status_request.id)
+        document_id = find_document_by_id["results"][0]['id']
+
+        try:
+            req = request('PATCH', f"{env('ATV_ENDPOINT')}{document_id}/",
+                          headers={"x-api-key": env('ATV_API_KEY'),
+                                   "accept": "application/json"},
+                          data={"status": status_request.status.value},
+                          files={"attachments": None})
+
+            response_json = req.json()
+            if hasattr(response_json, "id") is None:
+                raise HttpError(404, message="Resource not found")
+            return {200, "OK"}
+        except HttpError as error:
+            return error
