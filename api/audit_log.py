@@ -1,7 +1,4 @@
 from datetime import datetime, timezone
-from typing import Optional
-
-from django.db.models import Model
 
 from api.enums import Operation, Status
 from api.models import AuditLog
@@ -29,34 +26,30 @@ def _commit_to_audit_log(request, response
     Audit log events are written to the "audit" logger at "INFO" level.
     """
     current_time = _now()
-    profile_id = None
-    message = {
-        "audit_event": {
-            "origin": ORIGIN,
-            "status": _get_status(response),
-            "date_time_epoch": int(current_time.timestamp() * 1000),
-            "date_time": _iso8601_date(current_time),
-            "actor": {
-                "role": "ANONYMOUS",
-                "profile_id": profile_id,
-            },
-            "operation": _get_operation_name(request),
-            "target": _get_target_uri(request)
-        },
-    }
-    AuditLog.objects.create(message=message)
+    audit_event = {
+                      "origin": ORIGIN,
+                      "status": _get_status(response),
+                      "date_time_epoch": int(current_time.timestamp() * 1000),
+                      "date_time": _iso8601_date(current_time),
+                      "actor": {
+                          "profile_id": _get_profile_id(request),
+                      },
+                      "operation": _get_operation_name(request),
+                      "target": _get_target_uri(request)
+                  },
+
+    AuditLog.objects.create(audit_event=audit_event)
 
 
 def _get_target_uri(request):
     return request.path
 
 
-def _get_target_id(instance: Optional[Model]) -> Optional[str]:
-    if instance is None or instance.pk is None:
+def _get_profile_id(request):
+    if hasattr(request.user, "uuid"):
+        return str(request.user.uuid)
+    else:
         return None
-    field_name = getattr(instance, "audit_log_id_field", "pk")
-    audit_log_id = getattr(instance, field_name, None)
-    return str(audit_log_id)
 
 
 def _get_operation_name(request):
