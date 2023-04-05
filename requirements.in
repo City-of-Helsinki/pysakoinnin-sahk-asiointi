@@ -6,4 +6,5 @@ django-helusers
 pytest-django
 pytest-cov
 psycopg2
+pyclamd
 sentry-sdk

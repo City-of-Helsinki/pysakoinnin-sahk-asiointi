@@ -5,6 +5,7 @@ from ninja.errors import HttpError
 from requests import request
 
 from api.schemas import Objection, DocumentStatusRequest
+from .utils import virus_scan_attachment_file
 
 env = Env()
 
@@ -120,6 +121,10 @@ class PASIHandler:
 
     @staticmethod
     def save_objection(objection: Objection):
+        if objection.attachments is not None:
+            for attachment in objection.attachments:
+                virus_scan_attachment_file(attachment)
+
         try:
             req = request("POST", url=f"{env('PASI_ENDPOINT')}/api/v1/Objections/SaveObjection",
                           verify=False,

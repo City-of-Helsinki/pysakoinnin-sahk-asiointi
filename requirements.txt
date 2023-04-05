@@ -54,6 +54,8 @@ pyasn1==0.4.8
     # via
     #   python-jose
     #   rsa
+pyclamd==0.4.0
+    # via -r requirements.in
 pydantic==1.10.2
     # via django-ninja
 pyparsing==3.0.9
