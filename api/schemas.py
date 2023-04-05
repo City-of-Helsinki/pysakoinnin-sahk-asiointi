@@ -67,7 +67,7 @@ class AddressField(Schema):
 
 
 class Objection(Schema):
-    foulNumber: int
+    foulNumber: Optional[int]
     transferNumber: Optional[int]
     folderID: Optional[str]
     ssn: str
