@@ -22,7 +22,8 @@ env = Env(
     TOKEN_AUTH_ISSUER=(str, ""),
     TOKEN_AUTH_AUTHORIZATION_FIELD=(str, ""),
     TOKEN_AUTH_SCOPE_PREFIX=(str, ""),
-    CORS_ALLOWED_ORIGINS=(list, [])
+    CORS_ALLOWED_ORIGINS=(list, []),
+    CLAMAV_HOST=(str, "")
 )
 
 Env.read_env(str(BASE_DIR / "config.env"))
@@ -188,3 +189,6 @@ LOGGING = {
     "handlers": {"audit": _audit_log_handler},
     "loggers": {"audit": {"handlers": ["audit"], "level": "INFO", "propagate": True}},
 }
+
+# Malware protection
+CLAMAV_HOST = env("CLAMAV_HOST")
