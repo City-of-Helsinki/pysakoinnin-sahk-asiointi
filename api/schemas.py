@@ -58,24 +58,24 @@ class ExtendDueDateResponse(Schema):
 
 
 class AddressField(Schema):
-    addressLine1: str
-    addressLine2: str
+    addressLine1: Optional[str]
+    addressLine2: Optional[str]
     streetAddress: str
     postCode: str
-    postOffice: str
-    countryName: str
+    postOffice: Optional[str]
+    countryName: Optional[str]
 
 
 class Objection(Schema):
-    foulNumber: int
-    transferNumber: int
-    folderID: str
+    foulNumber: Optional[int]
+    transferNumber: Optional[int]
+    folderID: Optional[str]
     ssn: str
     firstName: str
     lastName: str
     email: str
     mobilePhone: str
-    bic: str
+    bic: Optional[str]
     iban: str
     authorRole: int
     address: AddressField
