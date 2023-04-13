@@ -1,9 +1,15 @@
+import requests
 from django.conf import settings
 from ninja.errors import HttpError
-from pyclamd import pyclamd
 
 
 def virus_scan_attachment_file(file_data):
-    cd = pyclamd.ClamdNetworkSocket(host=settings.CLAMAV_HOST)
-    if cd.scan_stream(file_data) is not None:
-        raise HttpError(400, message="Malicious file detected")
+    try:
+        req = requests.request('POST', f"{settings.CLAMAV_HOST}", files={file_data})
+        res = req.json()
+        if hasattr(res, 'data') and res['data']['is_infected'] is False:
+            return
+        else:
+            return HttpError(400, message="Request failed")
+    except Exception as error:
+        return error
