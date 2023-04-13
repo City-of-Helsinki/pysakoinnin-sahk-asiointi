@@ -122,22 +122,24 @@ class PASIHandler:
     @staticmethod
     def save_objection(objection: Objection):
         if objection.attachments is not None:
+            print('ping')
             for attachment in objection.attachments:
                 virus_scan_attachment_file(attachment)
-
-        try:
-            req = request("POST", url=f"{env('PASI_ENDPOINT')}/api/v1/Objections/SaveObjection",
-                          verify=False,
-                          headers={'content-type': 'application/json', 'x-api-version': '1.0'},
-                          json={**BASE_DETAILS, **Objection.dict(objection)}
-                          )
-            if req.status_code == 422:
-                raise HttpError(422, message=req.json())
-            return req
-        except HttpError as error:
-            raise error
-        except Exception as error:
-            raise HttpError(500, message=str(error))
+        else:
+            try:
+                print('pong')
+                req = request("POST", url=f"{env('PASI_ENDPOINT')}/api/v1/Objections/SaveObjection",
+                              verify=False,
+                              headers={'content-type': 'application/json', 'x-api-version': '1.0'},
+                              json={**BASE_DETAILS, **Objection.dict(objection)}
+                              )
+                if req.status_code == 422:
+                    raise HttpError(422, message=req.json())
+                return req
+            except HttpError as error:
+                raise error
+            except Exception as error:
+                raise HttpError(500, message=str(error))
 
 
 class DocumentHandler:
