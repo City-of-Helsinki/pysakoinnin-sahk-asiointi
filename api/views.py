@@ -5,7 +5,6 @@ from ninja.errors import HttpError
 from requests import request
 
 from api.schemas import Objection, DocumentStatusRequest
-from .utils import virus_scan_attachment_file
 
 env = Env()
 
@@ -71,7 +70,9 @@ class PASIHandler:
         try:
             req = request("POST", url=f"{env('PASI_ENDPOINT')}/api/v1/fouls/GetFoulData",
                           verify=False,
-                          headers={'content-type': 'application/json', 'x-api-version': '1.0'},
+                          headers={'authorization': f"Basic {env('PASI_AUTH_KEY')}",
+                                   'content-type': 'application/json',
+                                   'x-api-version': '1.0'},
                           json={
                               **BASE_DETAILS,
                               "foulNumber": foul_number,
@@ -90,7 +91,9 @@ class PASIHandler:
         try:
             req = request("POST", url=f"{env('PASI_ENDPOINT')}/api/v1/Transfers/GetTransferData",
                           verify=False,
-                          headers={'content-type': 'application/json', 'x-api-version': '1.0'},
+                          headers={'authorization': f"Basic {env('PASI_AUTH_KEY')}",
+                                   'content-type': 'application/json',
+                                   'x-api-version': '1.0'},
                           json={
                               **BASE_DETAILS,
                               "transferReferenceNumber": transfer_number,
@@ -109,7 +112,9 @@ class PASIHandler:
         try:
             req = request("POST", url=f"{env('PASI_ENDPOINT')}/api/v1/fouls/ExtendFoulDueDate",
                           verify=False,
-                          headers={'content-type': 'application/json', 'x-api-version': '1.0'},
+                          headers={'authorization': f"Basic {env('PASI_AUTH_KEY')}",
+                                   'content-type': 'application/json',
+                                   'x-api-version': '1.0'},
                           json={
                               **BASE_DETAILS,
                               "foulNumber": foul_data.foul_number,
@@ -121,25 +126,21 @@ class PASIHandler:
 
     @staticmethod
     def save_objection(objection: Objection):
-        if objection.attachments is not None:
-            print('ping')
-            for attachment in objection.attachments:
-                virus_scan_attachment_file(attachment)
-        else:
-            try:
-                print('pong')
-                req = request("POST", url=f"{env('PASI_ENDPOINT')}/api/v1/Objections/SaveObjection",
-                              verify=False,
-                              headers={'content-type': 'application/json', 'x-api-version': '1.0'},
-                              json={**BASE_DETAILS, **Objection.dict(objection)}
-                              )
-                if req.status_code == 422:
-                    raise HttpError(422, message=req.json())
-                return req
-            except HttpError as error:
-                raise error
-            except Exception as error:
-                raise HttpError(500, message=str(error))
+        try:
+            req = request("POST", url=f"{env('PASI_ENDPOINT')}/api/v1/Objections/SaveObjection",
+                          verify=False,
+                          headers={'authorization': f"Basic {env('PASI_AUTH_KEY')}",
+                                   'content-type': 'application/json',
+                                   'x-api-version': '1.0'},
+                          json={**BASE_DETAILS, **Objection.dict(objection)}
+                          )
+            if req.status_code == 422:
+                raise HttpError(422, message=req.json())
+            return req
+        except HttpError as error:
+            raise error
+        except Exception as error:
+            raise HttpError(500, message=str(error))
 
 
 class DocumentHandler:
