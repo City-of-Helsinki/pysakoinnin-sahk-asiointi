@@ -1,8 +1,6 @@
 from django.http import HttpRequest
 from environ import Env
-from helusers.oidc import RequestJWTAuthentication
 from ninja import Router, Schema
-from ninja.errors import HttpError
 from ninja.security import HttpBearer
 
 from api.schemas import FoulDataResponse, ATVDocumentResponse, ExtendDueDateResponse, TransferDataResponse, Objection, \
@@ -11,18 +9,6 @@ from api.views import PASIHandler, ATVHandler, DocumentHandler
 
 router = Router()
 env = Env()
-
-
-class AuthBearer(HttpBearer):
-    def authenticate(self, request: HttpRequest, token: str):
-        try:
-            authenticator = RequestJWTAuthentication()
-            user_auth = authenticator.authenticate(request=request)
-            if user_auth is not None:
-                request.user = user_auth.user
-                return True
-        except Exception as error:
-            raise HttpError(401, message=str(error))
 
 
 class ApiKeyAuth(HttpBearer):
@@ -38,16 +24,6 @@ class FoulRequest(Schema):
 
 class NotFoundError(Schema):
     detail: str = "Resource not found"
-
-
-@router.get("/helloworld")
-def helloworld(request):
-    return {"msg": 'Hello world'}
-
-
-@router.get('/tryAuth', auth=AuthBearer())
-def try_auth(request):
-    return "ping!"
 
 
 @router.get('/getFoulData', response={200: FoulDataResponse, 404: NotFoundError}, tags=['PASI'])
@@ -86,7 +62,7 @@ def save_objection(request, objection: Objection):
     return req.json()
 
 
-@router.get('/getDocuments/', response={200: ATVDocumentResponse}, tags=['ATV'], auth=AuthBearer())
+@router.get('/getDocuments/', response={200: ATVDocumentResponse}, tags=['ATV'])
 def get_atv_documents(request):
     """
     Retrieve all user documents from ATV with UUID
@@ -107,8 +83,7 @@ def get_document_by_transaction_id(request, id):
 
 @router.post('/sendObjection/{foul_id}',
              response={200: None, 201: ATVDocumentResponse, 400: None, 401: None},
-             tags=['ATV'],
-             auth=AuthBearer())
+             tags=['ATV'])
 def send_objection_to_atv(request, objection: Objection, foul_id: str):
     """
     Upload new user document to ATV
