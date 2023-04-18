@@ -46,17 +46,18 @@ class ATVHandler:
             raise error
 
     @staticmethod
-    def add_document(objection: Objection, foul_id: str, user_id: str):
+    def add_document(content, foul_id: str, user_id: str):
         try:
             req = request('POST', f"{env('ATV_ENDPOINT')}",
                           headers={"x-api-key": env('ATV_API_KEY')}, data={
                     "user_id": user_id,
                     "draft": False,
+                    "deletable": False,
                     "transaction_id": f"{foul_id}",
                     "tos_record_id": 12345,
                     "tos_function_id": 12345,
                     "status": "sent",
-                    "content": json.dumps({**Objection.dict(objection)})},
+                    "content": json.dumps(content)},
                           files={'attachments': None})
             return req.json()
         except Exception as error:
@@ -108,7 +109,7 @@ class PASIHandler:
             raise HttpError(500, message=str(error))
 
     @staticmethod
-    def extend_foul_due_date(foul_data):
+    def extend_foul_due_date(foul_data, user_id):
         try:
             req = request("POST", url=f"{env('PASI_ENDPOINT')}/api/v1/fouls/ExtendFoulDueDate",
                           verify=False,
@@ -120,6 +121,8 @@ class PASIHandler:
                               "foulNumber": foul_data.foul_number,
                               "registerNumber": f"{foul_data.register_number}"
                           })
+            if hasattr(req, "json"):
+                ATVHandler.add_document(req.json(), foul_data.foul_number, user_id)
             return req
         except Exception as error:
             raise HttpError(500, message=str(error))
