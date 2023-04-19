@@ -58,7 +58,7 @@ def save_objection(request, objection: Objection):
     """
     Send a new objection to PASI
     """
-    req = PASIHandler.save_objection(objection)
+    req = PASIHandler.save_objection(objection, user_id=request.user.uuid)
     return req.json()
 
 
@@ -78,17 +78,6 @@ def get_document_by_transaction_id(request, id):
     Get document from ATV by foul ID
     """
     req = ATVHandler.get_document_by_transaction_id(id)
-    return req
-
-
-@router.post('/sendObjection/{foul_id}',
-             response={200: None, 201: ATVDocumentResponse, 400: None, 401: None},
-             tags=['ATV'])
-def send_objection_to_atv(request, objection: Objection, foul_id: str):
-    """
-    Upload new user document to ATV
-    """
-    req = ATVHandler.add_document(objection, foul_id, user_id=request.user.uuid)
     return req
 
 

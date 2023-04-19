@@ -128,7 +128,7 @@ class PASIHandler:
             raise HttpError(500, message=str(error))
 
     @staticmethod
-    def save_objection(objection: Objection):
+    def save_objection(objection: Objection, user_id):
         try:
             req = request("POST", url=f"{env('PASI_ENDPOINT')}/api/v1/Objections/SaveObjection",
                           verify=False,
@@ -139,6 +139,8 @@ class PASIHandler:
                           )
             if req.status_code == 422:
                 raise HttpError(422, message=req.json())
+            if hasattr(req, "json"):
+                ATVHandler.add_document(objection, str(objection.foulNumber), user_id)
             return req
         except HttpError as error:
             raise error
