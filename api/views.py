@@ -140,7 +140,7 @@ class PASIHandler:
             if req.status_code == 422:
                 raise HttpError(422, message=req.json())
             if hasattr(req, "json"):
-                ATVHandler.add_document(**Objection.dict(objection), document_id=objection_id, user_id=user_id)
+                ATVHandler.add_document(objection, document_id=objection_id, user_id=user_id)
             return req
         except HttpError as error:
             raise error
