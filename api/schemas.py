@@ -144,8 +144,8 @@ class ATVDocumentSchema(Schema):
 
 class ATVDocumentResponse(Schema):
     count: int
-    next: Optional[int]
-    previous: Optional[int]
+    next: Optional[str]
+    previous: Optional[str]
     results: list[ATVDocumentSchema]
 
 
