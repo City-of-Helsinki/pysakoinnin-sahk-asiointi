@@ -47,7 +47,6 @@ class ATVHandler:
 
     @staticmethod
     def add_document(content, document_id, user_id: str):
-        print("Value in ATV handler", document_id)
         try:
             req = request('POST', f"{env('ATV_ENDPOINT')}",
                           headers={"x-api-key": env('ATV_API_KEY')}, data={
@@ -130,7 +129,6 @@ class PASIHandler:
 
     @staticmethod
     def save_objection(objection: Objection, objection_id, user_id):
-        print("Value in Pasi handler", objection_id)
         try:
             req = request("POST", url=f"{env('PASI_ENDPOINT')}/api/v1/Objections/SaveObjection",
                           verify=False,
