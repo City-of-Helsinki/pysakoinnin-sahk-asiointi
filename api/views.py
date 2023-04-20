@@ -1,5 +1,3 @@
-import json
-
 from environ import Env
 from ninja.errors import HttpError
 from requests import request
@@ -57,9 +55,9 @@ class ATVHandler:
                     "tos_record_id": 12345,
                     "tos_function_id": 12345,
                     "status": "sent",
-                    "content": json.dumps(**content)},
+                    "content": content.json()},
                           files={'attachments': None})
-            return req.json()
+            return req
         except Exception as error:
             raise HttpError(500, message=str(error))
 
@@ -140,7 +138,7 @@ class PASIHandler:
             if req.status_code == 422:
                 raise HttpError(422, message=req.json())
             if hasattr(req, "json"):
-                ATVHandler.add_document(objection, document_id=objection_id, user_id=user_id)
+                ATVHandler.add_document(objection, objection_id, user_id)
             return req
         except HttpError as error:
             raise error
