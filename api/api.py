@@ -1,3 +1,4 @@
+import ninja.errors
 from django.http import HttpRequest
 from environ import Env
 from ninja import Router, Schema
@@ -55,10 +56,16 @@ def extend_due_date(request, foul_data: FoulRequest):
 
 @router.post('/saveObjection', response={200: None, 204: None, 422: None}, tags=['PASI'])
 def save_objection(request, objection: Objection):
+    if hasattr(objection, "foulNumber") and objection.foulNumber is not None:
+        objection_id = objection.foulNumber
+    elif hasattr(objection, "transferNumber") and objection.transferNumber is not None:
+        objection_id = objection.transferNumber
+    else:
+        raise ninja.errors.HttpError(422, message="Foul number or transfer number missing")
     """
     Send a new objection to PASI
     """
-    req = PASIHandler.save_objection(objection, user_id=request.user.uuid)
+    req = PASIHandler.save_objection(objection, objection_id, user_id=request.user.uuid)
     return req.json()
 
 
