@@ -46,14 +46,15 @@ class ATVHandler:
             raise error
 
     @staticmethod
-    def add_document(content, foul_id: str, user_id: str):
+    def add_document(content, document_id, user_id: str):
+        print("Value in ATV handler", document_id)
         try:
             req = request('POST', f"{env('ATV_ENDPOINT')}",
                           headers={"x-api-key": env('ATV_API_KEY')}, data={
                     "user_id": user_id,
                     "draft": False,
                     "deletable": False,
-                    "transaction_id": f"{foul_id}",
+                    "transaction_id": f"{str(document_id)}",
                     "tos_record_id": 12345,
                     "tos_function_id": 12345,
                     "status": "sent",
@@ -128,7 +129,8 @@ class PASIHandler:
             raise HttpError(500, message=str(error))
 
     @staticmethod
-    def save_objection(objection: Objection, user_id):
+    def save_objection(objection: Objection, objection_id, user_id):
+        print("Value in Pasi handler", objection_id)
         try:
             req = request("POST", url=f"{env('PASI_ENDPOINT')}/api/v1/Objections/SaveObjection",
                           verify=False,
@@ -140,7 +142,7 @@ class PASIHandler:
             if req.status_code == 422:
                 raise HttpError(422, message=req.json())
             if hasattr(req, "json"):
-                ATVHandler.add_document(**Objection.dict(objection), foul_id=str(objection.foulNumber), user_id=user_id)
+                ATVHandler.add_document(**Objection.dict(objection), document_id=objection_id, user_id=user_id)
             return req
         except HttpError as error:
             raise error
