@@ -120,7 +120,7 @@ class PASIHandler:
                               "registerNumber": f"{foul_data.register_number}"
                           })
             if hasattr(req, "json"):
-                ATVHandler.add_document(req.json(), foul_data.foul_number, user_id)
+                ATVHandler.add_document(req, foul_data.foul_number, user_id)
             return req
         except Exception as error:
             raise HttpError(500, message=str(error))
