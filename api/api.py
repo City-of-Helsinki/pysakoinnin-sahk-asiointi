@@ -46,16 +46,6 @@ def get_transfer_data(request, transfer_number: int = 11720143, register_number:
     return req.json()
 
 
-class FileProp(Schema):
-    data: str
-    type: int
-
-
-@router.post('/testClam', auth=None)
-def testClamAV(request, body: FileProp):
-    return virus_scan_attachment_file(body.data)
-
-
 @router.post('/extendDueDate', response={200: ExtendDueDateResponse, 422: None}, tags=['PASI'])
 def extend_due_date(request, foul_data: FoulRequest):
     """
