@@ -1,4 +1,5 @@
 import copy
+import json
 
 from environ import Env
 from ninja.errors import HttpError
@@ -57,7 +58,7 @@ class ATVHandler:
                     "tos_record_id": 12345,
                     "tos_function_id": 12345,
                     "status": "sent",
-                    "metadata": metadata,
+                    "metadata": json.dumps(metadata),
                     "content": content.json()},
                           files={'attachments': None})
             return req
