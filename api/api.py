@@ -51,7 +51,7 @@ def extend_due_date(request, foul_data: FoulRequest):
     """
     Extend foul due date by 30 days
     """
-    req = PASIHandler.extend_foul_due_date(foul_data, user_id=1234)
+    req = PASIHandler.extend_foul_due_date(foul_data, user_id=request.user.uuid)
     return req.json()
 
 
