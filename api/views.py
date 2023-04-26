@@ -22,7 +22,7 @@ class ATVHandler:
     def get_documents(user_id: str):
 
         try:
-            req = request("GET", url=f"{env('ATV_ENDPOINT')}?user_id={user_id}",
+            req = request("GET", url=f"{env('ATV_ENDPOINT')}?user_id={user_id}&page_size=999",
                           headers={"x-api-key": env('ATV_API_KEY')})
             response_json = req.json()
             if len(response_json['results']) <= 0:
