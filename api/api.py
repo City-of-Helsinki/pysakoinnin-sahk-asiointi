@@ -46,7 +46,7 @@ def get_transfer_data(request, transfer_number: int = 11720143, register_number:
     return req.json()
 
 
-@router.post('/extendDueDate', response={200: ExtendDueDateResponse, 400: None, 422: None}, tags=['PASI'], auth=None)
+@router.post('/extendDueDate', response={200: ExtendDueDateResponse, 400: None, 422: None}, tags=['PASI'])
 def extend_due_date(request, foul_data: FoulRequest):
     """
     Extend foul due date by 30 days
