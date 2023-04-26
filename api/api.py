@@ -55,11 +55,12 @@ def extend_due_date(request, foul_data: FoulRequest):
     return req.json()
 
 
-@router.post('/saveObjection', response={200: None, 204: None, 422: None}, tags=['PASI'])
+@router.post('/saveObjection', response={200: None, 204: None, 422: None}, tags=['PASI'], auth=None)
 def save_objection(request, objection: Objection):
     """
     Send a new objection to PASI
     """
+
     if hasattr(objection, "foulNumber") and objection.foulNumber is not None:
         objection_id = objection.foulNumber
     elif hasattr(objection, "transferNumber") and objection.transferNumber is not None:
@@ -74,7 +75,10 @@ def save_objection(request, objection: Objection):
         except Exception:
             raise Exception
 
-    req = PASIHandler.save_objection(objection, objection_id, user_id=request.user.uuid)
+    if hasattr(objection, 'metadata') is None:
+        objection.metadata = dict
+
+    req = PASIHandler.save_objection(objection, objection_id, user_id=1234)
     return req.json()
 
 
