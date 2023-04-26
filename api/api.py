@@ -55,7 +55,7 @@ def extend_due_date(request, foul_data: FoulRequest):
     return req.json()
 
 
-@router.post('/saveObjection', response={200: None, 204: None, 422: None}, tags=['PASI'], auth=None)
+@router.post('/saveObjection', response={200: None, 204: None, 422: None}, tags=['PASI'])
 def save_objection(request, objection: Objection):
     """
     Send a new objection to PASI
@@ -78,7 +78,7 @@ def save_objection(request, objection: Objection):
     if hasattr(objection, 'metadata') is None:
         objection.metadata = dict
 
-    req = PASIHandler.save_objection(objection, objection_id, user_id=1234)
+    req = PASIHandler.save_objection(objection, objection_id, user_id=request.user.uuid)
     return req.json()
 
 
