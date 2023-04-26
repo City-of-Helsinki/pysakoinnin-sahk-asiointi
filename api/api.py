@@ -60,6 +60,7 @@ def save_objection(request, objection: Objection):
     """
     Send a new objection to PASI
     """
+
     if hasattr(objection, "foulNumber") and objection.foulNumber is not None:
         objection_id = objection.foulNumber
     elif hasattr(objection, "transferNumber") and objection.transferNumber is not None:
@@ -73,6 +74,9 @@ def save_objection(request, objection: Objection):
                 virus_scan_attachment_file(attachment.data)
         except Exception:
             raise Exception
+
+    if hasattr(objection, 'metadata') is None:
+        objection.metadata = dict
 
     req = PASIHandler.save_objection(objection, objection_id, user_id=request.user.uuid)
     return req.json()

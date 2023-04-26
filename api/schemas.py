@@ -83,6 +83,7 @@ class Objection(Schema):
     attachments: Optional[list[AttachmentSchema]]
     type: int
     sendDecisionViaEService: bool
+    metadata: Optional[dict]
 
 
 class TransferDataResponse(Schema):

@@ -1,8 +1,10 @@
+import copy
+
 from environ import Env
 from ninja.errors import HttpError
 from requests import request
 
-from api.schemas import Objection, DocumentStatusRequest
+from api.schemas import DocumentStatusRequest, Objection
 
 env = Env()
 
@@ -44,7 +46,7 @@ class ATVHandler:
             raise error
 
     @staticmethod
-    def add_document(content, document_id, user_id: str):
+    def add_document(content, document_id, user_id: str, metadata: dict):
         try:
             req = request('POST', f"{env('ATV_ENDPOINT')}",
                           headers={"x-api-key": env('ATV_API_KEY')}, data={
@@ -55,6 +57,7 @@ class ATVHandler:
                     "tos_record_id": 12345,
                     "tos_function_id": 12345,
                     "status": "sent",
+                    "metadata": metadata,
                     "content": content.json()},
                           files={'attachments': None})
             return req
@@ -123,8 +126,8 @@ class PASIHandler:
             if req.status_code == 400:
                 raise HttpError(400, message="Due date not extendable")
             if hasattr(req, "json"):
-                ATVHandler.add_document(req, foul_data.foul_number, user_id)
-                
+                ATVHandler.add_document(req, foul_data.foul_number, user_id, metadata={})
+
             return req
         except HttpError as error:
             raise error
@@ -133,18 +136,20 @@ class PASIHandler:
 
     @staticmethod
     def save_objection(objection: Objection, objection_id, user_id):
+        sanitised_objection = copy.deepcopy(objection)
+        del sanitised_objection.metadata
         try:
             req = request("POST", url=f"{env('PASI_ENDPOINT')}/api/v1/Objections/SaveObjection",
                           verify=False,
                           headers={'authorization': f"Basic {env('PASI_AUTH_KEY')}",
                                    'content-type': 'application/json',
                                    'x-api-version': '1.0'},
-                          json={**BASE_DETAILS, **Objection.dict(objection)}
+                          json={**BASE_DETAILS, **Objection.dict(sanitised_objection)}
                           )
             if req.status_code == 422:
                 raise HttpError(422, message=req.json())
-            if hasattr(req, "json"):
-                ATVHandler.add_document(objection, objection_id, user_id)
+            if hasattr(req, "json") and req.status_code == 200 or 204:
+                ATVHandler.add_document(sanitised_objection, objection_id, user_id, metadata=objection.metadata)
             return req
         except HttpError as error:
             raise error
