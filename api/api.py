@@ -6,6 +6,7 @@ from ninja.security import HttpBearer
 
 from api.schemas import FoulDataResponse, ATVDocumentResponse, ExtendDueDateResponse, TransferDataResponse, Objection, \
     DocumentStatusRequest
+from api.utils import virus_scan_attachment_file
 from api.views import PASIHandler, ATVHandler, DocumentHandler
 
 router = Router()
@@ -56,15 +57,23 @@ def extend_due_date(request, foul_data: FoulRequest):
 
 @router.post('/saveObjection', response={200: None, 204: None, 422: None}, tags=['PASI'])
 def save_objection(request, objection: Objection):
+    """
+    Send a new objection to PASI
+    """
     if hasattr(objection, "foulNumber") and objection.foulNumber is not None:
         objection_id = objection.foulNumber
     elif hasattr(objection, "transferNumber") and objection.transferNumber is not None:
         objection_id = objection.transferNumber
     else:
         raise ninja.errors.HttpError(422, message="Foul number or transfer number missing")
-    """
-    Send a new objection to PASI
-    """
+
+    if objection.attachments is not None and len(objection.attachments) > 0:
+        try:
+            for attachment in objection.attachments:
+                virus_scan_attachment_file(attachment.data)
+        except Exception:
+            raise Exception
+
     req = PASIHandler.save_objection(objection, objection_id, user_id=request.user.uuid)
     return req.json()
 

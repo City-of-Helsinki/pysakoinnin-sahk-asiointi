@@ -80,7 +80,7 @@ class Objection(Schema):
     authorRole: int
     address: AddressField
     description: str
-    attachments: list[AttachmentSchema]
+    attachments: Optional[list[AttachmentSchema]]
     type: int
     sendDecisionViaEService: bool
 
