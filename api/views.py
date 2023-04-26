@@ -148,7 +148,7 @@ class PASIHandler:
                           )
             if req.status_code == 422:
                 raise HttpError(422, message=req.json())
-            if hasattr(req, "json") and req.status_code == 200 or 204:
+            if hasattr(req, "json"):
                 ATVHandler.add_document(sanitised_objection, objection_id, user_id, metadata=objection.metadata)
             return req
         except HttpError as error:
