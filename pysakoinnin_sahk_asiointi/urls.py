@@ -1,6 +1,5 @@
 """pysakoinnin_sahk_asiointi URL Configuration """
 
-from django.contrib import admin
 from django.http import HttpRequest, HttpResponse
 from django.urls import path
 from helusers.oidc import RequestJWTAuthentication
@@ -32,8 +31,23 @@ def health(request):
     return HttpResponse("OK", status=200, headers={'Content-Type': "application/json"})
 
 
+def readiness(request):
+    try:
+        from django.db import connections
+        for name in connections:
+            cursor = connections[name].cursor()
+            cursor.execute("SELECT 1;")
+            row = cursor.fetchone()
+            if row is None:
+                return HttpError(500, message="Invalid response from database")
+    except Exception:
+        return HttpError(500, message="Cannot connect to database")
+
+    return HttpResponse("OK")
+
+
 urlpatterns = [
-    path("admin/", admin.site.urls),
     path("health/", health),
+    path("readiness/", readiness),
     path("api/v1/", api.urls)
 ]
