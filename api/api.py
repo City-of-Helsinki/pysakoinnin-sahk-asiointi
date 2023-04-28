@@ -79,6 +79,7 @@ def save_objection(request, objection: Objection):
         objection.metadata = dict
 
     req = PASIHandler.save_objection(objection, objection_id, user_id=request.user.uuid)
+    print(req)
     return req.json()
 
 

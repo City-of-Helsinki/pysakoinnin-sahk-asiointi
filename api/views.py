@@ -139,6 +139,8 @@ class PASIHandler:
     def save_objection(objection: Objection, objection_id, user_id):
         sanitised_objection = copy.deepcopy(objection)
         del sanitised_objection.metadata
+
+        print(sanitised_objection)
         try:
             req = request("POST", url=f"{env('PASI_ENDPOINT')}/api/v1/Objections/SaveObjection",
                           verify=False,
@@ -151,6 +153,9 @@ class PASIHandler:
                 raise HttpError(422, message=req.json())
             if hasattr(req, "json"):
                 ATVHandler.add_document(sanitised_objection, objection_id, user_id, metadata=objection.metadata)
+
+            print(req)
+            
             return req
         except HttpError as error:
             raise error
