@@ -140,7 +140,6 @@ class PASIHandler:
         sanitised_objection = copy.deepcopy(objection)
         del sanitised_objection.metadata
 
-        print(sanitised_objection)
         try:
             req = request("POST", url=f"{env('PASI_ENDPOINT')}/api/v1/Objections/SaveObjection",
                           verify=False,
@@ -151,11 +150,9 @@ class PASIHandler:
                           )
             if req.status_code == 422:
                 raise HttpError(422, message=req.json())
-            if hasattr(req, "json"):
+            if req.status_code == 200 or req.status_code == 204:
                 ATVHandler.add_document(sanitised_objection, objection_id, user_id, metadata=objection.metadata)
 
-            print(req)
-            
             return req
         except HttpError as error:
             raise error
