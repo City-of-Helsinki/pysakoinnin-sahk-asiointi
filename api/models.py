@@ -4,19 +4,21 @@ from django.utils.translation import gettext_lazy as _
 
 
 class AuditLog(models.Model):
-    audit_event = JSONField()
+    id = models.IntegerField
+    is_sent = models.BooleanField(default=False)
+    message = JSONField()
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("created at"))
 
     def __str__(self):
         return " ".join(
             [
-                _safe_get(self.audit_event, "origin"),
-                _safe_get(self.audit_event, "status"),
-                _safe_get(self.audit_event, "date_time"),
-                _safe_get(self.audit_event, "date_time_epoch"),
-                _safe_get(self.audit_event, "actor", "profile_id"),
-                _safe_get(self.audit_event, "operation"),
-                _safe_get(self.audit_event, "target"),
+                _safe_get(self.message.audit_event, "origin"),
+                _safe_get(self.message.audit_event, "status"),
+                _safe_get(self.message.audit_event, "date_time"),
+                _safe_get(self.message.audit_event, "date_time_epoch"),
+                _safe_get(self.message.audit_event, "actor", "profile_id"),
+                _safe_get(self.message.audit_event, "operation"),
+                _safe_get(self.message.audit_event, "target")
             ]
         )
 
