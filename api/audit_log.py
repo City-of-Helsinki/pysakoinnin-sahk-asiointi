@@ -79,6 +79,9 @@ class AuditLogMiddleware:
     def __call__(self, request):
         response = self.get_response(request)
 
-        _commit_to_audit_log(request, response)
+        if "health" in request.path or "readiness" in request.path:
+            pass
+        else:
+            _commit_to_audit_log(request, response)
 
         return response
