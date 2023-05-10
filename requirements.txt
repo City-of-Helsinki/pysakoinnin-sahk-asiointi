@@ -8,16 +8,24 @@ asgiref==3.5.2
     # via django
 attrs==22.2.0
     # via pytest
+authlib==1.2.0
+    # via drf-oidc-auth
 cachetools==5.2.0
     # via django-helusers
 certifi==2022.9.24
     # via
     #   requests
     #   sentry-sdk
+cffi==1.15.1
+    # via cryptography
 charset-normalizer==2.1.1
     # via requests
 coverage[toml]==7.2.1
     # via pytest-cov
+cryptography==40.0.2
+    # via
+    #   authlib
+    #   drf-oidc-auth
 deprecation==2.1.0
     # via django-helusers
 django==3.2.16
@@ -26,18 +34,31 @@ django==3.2.16
     #   django-cors-headers
     #   django-helusers
     #   django-ninja
+    #   djangorestframework
+    #   drf-oidc-auth
+    #   helsinki-profile-gdpr-api
 django-cors-headers==3.13.0
     # via -r requirements.in
 django-environ==0.9.0
     # via -r requirements.in
 django-helusers==0.7.1
-    # via -r requirements.in
+    # via
+    #   -r requirements.in
+    #   helsinki-profile-gdpr-api
 django-ninja==0.19.1
     # via -r requirements.in
+djangorestframework==3.14.0
+    # via
+    #   drf-oidc-auth
+    #   helsinki-profile-gdpr-api
+drf-oidc-auth==3.0.0
+    # via helsinki-profile-gdpr-api
 ecdsa==0.18.0
     # via python-jose
 exceptiongroup==1.1.1
     # via pytest
+helsinki-profile-gdpr-api==0.2.0
+    # via -r requirements.in
 idna==3.4
     # via requests
 iniconfig==2.0.0
@@ -56,6 +77,8 @@ pyasn1==0.4.8
     #   rsa
 pyclamd==0.4.0
     # via -r requirements.in
+pycparser==2.21
+    # via cffi
 pydantic==1.10.2
     # via django-ninja
 pyparsing==3.0.9
@@ -71,9 +94,13 @@ pytest-django==4.5.2
 python-jose==3.3.0
     # via django-helusers
 pytz==2022.5
-    # via django
+    # via
+    #   django
+    #   djangorestframework
 requests==2.28.1
-    # via django-helusers
+    # via
+    #   django-helusers
+    #   drf-oidc-auth
 rsa==4.9
     # via python-jose
 sentry-sdk==1.10.1

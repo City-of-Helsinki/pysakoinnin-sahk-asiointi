@@ -117,7 +117,8 @@ class PASIHandler:
                           verify=False,
                           headers={'authorization': f"Basic {env('PASI_AUTH_KEY')}",
                                    'content-type': 'application/json',
-                                   'x-api-version': '1.0'},
+                                   'x-api-version': '1.0',
+                                   'Connection': 'keep-alive'},
                           json={
                               **BASE_DETAILS,
                               "foulNumber": foul_data.foul_number,
