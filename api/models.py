@@ -6,7 +6,7 @@ from django.utils.translation import gettext_lazy as _
 class AuditLog(models.Model):
     id = models.IntegerField
     is_sent = models.BooleanField(default=False)
-    message = JSONField()
+    message = JSONField(default=dict)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("created at"))
 
     def __str__(self):
