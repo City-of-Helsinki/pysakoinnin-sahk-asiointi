@@ -130,10 +130,10 @@ class PASIHandler:
             if hasattr(req, "json"):
                 try:
                     ATVHandler.add_document(req, foul_data.foul_number, user_id, metadata={})
+                    return req
                 except Exception as error:
                     raise HttpError(500, message=str(error))
 
-            return req
         except HttpError as error:
             raise error
         except Exception as error:
@@ -157,10 +157,10 @@ class PASIHandler:
             if req.status_code == 200 or req.status_code == 204:
                 try:
                     ATVHandler.add_document(sanitised_objection, objection_id, user_id, metadata=objection.metadata)
+                    return req
                 except Exception as error:
                     raise HttpError(500, message=str(error))
 
-            return req
         except HttpError as error:
             raise error
         except Exception as error:
