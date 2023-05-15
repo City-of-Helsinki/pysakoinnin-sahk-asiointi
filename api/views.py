@@ -154,17 +154,19 @@ class PASIHandler:
                           )
             if req.status_code == 422:
                 raise HttpError(422, message=req.json())
-            if req.status_code == 200 or req.status_code == 204:
-                try:
-                    ATVHandler.add_document(sanitised_objection, objection_id, user_id, metadata=objection.metadata)
-                    return req
-                except Exception as error:
-                    raise HttpError(500, message=str(error))
 
         except HttpError as error:
             raise error
         except Exception as error:
             raise HttpError(500, message=str(error))
+
+        if req.status_code == 200 or req.status_code == 204:
+            try:
+                ATVHandler.add_document(sanitised_objection, objection_id, user_id, metadata=objection.metadata)
+            except Exception as error:
+                raise HttpError(500, message=str(error))
+
+        return req
 
 
 class DocumentHandler:
