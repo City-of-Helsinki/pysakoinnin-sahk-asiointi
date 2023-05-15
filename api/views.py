@@ -128,7 +128,10 @@ class PASIHandler:
             if req.status_code == 400:
                 raise HttpError(400, message="Due date not extendable")
             if hasattr(req, "json"):
-                ATVHandler.add_document(req, foul_data.foul_number, user_id, metadata={})
+                try:
+                    ATVHandler.add_document(req, foul_data.foul_number, user_id, metadata={})
+                except Exception as error:
+                    raise HttpError(500, message=str(error))
 
             return req
         except HttpError as error:
@@ -152,7 +155,10 @@ class PASIHandler:
             if req.status_code == 422:
                 raise HttpError(422, message=req.json())
             if req.status_code == 200 or req.status_code == 204:
-                ATVHandler.add_document(sanitised_objection, objection_id, user_id, metadata=objection.metadata)
+                try:
+                    ATVHandler.add_document(sanitised_objection, objection_id, user_id, metadata=objection.metadata)
+                except Exception as error:
+                    raise HttpError(500, message=str(error))
 
             return req
         except HttpError as error:
