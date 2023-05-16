@@ -8,4 +8,3 @@ pytest-cov
 psycopg2-binary
 pyclamd
 sentry-sdk
-helsinki-profile-gdpr-api

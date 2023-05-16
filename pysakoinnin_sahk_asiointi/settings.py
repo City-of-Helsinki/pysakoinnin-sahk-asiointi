@@ -1,16 +1,15 @@
-import os
 from pathlib import Path
 from sys import stdout
 
-import environ
 import sentry_sdk
 from corsheaders.defaults import default_headers
+from environ import Env
 from sentry_sdk.integrations.django import DjangoIntegration
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-env = environ.Env(
+env = Env(
     DEBUG=(bool, False),
     SECRET_KEY=(str, ""),
     ALLOWED_HOSTS=(list, []),
@@ -25,11 +24,11 @@ env = environ.Env(
     TOKEN_AUTH_SCOPE_PREFIX=(str, ""),
     CORS_ALLOWED_ORIGINS=(list, []),
     CLAMAV_HOST=(str, ""),
-    STATIC_ROOT=(str, str(BASE_DIR / "static")),
+    GDPR_API_AUDIENCE=(str, ""),
+    GDPR_API_ISSUER=(str, "")
 )
 
-environ.Env.read_env(str(BASE_DIR / "config.env"))
-STATIC_ROOT = env('STATIC_ROOT')
+Env.read_env(str(BASE_DIR / "config.env"))
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env("DEBUG")
@@ -195,3 +194,6 @@ LOGGING = {
 
 # Malware protection
 CLAMAV_HOST = env("CLAMAV_HOST")
+
+# Increase max data upload size to accommodate common use cases
+DATA_UPLOAD_MAX_MEMORY_SIZE = 20971520
