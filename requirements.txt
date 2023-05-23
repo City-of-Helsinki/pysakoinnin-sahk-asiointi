@@ -30,7 +30,7 @@ django-cors-headers==3.13.0
     # via -r requirements.in
 django-environ==0.9.0
     # via -r requirements.in
-django-helusers==0.7.1
+django-helusers==0.8.1
     # via -r requirements.in
 django-ninja==0.19.1
     # via -r requirements.in
