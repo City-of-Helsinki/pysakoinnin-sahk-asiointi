@@ -38,6 +38,8 @@ COPY . ./
 RUN mkdir -p ./data
 RUN chgrp -R 0 ./data && chmod g+w -R ./data
 
+RUN SECRET_KEY="only-used-for-collectstatic" python manage.py collectstatic --noinput
+
 # Set user and document the port.
 USER nobody:0
 EXPOSE 8000/tcp
