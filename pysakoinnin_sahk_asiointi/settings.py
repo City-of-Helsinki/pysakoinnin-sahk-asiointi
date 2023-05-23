@@ -1,6 +1,7 @@
 from pathlib import Path
 from sys import stdout
 
+import django.conf.global_settings
 import sentry_sdk
 from corsheaders.defaults import default_headers
 from environ import Env
@@ -198,4 +199,4 @@ LOGGING = {
 CLAMAV_HOST = env("CLAMAV_HOST")
 
 # Increase max data upload size to accommodate common use cases
-DATA_UPLOAD_MAX_MEMORY_SIZE = 20971520
+django.conf.global_settings.DATA_UPLOAD_MAX_MEMORY_SIZE = 20971520
