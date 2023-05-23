@@ -2,4 +2,6 @@
 
 # Start server
 python ./manage.py migrate --noinput
-python ./manage.py runserver 0.0.0.0:8000
+gunicorn pysakoinnin_sahk_asiointi.wsgi:application --bind 0.0.0.0:8000 --daemon
+
+su -c 'nginx -g "daemon off;"'

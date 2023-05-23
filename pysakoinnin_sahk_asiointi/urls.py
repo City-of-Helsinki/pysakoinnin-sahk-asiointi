@@ -51,5 +51,5 @@ def readiness(request):
 urlpatterns = [
     path("health/", health),
     path("readiness/", readiness),
-    path("api/v1/", api.urls)
+    path("api/v1/", api.urls),
 ]
