@@ -25,7 +25,8 @@ env = Env(
     CORS_ALLOWED_ORIGINS=(list, []),
     CLAMAV_HOST=(str, ""),
     GDPR_API_AUDIENCE=(str, ""),
-    GDPR_API_ISSUER=(str, "")
+    GDPR_API_ISSUER=(str, ""),
+    STATIC_ROOT=(str, str(BASE_DIR / "static/"))
 )
 
 Env.read_env(str(BASE_DIR / "config.env"))
@@ -173,6 +174,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = "static/"
+STATIC_ROOT = env('STATIC_ROOT')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
