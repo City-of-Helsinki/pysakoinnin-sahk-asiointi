@@ -40,6 +40,15 @@ RUN chgrp -R 0 ./data && chmod g+w -R ./data
 
 RUN SECRET_KEY="only-used-for-collectstatic" python manage.py collectstatic --noinput
 
+# Create NGINX file directories
+
+# install nginx
+RUN apt-get update && apt-get install nginx -y
+# copy our nginx configuration to overwrite nginx defaults
+COPY default.conf /etc/nginx/conf.d/default.conf
+# link nginx logs to container stdout
+RUN ln -sf /dev/stdout /var/log/nginx/access.log && ln -sf /dev/stderr /var/log/nginx/error.log
+
+
 # Set user and document the port.
-USER nobody:0
-EXPOSE 8000/tcp
+EXPOSE 8080/tcp
