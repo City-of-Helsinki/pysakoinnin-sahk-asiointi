@@ -5,7 +5,7 @@ django-ninja
 django-helusers
 pytest-django
 pytest-cov
-psycopg2
+psycopg2-binary
 pyclamd
 sentry-sdk
 helsinki-profile-gdpr-api

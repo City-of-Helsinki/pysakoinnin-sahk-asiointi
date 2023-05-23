@@ -1,15 +1,16 @@
+import os
 from pathlib import Path
 from sys import stdout
 
+import environ
 import sentry_sdk
 from corsheaders.defaults import default_headers
-from environ import Env
 from sentry_sdk.integrations.django import DjangoIntegration
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-env = Env(
+env = environ.Env(
     DEBUG=(bool, False),
     SECRET_KEY=(str, ""),
     ALLOWED_HOSTS=(list, []),
@@ -23,10 +24,12 @@ env = Env(
     TOKEN_AUTH_AUTHORIZATION_FIELD=(str, ""),
     TOKEN_AUTH_SCOPE_PREFIX=(str, ""),
     CORS_ALLOWED_ORIGINS=(list, []),
-    CLAMAV_HOST=(str, "")
+    CLAMAV_HOST=(str, ""),
+    STATIC_ROOT=(str, str(BASE_DIR / "static")),
 )
 
-Env.read_env(str(BASE_DIR / "config.env"))
+environ.Env.read_env(str(BASE_DIR / "config.env"))
+STATIC_ROOT = env('STATIC_ROOT')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env("DEBUG")
