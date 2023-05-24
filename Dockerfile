@@ -40,8 +40,6 @@ RUN chgrp -R 0 ./data && chmod g+w -R ./data
 
 RUN SECRET_KEY="only-used-for-collectstatic" python manage.py collectstatic --noinput
 
-# Create NGINX file directories
-
 # install nginx
 RUN apt-get update && apt-get install nginx -y
 # copy our nginx configuration to overwrite nginx defaults
