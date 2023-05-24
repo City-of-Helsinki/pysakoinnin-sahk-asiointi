@@ -35,7 +35,7 @@ class JWTAuth(HttpBearer):
         except Exception:
             raise HttpError(401, message="JWT verification failed.")
 
-        api_scopes = jwt.claims.get(env('GDPR_API_AUTH_FIELD'), [])
+        api_scopes = jwt.claims.get(env('TOKEN_AUTH_AUTHORIZATION_FIELD'), [])
         if self.required_scope not in api_scopes:
             print(self.required_scope)
             raise HttpError(401, message="No suitable API scope found")
