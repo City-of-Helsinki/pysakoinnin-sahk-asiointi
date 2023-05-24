@@ -140,7 +140,7 @@ class PASIHandler:
             raise HttpError(500, message=str(error))
 
     @staticmethod
-    def save_objection(objection: Objection, objection_id, user_id):
+    def save_objection(objection: Objection, objection_id):
         sanitised_objection = copy.deepcopy(objection)
         del sanitised_objection.metadata
 
@@ -159,12 +159,6 @@ class PASIHandler:
             raise error
         except Exception as error:
             raise HttpError(500, message=str(error))
-
-        if req.status_code == 200 or req.status_code == 204:
-            try:
-                ATVHandler.add_document(sanitised_objection, objection_id, user_id, metadata=objection.metadata)
-            except Exception as error:
-                raise HttpError(500, message=str(error))
 
         return req
 
