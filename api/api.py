@@ -78,7 +78,12 @@ def save_objection(request, objection: Objection):
     if hasattr(objection, 'metadata') is None:
         objection.metadata = dict
 
-    req = PASIHandler.save_objection(objection, objection_id, user_id=request.user.uuid)
+    try:
+        ATVHandler.add_document(objection, objection_id, user_id=request.user.uuid, metadata={**objection.metadata})
+    except Exception as error:
+        raise ninja.errors.HttpError(500, message=str(error))
+
+    req = PASIHandler.save_objection(objection, objection_id)
     return req.status_code
 
 
