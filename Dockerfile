@@ -39,6 +39,8 @@ RUN SECRET_KEY="only-used-for-collectstatic" python manage.py collectstatic --no
 
 # Copy NGINX conf
 COPY default.conf /etc/nginx/conf.d/default.conf
+# link nginx logs to container stdout
+RUN ln -sf /dev/stdout /var/log/nginx/access.log && ln -sf /dev/stderr /var/log/nginx/error.log
 
 # Copy and set the entrypoint.
 COPY docker-entrypoint.sh ./
