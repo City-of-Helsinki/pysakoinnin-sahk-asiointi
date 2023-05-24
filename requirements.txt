@@ -38,6 +38,8 @@ ecdsa==0.18.0
     # via python-jose
 exceptiongroup==1.1.1
     # via pytest
+gunicorn==20.1.0
+    # via -r requirements.in
 idna==3.4
     # via requests
 iniconfig==2.0.0
@@ -92,3 +94,6 @@ urllib3==1.26.12
     # via
     #   requests
     #   sentry-sdk
+
+# The following packages are considered to be unsafe in a requirements file:
+# setuptools

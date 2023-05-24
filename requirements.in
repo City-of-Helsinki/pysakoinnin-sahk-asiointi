@@ -8,3 +8,4 @@ pytest-cov
 psycopg2-binary
 pyclamd
 sentry-sdk
+gunicorn
