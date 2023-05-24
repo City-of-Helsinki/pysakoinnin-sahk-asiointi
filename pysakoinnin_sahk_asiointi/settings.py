@@ -27,6 +27,8 @@ env = Env(
     CLAMAV_HOST=(str, ""),
     GDPR_API_AUDIENCE=(str, ""),
     GDPR_API_ISSUER=(str, ""),
+    GDPR_API_QUERY_SCOPE=(str, ""),
+    GDPR_API_DELETE_SCOPE=(str, ""),
     STATIC_ROOT=(str, str(BASE_DIR / "static/"))
 )
 

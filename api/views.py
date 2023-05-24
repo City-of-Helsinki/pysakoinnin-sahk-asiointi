@@ -28,7 +28,7 @@ class ATVHandler:
             req = request("GET", url=f"{env('ATV_ENDPOINT')}?user_id={user_id}&page_size=999",
                           headers={"x-api-key": env('ATV_API_KEY')})
             response_json = req.json()
-            if hasattr(response_json, 'results') & len(response_json['results']) <= 0:
+            if hasattr(response_json, 'results') and len(response_json['results']) <= 0:
                 raise HttpError(404, message="Resource not found")
             return response_json
         except HttpError as error:

@@ -38,7 +38,7 @@ RUN chgrp -R 0 ./data && chmod g+w -R ./data
 RUN SECRET_KEY="only-used-for-collectstatic" python manage.py collectstatic --noinput
 
 # Copy NGINX conf
-COPY default.conf /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/nginx.conf
 # link nginx logs to container stdout
 RUN ln -sf /dev/stdout /var/log/nginx/access.log && ln -sf /dev/stderr /var/log/nginx/error.log
 
@@ -47,5 +47,6 @@ COPY docker-entrypoint.sh ./
 RUN ["chmod", "+x", "/usr/src/app/docker-entrypoint.sh"]
 ENTRYPOINT ["./docker-entrypoint.sh"]
 
-# Document the port.
+# Document the port and set random user to simulate OpenShift behaviour
+USER nobody:0
 EXPOSE 8080/tcp
