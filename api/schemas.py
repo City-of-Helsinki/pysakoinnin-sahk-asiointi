@@ -20,6 +20,10 @@ class AttachmentWithType(AttachmentSchema):
     attachmentType: int
 
 
+class StrippedAttachmentSchema(Schema):
+    data: str
+
+
 class FoulDataResponse(Schema):
     foulNumber: int
     foulDate: str
@@ -80,7 +84,7 @@ class Objection(Schema):
     authorRole: int
     address: AddressField
     description: str
-    attachments: Optional[list[AttachmentSchema]]
+    attachments: Optional[list[StrippedAttachmentSchema]]
     type: int
     sendDecisionViaEService: bool
     metadata: Optional[dict]
