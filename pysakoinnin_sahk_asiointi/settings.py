@@ -29,7 +29,8 @@ env = Env(
     GDPR_API_ISSUER=(str, ""),
     GDPR_API_QUERY_SCOPE=(str, ""),
     GDPR_API_DELETE_SCOPE=(str, ""),
-    STATIC_ROOT=(str, str(BASE_DIR / "static/"))
+    STATIC_ROOT=(str, str(BASE_DIR / "static/")),
+    MAILGUN_API_KEY=(str, "")
 )
 
 Env.read_env(str(BASE_DIR / "config.env"))
@@ -63,8 +64,10 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "pysakoinnin_sahk_asiointi",
     "api",
+    "mail_service",
     "ninja",
     "corsheaders",
+    "anymail",
 ]
 
 MIDDLEWARE = [
@@ -161,6 +164,14 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
+
+# Anymail setup
+ANYMAIL = {
+    "MAILGUN_API_KEY": env('MAILGUN_API_KEY'),
+    "MAILGUN_API_URL": "https://api.eu.mailgun.net/v3"
+}
+EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
+DEFAULT_FROM_EMAIL = "noreply@hel.fi"
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/

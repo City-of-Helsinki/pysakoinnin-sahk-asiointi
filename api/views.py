@@ -166,10 +166,7 @@ class PASIHandler:
 class DocumentHandler:
 
     @staticmethod
-    def set_document_status(status_request: DocumentStatusRequest):
-        find_document_by_id = ATVHandler.get_document_by_transaction_id(status_request.id)
-        document_id = find_document_by_id["results"][0]['id']
-
+    def set_document_status(document_id: str, status_request: DocumentStatusRequest):
         try:
             req = request('PATCH', f"{env('ATV_ENDPOINT')}{document_id}/",
                           headers={"x-api-key": env('ATV_API_KEY'),
