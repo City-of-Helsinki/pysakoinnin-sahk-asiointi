@@ -1,3 +1,5 @@
+import copy
+
 import ninja.errors
 from django.http import HttpRequest
 from environ import Env
@@ -8,6 +10,7 @@ from api.schemas import FoulDataResponse, ATVDocumentResponse, TransferDataRespo
     DocumentStatusRequest
 from api.utils import virus_scan_attachment_file
 from api.views import PASIHandler, ATVHandler, DocumentHandler
+from mail_service.utils import mail_constructor
 
 router = Router()
 env = Env()
@@ -78,8 +81,12 @@ def save_objection(request, objection: Objection):
     if hasattr(objection, 'metadata') is None:
         objection.metadata = dict
 
+    objection_without_attachments = copy.deepcopy(objection)
+    del objection_without_attachments.attachments
+
     try:
-        ATVHandler.add_document(objection, objection_id, user_id=request.user.uuid, metadata={**objection.metadata})
+        ATVHandler.add_document(objection_without_attachments, objection_id, user_id=request.user.uuid,
+                                metadata={**objection.metadata})
     except Exception as error:
         raise ninja.errors.HttpError(500, message=str(error))
 
@@ -112,4 +119,17 @@ def set_document_status(request, status_request: DocumentStatusRequest):
     """
     Update document status with ID and status
     """
-    return DocumentHandler.set_document_status(status_request)
+    find_document_by_id = ATVHandler.get_document_by_transaction_id(status_request.id)
+    document_id = find_document_by_id["results"][0]['id']
+
+    req = DocumentHandler.set_document_status(document_id, status_request)
+
+    if req.status_code == 200:
+        mail_constructor(event=status_request.status, lang=find_document_by_id['results'][0]['metadata']['lang'],
+                         mail_to=find_document_by_id['results'][0]['email'])
+
+
+@router.get('/testEmail', auth=None)
+def testEmail(request):
+    mail = mail_constructor(event='resolvedViaEService', lang='en', mail_to='jaakko.ihanamaki@futurice.com')
+    mail.send()

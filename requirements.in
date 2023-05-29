@@ -9,3 +9,4 @@ psycopg2-binary
 pyclamd
 sentry-sdk
 gunicorn
+django-anymail
