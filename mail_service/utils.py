@@ -36,6 +36,7 @@ events = {
 
 def mail_constructor(event: str, lang: str, mail_to: str):
     now = datetime.datetime.now(tz=ZoneInfo('Europe/Helsinki'))
+    formatted_time = datetime.datetime.strftime(now, '%H:%M')
     if lang is None:
         lang = 'FI'
 
@@ -47,7 +48,7 @@ def mail_constructor(event: str, lang: str, mail_to: str):
                 <br>
                 (Tämä on automaattinen viesti jonka on lähettänyt Helsingin kaupungin pysäköinninvalvonnan sähköinen
                 asiointipalvelu. Älä vastaa tähän viestiin.)</p>""".format(event=events[event][lang.upper()],
-                                                                           now=f"{now.hour}:{now.minute}"),
+                                                                           now=formatted_time),
 
         'SV': """<p>Nya händelser har kommit in i parkering e-tjänsten: <i>{event}</i> på {now}.
                 <br>
@@ -56,7 +57,7 @@ def mail_constructor(event: str, lang: str, mail_to: str):
                 <br>
                 (Detta är ett automatiskt meddelande som skickas av Helsingfors stads parkeringsövervaknings e-tjänst. 
                 Svara inte på detta meddelande.)</p>""".format(event=events[event][lang.upper()],
-                                                               now=f"{now.hour}:{now.minute}"),
+                                                               now=formatted_time),
 
         'EN': """<p>New event has arrived in the Parking e-service: <i>{event}</i> at {now}.
                     <br>
@@ -66,7 +67,7 @@ def mail_constructor(event: str, lang: str, mail_to: str):
                 (This is an automated message sent by the City of Helsinki parking control e-service. 
                 Do not reply to this message.)</p>""".format(
             event=events[event][lang.upper()],
-            now=f"{now.hour}:{now.minute}"),
+            now=formatted_time),
     }
 
     msg = EmailMultiAlternatives(
