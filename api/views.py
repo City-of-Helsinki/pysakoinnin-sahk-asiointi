@@ -1,6 +1,7 @@
 import copy
 import json
 
+from django.http import HttpResponse
 from environ import Env
 from ninja.errors import HttpError
 from requests import request
@@ -177,6 +178,6 @@ class DocumentHandler:
             response_json = req.json()
             if hasattr(response_json, "id") is None:
                 raise HttpError(404, message="Resource not found")
-            return {200, "OK"}
+            return HttpResponse(200, 'OK')
         except HttpError as error:
             return error

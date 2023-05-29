@@ -1,7 +1,7 @@
 import copy
 
 import ninja.errors
-from django.http import HttpRequest
+from django.http import HttpRequest, HttpResponse
 from environ import Env
 from ninja import Router, Schema
 from ninja.security import HttpBearer
@@ -128,7 +128,7 @@ def set_document_status(request, status_request: DocumentStatusRequest):
         mail = mail_constructor(event=status_request.status, lang=find_document_by_id['results'][0]['metadata']['lang'],
                                 mail_to=find_document_by_id['results'][0]['content']['email'])
         mail.send()
-        return {200, 'OK'}
+        return HttpResponse(200)
 
 
 @router.get('/testEmail', auth=None)
