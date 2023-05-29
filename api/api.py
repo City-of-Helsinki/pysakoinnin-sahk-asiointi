@@ -125,8 +125,10 @@ def set_document_status(request, status_request: DocumentStatusRequest):
     req = DocumentHandler.set_document_status(document_id, status_request)
 
     if req.status_code == 200:
-        mail_constructor(event=status_request.status, lang=find_document_by_id['results'][0]['metadata']['lang'],
-                         mail_to=find_document_by_id['results'][0]['email'])
+        mail = mail_constructor(event=status_request.status, lang=find_document_by_id['results'][0]['metadata']['lang'],
+                                mail_to=find_document_by_id['results'][0]['content']['email'])
+        mail.send()
+        return {200, 'OK'}
 
 
 @router.get('/testEmail', auth=None)
