@@ -66,7 +66,7 @@ def extend_due_date(request, foul_data: FoulRequest):
         mail = extend_due_date_mail_constructor(new_due_date=req.json['dueDate'], lang='FI',
                                                 mail_to='jaakko.ihanamaki@futurice.com')
         mail.send()
-        
+
         if hasattr(mail, 'anymail_status'):
             _commit_to_audit_log(mail.to[0], mail.anymail_status)
 
@@ -96,11 +96,12 @@ def save_objection(request, objection: Objection):
     if hasattr(objection, 'metadata') is None:
         objection.metadata = dict
 
-    objection_without_attachments = copy.deepcopy(objection)
-    del objection_without_attachments.attachments
+    objection_without_attachment_data = copy.deepcopy(objection)
+    for attachment in objection_without_attachment_data.attachments:
+        del attachment.data
 
     try:
-        ATVHandler.add_document(objection_without_attachments, objection_id, user_id=request.user.uuid,
+        ATVHandler.add_document(objection_without_attachment_data, objection_id, user_id=request.user.uuid,
                                 metadata={**objection.metadata})
     except Exception as error:
         raise ninja.errors.HttpError(500, message=str(error))
