@@ -92,3 +92,41 @@ def mail_constructor(event: str, lang: str, mail_to: str):
     msg.attach_alternative(html, "text/html")
 
     return msg
+
+
+def extend_due_date_mail_constructor(lang: str, new_due_date: str, mail_to):
+    now = datetime.datetime.now(tz=ZoneInfo('Europe/Helsinki'))
+    formatted_time = datetime.datetime.strftime(now, '%H:%M')
+    if lang is None:
+        lang = 'FI'
+
+    bodyTemplates = {
+        'FI': """<p>Eräpäivää siirretty, uusi eräpäivä on {new_due_date}""".format(new_due_date=new_due_date),
+
+        'SV': """<p>Eräpäivää siirretty, uusi eräpäivä on {new_due_date}""".format(new_due_date=new_due_date),
+
+        'EN': """<p>Eräpäivää siirretty, uusi eräpäivä on {new_due_date}""".format(new_due_date=new_due_date),
+    }
+
+    msg = EmailMultiAlternatives(
+        headers[lang.upper()],
+        bodyTemplates[lang.upper()],
+        "Pysäköinnin Asiointi <noreply@hel.fi>",
+        [mail_to], )
+
+    logo = attach_inline_image_file(msg, 'mail_service/assets/logo.jpg')
+    html = """
+    <html>
+    <body>
+    <h2><img alt="Logo" src="cid:{logo}" height="24px" style="margin-right: 12px;"/>Pysäköinnin
+        Asiointi</h2>
+    <h1>{header}</h1>
+    {body}
+    </body>
+    </html>""".format(header=headers[lang.upper()],
+                      body=bodyTemplates[lang.upper()],
+                      logo=logo)
+
+    msg.attach_alternative(html, "text/html")
+
+    return msg
