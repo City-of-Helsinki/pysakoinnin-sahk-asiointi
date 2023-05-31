@@ -112,7 +112,7 @@ class PASIHandler:
             raise HttpError(500, message=str(error))
 
     @staticmethod
-    def extend_foul_due_date(foul_data, user_id):
+    def extend_foul_due_date(foul_data):
         try:
             req = request("POST", url=f"{env('PASI_ENDPOINT')}/api/v1/fouls/ExtendFoulDueDate",
                           verify=False,
@@ -128,17 +128,13 @@ class PASIHandler:
 
             if req.status_code == 400:
                 raise HttpError(400, message="Due date not extendable")
-            if hasattr(req, "json"):
-                try:
-                    ATVHandler.add_document(req, foul_data.foul_number, user_id, metadata={})
-                    return req
-                except Exception as error:
-                    raise HttpError(500, message=str(error))
 
         except HttpError as error:
             raise error
         except Exception as error:
             raise HttpError(500, message=str(error))
+
+        return req
 
     @staticmethod
     def save_objection(objection: Objection, objection_id):

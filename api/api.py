@@ -10,7 +10,8 @@ from api.schemas import FoulDataResponse, ATVDocumentResponse, TransferDataRespo
     DocumentStatusRequest
 from api.utils import virus_scan_attachment_file
 from api.views import PASIHandler, ATVHandler, DocumentHandler
-from mail_service.utils import mail_constructor
+from mail_service.audit_log import _commit_to_audit_log
+from mail_service.utils import mail_constructor, extend_due_date_mail_constructor
 
 router = Router()
 env = Env()
@@ -54,7 +55,21 @@ def extend_due_date(request, foul_data: FoulRequest):
     """
     Extend foul due date by 30 days
     """
-    req = PASIHandler.extend_foul_due_date(foul_data, user_id=request.user.uuid)
+    req = PASIHandler.extend_foul_due_date(foul_data)
+
+    try:
+        ATVHandler.add_document(req, foul_data.foul_number, request.user.uuid, metadata={})
+    except Exception as error:
+        raise ninja.errors.HttpError(500, message=str(error))
+
+    if req.status_code == 200:
+        mail = extend_due_date_mail_constructor(new_due_date=req.json['dueDate'], lang='FI',
+                                                mail_to='jaakko.ihanamaki@futurice.com')
+        mail.send()
+        
+        if hasattr(mail, 'anymail_status'):
+            _commit_to_audit_log(mail.to[0], mail.anymail_status)
+
     return req.json()
 
 
@@ -133,5 +148,7 @@ def set_document_status(request, status_request: DocumentStatusRequest):
 
 @router.get('/testEmail', auth=None)
 def testEmail(request):
-    mail = mail_constructor(event='resolvedViaEService', lang='en', mail_to='jaakko.ihanamaki@futurice.com')
+    mail = mail_constructor(event='resolvedViaMail', lang='fI', mail_to='jaakko.ihanamaki@futurice.com')
     mail.send()
+    if hasattr(mail, 'anymail_status'):
+        _commit_to_audit_log(mail.to[0], mail.anymail_status)
