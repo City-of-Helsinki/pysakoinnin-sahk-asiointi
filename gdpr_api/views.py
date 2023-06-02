@@ -1,4 +1,4 @@
-from django.http import HttpRequest
+from django.http import HttpRequest, HttpResponse
 from environ import Env
 from helusers.jwt import JWT
 from helusers.oidc import OIDCConfig
@@ -48,7 +48,55 @@ def get_user_info(request, user_id: str):
     if not request.auth or request.auth != user_id:
         raise HttpError(401, message="Unauthorised")
     req = ATVHandler.get_documents(user_id)
-    return req
+
+    if HttpError:
+        return HttpResponse(status=204)
+
+    results = req['results']
+
+    def get_key_val_pair(obj):
+        _dict = {'key': 'CONTENT', 'children': []}
+
+        def destructure_dict(val):
+            _list = []
+            for key in val:
+                _list.append({
+                    'key': key,
+                    'value': val[key]
+                })
+
+            return _list
+
+        for key in obj:
+            if type(obj[key]) is dict:
+                _dict['children'].append(
+                    {'key': key,
+                     'children': destructure_dict(obj[key])}
+                )
+            elif type(obj[key]) is list:
+                for item in obj[key]:
+                    _dict['children'].append(
+                        {'key': key,
+                         'children': destructure_dict(item)
+                         }
+                    )
+            else:
+                _dict['children'].append({
+                    'key': key,
+                    'value': obj[key]
+                })
+
+        return _dict
+
+    return_obj = {
+        'key': 'RESULTS',
+        'children': []
+    }
+
+    for index in results:
+        return_obj['children'].append(get_key_val_pair(index['content']))
+
+    return return_obj
 
 
 @router.delete('/{user_id}', tags=["GDPR API"], auth=JWTAuth(required_scope=env("GDPR_API_DELETE_SCOPE")))
@@ -56,4 +104,21 @@ def delete_user_info(request, user_id: str):
     if not request.auth or request.auth != user_id:
         raise HttpError(401, message="Unauthorised")
 
-    raise HttpError(403, message="Tietojen poisto ei ole mahdollista lain xyz velvoittamana")
+    return HttpResponse(403, content={
+        "errors": [
+            {
+                "code": "LEGAL_OBLIGATION",
+                "message": {
+                    "en": "It is not possible to delete data. The processing is necessary for "
+                          "compliance with a legal obligation of the controller "
+                          "(EU General Data Protection Regulation Article 6 C).",
+                    "fi": "Tietojen poisto ei ole mahdollista. Tietojen käsittely on tarpeen rekisterinpitäjän "
+                          "lakisääteisen velvoitteen noudattamiseksi "
+                          "(EU:n yleisen tietosuoja-asetus 6 artikla C-kohta).",
+                    "sv": "Det är inte möjligt att radera uppgifter. Behandlingen är "
+                          "nödvändig för att uppfylla en rättslig förpliktelse för den "
+                          "personuppgiftsansvarige (EU:s allmänna dataskyddsförordning Artikle 6 C)."
+                }
+            }
+        ]
+    })
