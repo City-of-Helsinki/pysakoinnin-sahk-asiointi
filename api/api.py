@@ -63,7 +63,8 @@ def extend_due_date(request, foul_data: FoulRequest):
         raise ninja.errors.HttpError(500, message=str(error))
 
     if req.status_code == 200:
-        mail = extend_due_date_mail_constructor(new_due_date=req.json['dueDate'], lang='FI',
+        json = req.json()
+        mail = extend_due_date_mail_constructor(new_due_date=json['dueDate'], lang='FI',
                                                 mail_to='jaakko.ihanamaki@futurice.com')
         mail.send()
 
@@ -145,11 +146,3 @@ def set_document_status(request, status_request: DocumentStatusRequest):
                                 mail_to=find_document_by_id['results'][0]['content']['email'])
         mail.send()
         return HttpResponse(200)
-
-
-@router.get('/testEmail', auth=None)
-def testEmail(request):
-    mail = mail_constructor(event='resolvedViaMail', lang='fI', mail_to='jaakko.ihanamaki@futurice.com')
-    mail.send()
-    if hasattr(mail, 'anymail_status'):
-        _commit_to_audit_log(mail.to[0], mail.anymail_status)
