@@ -1,4 +1,4 @@
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest, JsonResponse, HttpResponse
 from environ import Env
 from helusers.jwt import JWT
 from helusers.oidc import OIDCConfig
@@ -49,7 +49,7 @@ def get_user_info(request, user_id: str):
         raise HttpError(401, message="Unauthorised")
     req = ATVHandler.get_documents(user_id)
 
-    if HttpError:
+    if len(req['results']) <= 0:
         return HttpResponse(status=204)
 
     results = req['results']
@@ -104,7 +104,12 @@ def delete_user_info(request, user_id: str):
     if not request.auth or request.auth != user_id:
         raise HttpError(401, message="Unauthorised")
 
-    return HttpResponse(403, content={
+    req = ATVHandler.get_documents(user_id)
+
+    if len(req['results']) <= 0:
+        return HttpResponse(status=204)
+
+    return JsonResponse(status=403, data={
         "errors": [
             {
                 "code": "LEGAL_OBLIGATION",
