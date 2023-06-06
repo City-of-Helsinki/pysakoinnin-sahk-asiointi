@@ -57,6 +57,12 @@ class ExtendDueDateResponse(Schema):
     responseCode: int
 
 
+class FoulRequest(Schema):
+    foul_number: int
+    register_number: str
+    metadata: Optional[dict]
+
+
 class AddressField(Schema):
     addressLine1: Optional[str]
     addressLine2: Optional[str]
