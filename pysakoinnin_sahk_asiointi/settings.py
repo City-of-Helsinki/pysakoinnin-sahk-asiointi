@@ -205,7 +205,7 @@ LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
     "handlers": {"audit": _audit_log_handler},
-    "loggers": {"audit": {"handlers": ["audit"], "level": "INFO", "propagate": True}},
+    "loggers": {"audit": {"handlers": ["audit"], "level": "ERROR", "propagate": True}},
 }
 
 # Malware protection
@@ -213,3 +213,5 @@ CLAMAV_HOST = env("CLAMAV_HOST")
 
 # Increase max data upload size to accommodate common use cases
 django.conf.global_settings.DATA_UPLOAD_MAX_MEMORY_SIZE = 20971520
+DATA_UPLOAD_MAX_MEMORY_SIZE = 20971520
+FILE_UPLOAD_MAX_MEMORY_SIZE = 20971520

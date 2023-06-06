@@ -7,7 +7,7 @@ from ninja import Router, Schema
 from ninja.security import HttpBearer
 
 from api.schemas import FoulDataResponse, ATVDocumentResponse, TransferDataResponse, ExtendDueDateResponse, Objection, \
-    DocumentStatusRequest
+    DocumentStatusRequest, FoulRequest
 from api.utils import virus_scan_attachment_file
 from api.views import PASIHandler, ATVHandler, DocumentHandler
 from mail_service.audit_log import _commit_to_audit_log
@@ -21,11 +21,6 @@ class ApiKeyAuth(HttpBearer):
     def authenticate(self, request: HttpRequest, token: str):
         if token == env("PASI_API_KEY"):
             return True
-
-
-class FoulRequest(Schema):
-    foul_number: int
-    register_number: str
 
 
 class NotFoundError(Schema):
@@ -57,19 +52,19 @@ def extend_due_date(request, foul_data: FoulRequest):
     """
     req = PASIHandler.extend_foul_due_date(foul_data)
 
-    try:
-        ATVHandler.add_document(req, foul_data.foul_number, request.user.uuid, metadata={})
-    except Exception as error:
-        raise ninja.errors.HttpError(500, message=str(error))
-
     if req.status_code == 200:
         json = req.json()
-        mail = extend_due_date_mail_constructor(new_due_date=json['dueDate'], lang='FI',
-                                                mail_to='jaakko.ihanamaki@futurice.com')
+        mail = extend_due_date_mail_constructor(new_due_date=json['dueDate'], lang=foul_data.metadata['lang'],
+                                                mail_to=foul_data.metadata['email'])
         mail.send()
 
         if hasattr(mail, 'anymail_status'):
             _commit_to_audit_log(mail.to[0], mail.anymail_status)
+
+    try:
+        ATVHandler.add_document(req, foul_data.foul_number, request.user.uuid, metadata={})
+    except Exception as error:
+        raise ninja.errors.HttpError(500, message=str(error))
 
     return req.json()
 
