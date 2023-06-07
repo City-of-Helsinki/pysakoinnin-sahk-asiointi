@@ -3,5 +3,10 @@ django-cors-headers
 django-environ
 django-ninja
 django-helusers
-psycopg2
+pytest-django
+pytest-cov
+psycopg2-binary
+pyclamd
 sentry-sdk
+gunicorn
+django-anymail
