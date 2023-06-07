@@ -26,7 +26,7 @@ class FoulDataResponse(Schema):
     monitoringStart: str
     registerNumber: str
     vehicleType: str
-    vehicleModel: str
+    vehicleModel: Optional[str]
     vehicleBrand: str
     vehicleColor: str
     address: str
@@ -38,9 +38,9 @@ class FoulDataResponse(Schema):
     invoiceSumText: str
     openAmountText: str
     dueDate: str
-    referenceNumber: str
-    iban: str
-    barCode: str
+    referenceNumber: Optional[str]
+    iban: Optional[str]
+    barCode: Optional[str]
     foulMakerAddress: Optional[str]
     attachments: list[AttachmentWithType]
     dueDateExtendable: bool
@@ -57,32 +57,39 @@ class ExtendDueDateResponse(Schema):
     responseCode: int
 
 
+class FoulRequest(Schema):
+    foul_number: int
+    register_number: str
+    metadata: Optional[dict]
+
+
 class AddressField(Schema):
-    addressLine1: str
-    addressLine2: str
+    addressLine1: Optional[str]
+    addressLine2: Optional[str]
     streetAddress: str
     postCode: str
-    postOffice: str
-    countryName: str
+    postOffice: Optional[str]
+    countryName: Optional[str]
 
 
 class Objection(Schema):
-    foulNumber: int
-    transferNumber: int
-    folderID: str
+    foulNumber: Optional[int]
+    transferNumber: Optional[int]
+    folderID: Optional[str]
     ssn: str
     firstName: str
     lastName: str
     email: str
     mobilePhone: str
-    bic: str
+    bic: Optional[str]
     iban: str
     authorRole: int
     address: AddressField
     description: str
-    attachments: list[AttachmentSchema]
+    attachments: Optional[list[AttachmentSchema]]
     type: int
     sendDecisionViaEService: bool
+    metadata: Optional[dict]
 
 
 class TransferDataResponse(Schema):
@@ -144,8 +151,8 @@ class ATVDocumentSchema(Schema):
 
 class ATVDocumentResponse(Schema):
     count: int
-    next: Optional[int]
-    previous: Optional[int]
+    next: Optional[str]
+    previous: Optional[str]
     results: list[ATVDocumentSchema]
 
 
