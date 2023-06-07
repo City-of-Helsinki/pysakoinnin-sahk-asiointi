@@ -44,7 +44,7 @@ def _commit_to_audit_log(request, response
 def _get_target_uri(request):
     return request.path
 
-
+  
 def _get_profile_id(request):
     if hasattr(request.user, "uuid"):
         return str(request.user.uuid)

@@ -165,6 +165,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
 # Anymail setup
 ANYMAIL = {
     "MAILGUN_API_KEY": env('MAILGUN_API_KEY'),

@@ -33,6 +33,7 @@ def get_foul_data(request, foul_number: int = 113148427, register_number: str = 
     Retrieve foul data from PASI by foul number and register number
     """
     req = PASIHandler.get_foul_data(foul_number, register_number)
+
     return req.json()
 
 
@@ -42,6 +43,7 @@ def get_transfer_data(request, transfer_number: int = 11720143, register_number:
     Retrieve transfer data from PASI by transfer number and register number
     """
     req = PASIHandler.get_transfer_data(transfer_number, register_number)
+
     return req.json()
 
 
@@ -112,6 +114,7 @@ def get_atv_documents(request):
     Retrieve all user documents from ATV with UUID
     """
     req = ATVHandler.get_documents(request.user.uuid)
+
     return req
 
 
@@ -124,13 +127,13 @@ def get_document_by_transaction_id(request, id):
     req = ATVHandler.get_document_by_transaction_id(id)
     return req
 
-
 @router.patch('/setDocumentStatus', response={200: None, 401: None, 404: NotFoundError, 422: None},
               tags=['Pysaköinnin asiointi'], auth=ApiKeyAuth())
 def set_document_status(request, status_request: DocumentStatusRequest):
     """
     Update document status with ID and status
     """
+    
     find_document_by_id = ATVHandler.get_document_by_transaction_id(status_request.id)
     document_id = find_document_by_id["results"][0]['id']
 

@@ -1,5 +1,4 @@
 """pysakoinnin_sahk_asiointi URL Configuration """
-
 from django.http import HttpRequest, HttpResponse
 from django.urls import path
 from helusers.oidc import RequestJWTAuthentication
