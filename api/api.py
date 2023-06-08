@@ -57,19 +57,18 @@ def extend_due_date(request, foul_data: FoulRequest):
 
     req = PASIHandler.extend_foul_due_date(foul_data_for_pasi)
 
-    if req.status_code == 200:
-        json = req.json()
-        mail = extend_due_date_mail_constructor(new_due_date=json['dueDate'], lang=foul_data.metadata['lang'],
-                                                mail_to=foul_data.metadata['email'])
-        mail.send()
+    json = req.json()
+    mail = extend_due_date_mail_constructor(new_due_date=json['dueDate'], lang=foul_data.metadata['lang'],
+                                            mail_to=foul_data.metadata['email'])
+    mail.send()
 
-        if hasattr(mail, 'anymail_status'):
-            _commit_to_audit_log(mail.to[0], mail.anymail_status)
+    if hasattr(mail, 'anymail_status'):
+        _commit_to_audit_log(mail.to[0], mail.anymail_status)
 
-        try:
-            ATVHandler.add_document(req, foul_data.foul_number, request.user.uuid, metadata={})
-        except Exception as error:
-            raise ninja.errors.HttpError(500, message=str(error))
+    try:
+        ATVHandler.add_document(req, foul_data.foul_number, request.user.uuid, metadata={})
+    except Exception as error:
+        raise ninja.errors.HttpError(500, message=str(error))
 
     return req.json()
 
