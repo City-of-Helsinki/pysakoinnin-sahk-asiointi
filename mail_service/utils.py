@@ -95,7 +95,9 @@ def mail_constructor(event: str, lang: str, mail_to: str):
 
 
 def extend_due_date_mail_constructor(lang: str, new_due_date: str, mail_to):
-    formatted_time = datetime.datetime.strptime(new_due_date, '%D.%M.YYYY')
+    date = datetime.datetime.strptime(new_due_date, '%Y-%m-%dT%H:%M:%S')
+    formatted_time = datetime.datetime.strftime(date, '%d.%m.%Y')
+    
     if lang is None:
         lang = 'FI'
 

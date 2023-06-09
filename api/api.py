@@ -52,23 +52,28 @@ def extend_due_date(request, foul_data: FoulRequest):
     """
     Extend foul due date by 30 days
     """
-    req = PASIHandler.extend_foul_due_date(foul_data)
+    foul_data_for_pasi = copy.deepcopy(foul_data)
+    del foul_data_for_pasi.metadata
 
-    if req.status_code == 200:
-        json = req.json()
-        mail = extend_due_date_mail_constructor(new_due_date=json['dueDate'], lang=foul_data.metadata['lang'],
-                                                mail_to=foul_data.metadata['email'])
-        mail.send()
+    req = PASIHandler.extend_foul_due_date(foul_data_for_pasi)
 
-        if hasattr(mail, 'anymail_status'):
-            _commit_to_audit_log(mail.to[0], mail.anymail_status)
+    json = req.json()
+    mail = extend_due_date_mail_constructor(new_due_date=json['dueDate'], lang=foul_data.metadata['lang'],
+                                            mail_to=foul_data.metadata['email'])
+    mail.send()
+
+    if hasattr(mail, 'anymail_status'):
+        _commit_to_audit_log(mail.to[0], mail.anymail_status)
 
     try:
+        print('ping for atv')
         ATVHandler.add_document(req, foul_data.foul_number, request.user.uuid, metadata={})
     except Exception as error:
+        print('something wrong with atv', str(error))
         raise ninja.errors.HttpError(500, message=str(error))
-
-    return req.json()
+    finally:
+        print('ping return')
+        return req.json()
 
 
 @router.post('/saveObjection', response={200: None, 204: None, 422: None}, tags=['PASI'])
@@ -133,7 +138,6 @@ def set_document_status(request, status_request: DocumentStatusRequest):
     """
     Update document status with ID and status
     """
-    
     find_document_by_id = ATVHandler.get_document_by_transaction_id(status_request.id)
     document_id = find_document_by_id["results"][0]['id']
 
