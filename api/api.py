@@ -132,14 +132,12 @@ def get_document_by_transaction_id(request, id):
     req = ATVHandler.get_document_by_transaction_id(id)
     return req
 
-
 @router.patch('/setDocumentStatus', response={200: None, 401: None, 404: NotFoundError, 422: None},
               tags=['Pysaköinnin asiointi'], auth=ApiKeyAuth())
 def set_document_status(request, status_request: DocumentStatusRequest):
     """
     Update document status with ID and status
     """
-
     find_document_by_id = ATVHandler.get_document_by_transaction_id(status_request.id)
     document_id = find_document_by_id["results"][0]['id']
 
