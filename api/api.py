@@ -69,8 +69,8 @@ def extend_due_date(request, foul_data: FoulRequest):
         ATVHandler.add_document(req, foul_data.foul_number, request.user.uuid, metadata={})
     except Exception as error:
         raise ninja.errors.HttpError(500, message=str(error))
-
-    return req.json()
+    finally:
+        return req.json()
 
 
 @router.post('/saveObjection', response={200: None, 204: None, 422: None}, tags=['PASI'])
