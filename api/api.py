@@ -66,10 +66,13 @@ def extend_due_date(request, foul_data: FoulRequest):
         _commit_to_audit_log(mail.to[0], mail.anymail_status)
 
     try:
+        print('ping for atv')
         ATVHandler.add_document(req, foul_data.foul_number, request.user.uuid, metadata={})
     except Exception as error:
+        print('something wrong with atv', str(error))
         raise ninja.errors.HttpError(500, message=str(error))
     finally:
+        print('ping return')
         return req.json()
 
 
