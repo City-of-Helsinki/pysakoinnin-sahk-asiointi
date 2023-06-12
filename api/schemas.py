@@ -97,7 +97,7 @@ class TransferDataResponse(Schema):
     transferDate: str
     registerNumber: str
     vehicleType: str
-    vehicleModel: str
+    vehicleModel: Optional[str]
     vehicleBrand: str
     vehicleColor: str
     startAddress: str

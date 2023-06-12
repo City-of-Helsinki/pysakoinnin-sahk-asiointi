@@ -55,7 +55,10 @@ def extend_due_date(request, foul_data: FoulRequest):
     foul_data_for_pasi = copy.deepcopy(foul_data)
     del foul_data_for_pasi.metadata
 
-    req = PASIHandler.extend_foul_due_date(foul_data_for_pasi)
+    try:
+        req = PASIHandler.extend_foul_due_date(foul_data_for_pasi)
+    except Exception as error:
+        raise ninja.errors.HttpError(500, message=str(error))
 
     json = req.json()
     mail = extend_due_date_mail_constructor(new_due_date=json['dueDate'], lang=foul_data.metadata['lang'],
@@ -66,13 +69,10 @@ def extend_due_date(request, foul_data: FoulRequest):
         _commit_to_audit_log(mail.to[0], mail.anymail_status)
 
     try:
-        print('ping for atv')
-        ATVHandler.add_document(req, foul_data.foul_number, request.user.uuid, metadata={})
+        ATVHandler.add_document(req, foul_data.foul_number, request.user.uuid, metadata={**foul_data})
     except Exception as error:
-        print('something wrong with atv', str(error))
         raise ninja.errors.HttpError(500, message=str(error))
     finally:
-        print('ping return')
         return req.json()
 
 
@@ -131,6 +131,7 @@ def get_document_by_transaction_id(request, id):
     """
     req = ATVHandler.get_document_by_transaction_id(id)
     return req
+
 
 @router.patch('/setDocumentStatus', response={200: None, 401: None, 404: NotFoundError, 422: None},
               tags=['Pysaköinnin asiointi'], auth=ApiKeyAuth())
