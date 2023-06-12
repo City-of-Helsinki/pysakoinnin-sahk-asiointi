@@ -60,6 +60,8 @@ def extend_due_date(request, foul_data: FoulRequest):
     except Exception as error:
         raise ninja.errors.HttpError(500, message=str(error))
 
+    ATVHandler.add_document(req, foul_data.foul_number, request.user.uuid, metadata={**foul_data})
+
     json = req.json()
     mail = extend_due_date_mail_constructor(new_due_date=json['dueDate'], lang=foul_data.metadata['lang'],
                                             mail_to=foul_data.metadata['email'])
@@ -68,12 +70,7 @@ def extend_due_date(request, foul_data: FoulRequest):
     if hasattr(mail, 'anymail_status'):
         _commit_to_audit_log(mail.to[0], mail.anymail_status)
 
-    try:
-        ATVHandler.add_document(req, foul_data.foul_number, request.user.uuid, metadata={**foul_data})
-    except Exception as error:
-        raise ninja.errors.HttpError(500, message=str(error))
-    finally:
-        return req.json()
+    return req.json()
 
 
 @router.post('/saveObjection', response={200: None, 204: None, 422: None}, tags=['PASI'])
