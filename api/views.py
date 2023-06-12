@@ -48,6 +48,7 @@ class ATVHandler:
 
     @staticmethod
     def add_document(content, document_id, user_id: str, metadata: dict):
+        print(content.json())
         try:
             req = request('POST', f"{env('ATV_ENDPOINT')}",
                           headers={"x-api-key": env('ATV_API_KEY')}, data={
