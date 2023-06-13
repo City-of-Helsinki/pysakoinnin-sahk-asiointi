@@ -60,7 +60,8 @@ def extend_due_date(request, foul_data: FoulRequest):
     except Exception as error:
         raise ninja.errors.HttpError(500, message=str(error))
 
-    ATVHandler.add_document(req, foul_data.foul_number, request.user.uuid, metadata={})
+    atv_req = ATVHandler.add_document(req, foul_data.foul_number, request.user.uuid, metadata={})
+    print(atv_req.json())
 
     json = req.json()
     mail = extend_due_date_mail_constructor(new_due_date=json['dueDate'], lang=foul_data.metadata['lang'],
