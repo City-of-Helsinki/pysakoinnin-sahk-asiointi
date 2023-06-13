@@ -58,6 +58,7 @@ def extend_due_date(request, foul_data: FoulRequest):
     try:
         req = PASIHandler.extend_foul_due_date(foul_data_for_pasi)
     except Exception as error:
+        print('something wrong with atv', str(error))
         raise ninja.errors.HttpError(500, message=str(error))
 
     json = req.json()
