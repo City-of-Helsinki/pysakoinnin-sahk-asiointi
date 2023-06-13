@@ -43,7 +43,7 @@ def mail_constructor(event: str, lang: str, mail_to: str):
     bodyTemplates = {
         'FI': """<p>Pysäköinnin asiointiin on saapunut uusi tapahtuma: <i>{event}</i> klo {now}.
                 <br>
-                Kirjaudu pysäköinnin sähköiseen asiointiin https://xxxx.xxxx.fi
+                Kirjaudu pysäköinnin sähköiseen asiointiin https://pysakoinninasiointi.hel.fi
                 <br>
                 <br>
                 (Tämä on automaattinen viesti jonka on lähettänyt Helsingin kaupungin pysäköinninvalvonnan sähköinen
@@ -52,7 +52,7 @@ def mail_constructor(event: str, lang: str, mail_to: str):
 
         'SV': """<p>Nya händelser har kommit in i parkering e-tjänsten: <i>{event}</i> på {now}.
                 <br>
-                Logga in på parkerings e-tjänster https://xxxx.xxxx.fi
+                Logga in på parkerings e-tjänster https://pysakoinninasiointi.hel.fi
                 <br>
                 <br>
                 (Detta är ett automatiskt meddelande som skickas av Helsingfors stads parkeringsövervaknings e-tjänst. 
@@ -61,7 +61,7 @@ def mail_constructor(event: str, lang: str, mail_to: str):
 
         'EN': """<p>New event has arrived in the Parking e-service: <i>{event}</i> at {now}.
                     <br>
-                    Sign in to parking e-services https://xxxx.xxxx.fi
+                    Sign in to parking e-services https://pysakoinninasiointi.hel.fi
                     <br>
                     <br>    
                 (This is an automated message sent by the City of Helsinki parking control e-service. 
@@ -97,7 +97,7 @@ def mail_constructor(event: str, lang: str, mail_to: str):
 def extend_due_date_mail_constructor(lang: str, new_due_date: str, mail_to):
     date = datetime.datetime.strptime(new_due_date, '%Y-%m-%dT%H:%M:%S')
     formatted_time = datetime.datetime.strftime(date, '%d.%m.%Y')
-    
+
     if lang is None:
         lang = 'FI'
 

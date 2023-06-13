@@ -55,9 +55,17 @@ def extend_due_date(request, foul_data: FoulRequest):
     foul_data_for_pasi = copy.deepcopy(foul_data)
     del foul_data_for_pasi.metadata
 
-    req = PASIHandler.extend_foul_due_date(foul_data_for_pasi)
+    try:
+        req = PASIHandler.extend_foul_due_date(foul_data_for_pasi)
+    except Exception as error:
+        print('something wrong with atv', str(error))
+        raise ninja.errors.HttpError(500, message=str(error))
 
     json = req.json()
+
+    atv_req = ATVHandler.add_document({**json}, foul_data.foul_number, request.user.uuid, metadata={})
+    print(atv_req.json())
+
     mail = extend_due_date_mail_constructor(new_due_date=json['dueDate'], lang=foul_data.metadata['lang'],
                                             mail_to=foul_data.metadata['email'])
     mail.send()
@@ -65,15 +73,7 @@ def extend_due_date(request, foul_data: FoulRequest):
     if hasattr(mail, 'anymail_status'):
         _commit_to_audit_log(mail.to[0], mail.anymail_status)
 
-    try:
-        print('ping for atv')
-        ATVHandler.add_document(req, foul_data.foul_number, request.user.uuid, metadata={})
-    except Exception as error:
-        print('something wrong with atv', str(error))
-        raise ninja.errors.HttpError(500, message=str(error))
-    finally:
-        print('ping return')
-        return req.json()
+    return req.json()
 
 
 @router.post('/saveObjection', response={200: None, 204: None, 422: None}, tags=['PASI'])
@@ -104,7 +104,7 @@ def save_objection(request, objection: Objection):
         del attachment.data
 
     try:
-        ATVHandler.add_document(objection_without_attachment_data, objection_id, user_id=request.user.uuid,
+        ATVHandler.add_document({**objection_without_attachment_data}, objection_id, user_id=request.user.uuid,
                                 metadata={**objection.metadata})
     except Exception as error:
         raise ninja.errors.HttpError(500, message=str(error))
@@ -131,6 +131,7 @@ def get_document_by_transaction_id(request, id):
     """
     req = ATVHandler.get_document_by_transaction_id(id)
     return req
+
 
 @router.patch('/setDocumentStatus', response={200: None, 401: None, 404: NotFoundError, 422: None},
               tags=['Pysaköinnin asiointi'], auth=ApiKeyAuth())
