@@ -60,7 +60,7 @@ class ATVHandler:
                     "tos_function_id": 12345,
                     "status": "sent",
                     "metadata": json.dumps(metadata),
-                    "content": content.json()},
+                    "content": json.dumps(content.json())},
                           files={'attachments': None})
             return req
         except Exception as error:
