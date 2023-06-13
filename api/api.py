@@ -104,7 +104,7 @@ def save_objection(request, objection: Objection):
         del attachment.data
 
     try:
-        ATVHandler.add_document(content={**objection_without_attachment_data}, document_id=objection_id,
+        ATVHandler.add_document(content=objection_without_attachment_data.dict(), document_id=objection_id,
                                 user_id=request.user.uuid,
                                 metadata={**objection.metadata})
     except Exception as error:
