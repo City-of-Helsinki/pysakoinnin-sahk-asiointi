@@ -60,10 +60,11 @@ def extend_due_date(request, foul_data: FoulRequest):
     except Exception as error:
         raise ninja.errors.HttpError(500, message=str(error))
 
-    atv_req = ATVHandler.add_document(req, foul_data.foul_number, request.user.uuid, metadata={})
+    json = req.json()
+
+    atv_req = ATVHandler.add_document({**json}, foul_data.foul_number, request.user.uuid, metadata={})
     print(atv_req.json())
 
-    json = req.json()
     mail = extend_due_date_mail_constructor(new_due_date=json['dueDate'], lang=foul_data.metadata['lang'],
                                             mail_to=foul_data.metadata['email'])
     mail.send()
@@ -102,7 +103,7 @@ def save_objection(request, objection: Objection):
         del attachment.data
 
     try:
-        ATVHandler.add_document(objection_without_attachment_data, objection_id, user_id=request.user.uuid,
+        ATVHandler.add_document({**objection_without_attachment_data}, objection_id, user_id=request.user.uuid,
                                 metadata={**objection.metadata})
     except Exception as error:
         raise ninja.errors.HttpError(500, message=str(error))

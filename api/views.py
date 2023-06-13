@@ -47,8 +47,8 @@ class ATVHandler:
             raise error
 
     @staticmethod
-    def add_document(content, document_id, user_id: str, metadata: dict):
-        print(content.json())
+    def add_document(content: dict, document_id, user_id: str, metadata: dict):
+        print(content)
         try:
             req = request('POST', f"{env('ATV_ENDPOINT')}",
                           headers={"x-api-key": env('ATV_API_KEY')}, data={
@@ -60,7 +60,7 @@ class ATVHandler:
                     "tos_function_id": 12345,
                     "status": "sent",
                     "metadata": json.dumps(metadata),
-                    "content": json.dumps(content.json())},
+                    "content": json.dumps(content)},
                           files={'attachments': None})
             return req
         except Exception as error:
