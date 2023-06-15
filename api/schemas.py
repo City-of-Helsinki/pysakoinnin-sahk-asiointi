@@ -7,7 +7,7 @@ from ninja import Schema
 # Parking foul related
 class FoulSchema(Schema):
     description: str
-    additionalInfo: str
+    additionalInfo: Optional[str]
 
 
 class AttachmentSchema(Schema):
