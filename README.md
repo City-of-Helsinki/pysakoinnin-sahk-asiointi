@@ -5,21 +5,9 @@ for [Pysäköinnin Sähköinen Asiointi](https://helsinkisolutionoffice.atlassia
 
 ## Running the application with docker-compose
 
-Insert the following configuration files to your local directory
+⚠️ ️Requires a `config.env` file to run, contact admin if needed
 
-```
-./config.env
-DEBUG=True
-SECRET_KEY="development"
-ALLOWED_HOSTS="localhost"
-
-# Database related secrets
-DB_PASSWORD="root"
-DB_NAME="parking-service"
-DB_USER="parking-user"
-DB_HOST="localhost"
-DB_PORT=5432
-```
+To override production Docker-Compose settings insert the following file to your root
 
 ```
 ./docker-compose.override.yml
@@ -27,16 +15,18 @@ DB_PORT=5432
 version: '3'
 services:
   server:
-    container_name: parking-service-server
+    container_name: api-server
     env_file:
       - config.env
     environment:
-      - DB_HOST=parking-service-db
+      - DATABASE_URL=postgres://parking-user:root@api-db:5432/parking-service
+    expose:
+      - 8080
     depends_on:
       - db
 
   db:
-    container_name: parking-service-db
+    container_name: api-db
     image: postgres:alpine
     restart: always
     environment:
@@ -45,6 +35,10 @@ services:
       - POSTGRES_DB=parking-service
     volumes:
       - db:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    expose:
+      - 5432
 
 volumes:
   db:
@@ -53,17 +47,22 @@ volumes:
 
 Then simply run `docker-compose up` and Docker will build PostgreSQL database and Django server instances
 
+Note that running the app with Docker proxies the application to port `8080`
+
 ## Running the application with hot-reload (recommended for active development)
 
 - Install a Python virtual environment of your choice (for example [venv](https://docs.python.org/3/tutorial/venv.html))
   with Python 3.x
 - In a new terminal window start a local database instance with
   `docker run --name parking-service-db -p 5432:5432 -e POSTGRES_USER=parking-user -e POSTGRES_PASSWORD=root -e POSTGRES_DB=parking-service postgres:alpine`
-- Insert `config.env` file from above to your root directory
+- Make sure a `config.env` file is present in your root directory
 - Activate virtual environment
 - Install dependencies with `pip install -r requirements.in`
 - Run migrations `python manage.py migrate`
 - Run server `python manage.py runserver`
+
+
+- Alternatively you can run server with `gunicorn pysakoinnin_sahk_asiointi.wsgi:application --bind 0.0.0.0:8000`
 
 Note: psycopg2 may require a local installation of PostgreSQL. Install for macOS with Homebrew `brew install postgresql`
 

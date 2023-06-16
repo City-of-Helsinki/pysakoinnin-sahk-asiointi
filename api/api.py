@@ -58,13 +58,12 @@ def extend_due_date(request, foul_data: FoulRequest):
     try:
         req = PASIHandler.extend_foul_due_date(foul_data_for_pasi)
     except Exception as error:
-        print('something wrong with atv', str(error))
         raise ninja.errors.HttpError(500, message=str(error))
 
     json = req.json()
 
     atv_req = ATVHandler.add_document({**json}, foul_data.foul_number, request.user.uuid, metadata={})
-    print(atv_req.json())
+    atv_req.json()
 
     mail = extend_due_date_mail_constructor(new_due_date=json['dueDate'], lang=foul_data.metadata['lang'],
                                             mail_to=foul_data.metadata['email'])
