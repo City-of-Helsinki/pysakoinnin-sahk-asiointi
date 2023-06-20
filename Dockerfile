@@ -4,6 +4,7 @@
 FROM registry.access.redhat.com/ubi9/nginx-122 as appbase
 
 WORKDIR /usr/src/app
+USER root
 RUN chmod g+w /usr/src/app
 
 # Copy requirement files.
@@ -25,6 +26,7 @@ ENV PYTHONUNBUFFERED 1
 RUN mkdir -p /var/parking-service/static
 
 # Clean up
+USER root
 RUN yum clean all
 RUN rm -rf /var/cache/yum
 
