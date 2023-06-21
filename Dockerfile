@@ -1,9 +1,10 @@
 # Build a base image for development and production stages.
 # Note that this stage won't get thrown out so we need to think about
 # layer sizes from this point on.
-FROM nginx:stable-alpine3.17-slim as appbase
+FROM registry.access.redhat.com/ubi9/nginx-122 as appbase
 
 WORKDIR /usr/src/app
+USER root
 RUN chmod g+w /usr/src/app
 
 # Copy requirement files.
@@ -13,7 +14,8 @@ COPY requirements.txt ./
 # Note that production dependencies are installed here as well since
 # that is the default state of the image and development stages are
 # just extras.
-RUN apk update && apk add --no-cache traceroute postgresql python3
+USER root
+RUN yum install -y postgresql python3
 RUN python3 -m ensurepip
 RUN pip3 install --no-cache-dir -r ./requirements.txt
 
@@ -22,6 +24,11 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 RUN mkdir -p /var/parking-service/static
+
+# Clean up
+USER root
+RUN yum clean all
+RUN rm -rf /var/cache/yum
 
 # Build production image using the appbase stage as base. This should always
 # be the last stage of Dockerfile.
@@ -35,7 +42,7 @@ RUN mkdir -p ./data
 RUN chgrp -R 0 ./data && chmod g+w -R ./data
 
 # Collect static files
-RUN SECRET_KEY="only-used-for-collectstatic" python manage.py collectstatic --noinput
+RUN SECRET_KEY="only-used-for-collectstatic" python3 manage.py collectstatic --noinput
 
 # Copy NGINX conf
 COPY nginx.conf /etc/nginx/nginx.conf
