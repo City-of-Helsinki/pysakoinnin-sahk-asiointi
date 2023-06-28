@@ -10,6 +10,12 @@ from api.schemas import DocumentStatusRequest, Objection
 
 env = Env()
 
+LANGUAGES = {
+    "fi": 0,
+    "sv": 1,
+    "en": 2
+}
+
 BASE_DETAILS = {"username": "string",
                 "password": "string",
                 "customerID": {
@@ -138,6 +144,15 @@ class PASIHandler:
     @staticmethod
     def save_objection(objection: Objection, objection_id):
         sanitised_objection = copy.deepcopy(objection)
+        metadataLang = sanitised_objection.metadata.get('lang')
+        customerLanguage = BASE_DETAILS["customerLanguage"]
+        
+        if (metadataLang != None):
+            if metadataLang in LANGUAGES:
+                customerLanguage = LANGUAGES[metadataLang]
+            else:
+                raise ValueError("Unsupported language: " + metadataLang)
+        
         del sanitised_objection.metadata
 
         try:
@@ -146,7 +161,7 @@ class PASIHandler:
                           headers={'authorization': f"Basic {env('PASI_AUTH_KEY')}",
                                    'content-type': 'application/json',
                                    'x-api-version': '1.0'},
-                          json={**BASE_DETAILS, **Objection.dict(sanitised_objection)}
+                          json={**BASE_DETAILS, **Objection.dict(sanitised_objection), "customerLanguage": customerLanguage}
                           )
             if req.status_code == 422:
                 raise HttpError(422, message=req.json())
@@ -157,7 +172,6 @@ class PASIHandler:
             raise HttpError(500, message=str(error))
 
         return req
-
 
 class DocumentHandler:
 
