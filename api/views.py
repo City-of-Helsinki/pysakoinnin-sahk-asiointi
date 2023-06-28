@@ -146,8 +146,12 @@ class PASIHandler:
         sanitised_objection = copy.deepcopy(objection)
         metadataLang = sanitised_objection.metadata.get('lang')
         customerLanguage = BASE_DETAILS["customerLanguage"]
-        if metadataLang in LANGUAGES:
-            customerLanguage = LANGUAGES[metadataLang]
+        
+        if (metadataLang != None):
+            if metadataLang in LANGUAGES:
+                customerLanguage = LANGUAGES[metadataLang]
+            else:
+                raise ValueError("Unsupported language: " + metadataLang)
         
         del sanitised_objection.metadata
 
