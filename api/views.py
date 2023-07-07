@@ -185,7 +185,7 @@ class DocumentHandler:
                           files={"attachments": None})
 
             response_json = req.json()
-            if hasattr(response_json, "id") is None:
+            if "id" not in response_json:
                 raise HttpError(404, message="Resource not found")
             return HttpResponse(200, 'OK')
         except HttpError as error:
