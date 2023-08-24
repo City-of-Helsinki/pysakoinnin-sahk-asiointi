@@ -37,7 +37,7 @@ events = {
 def mail_constructor(event: str, lang: str, mail_to: str):
     now = datetime.datetime.now(tz=ZoneInfo('Europe/Helsinki'))
     formatted_time = datetime.datetime.strftime(now, '%H:%M')
-    if lang is None:
+    if lang not in headers:
         lang = 'FI'
 
     bodyTemplates = {
