@@ -4,10 +4,8 @@ from api.tests.mocks import MockResponse, MOCK_FOUL ,MOCK_TRANSFER
 
 
 API_ROOT = "/api/v1"
-
-
 class TestEndpoints(TestCase):
-    # Purpose of these tests is to ensure unauthorized users are not accessing endpoints
+    # Purpose of these unauht tests is to ensure unauthorized users are not accessing endpoints
     # and developers using auth=None while locally developing are not accidentally pushing those into live
     @patch('api.views.PASIHandler.get_foul_data')
     def test_get_foul_data_unauth(self, get_foul_data_mock):
