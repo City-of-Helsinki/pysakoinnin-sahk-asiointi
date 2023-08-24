@@ -1,38 +1,45 @@
 from django.test import TestCase
-from mail_service.utils import extend_due_date_mail_constructor
-from anymail.message import attach_inline_image_file
+from mail_service.utils import extend_due_date_mail_constructor, mail_constructor, headers, events
 
-
-lang = "FI"
 mail_to = "test@email.com"
 new_due_date = "2023-01-01T00:30:00"
 
 class TestMailUtils(TestCase):
 
     def test_extend_due_date_mail_constructor(self):
-        mail = extend_due_date_mail_constructor(lang=lang, new_due_date=new_due_date, mail_to=mail_to)
-        assert mail.subject == "Uusi tapahtuma Pysäköinnin Asioinnissa"
+        # Test that passed information can be found in mail
+        mail = extend_due_date_mail_constructor(lang="FI", new_due_date=new_due_date, mail_to=mail_to)
+        assert mail.subject == headers["FI"]
         assert mail.body == "<p>Eräpäivää siirretty, uusi eräpäivä on 01.01.2023"
         assert mail.to[0] == mail_to
 
         # check different languages
         mail = extend_due_date_mail_constructor(lang="EN", new_due_date=new_due_date, mail_to=mail_to)
-        assert mail.subject == 'New event in Parking e-service'
+        assert mail.subject == headers["EN"]
 
         mail = extend_due_date_mail_constructor(lang="SV", new_due_date=new_due_date, mail_to=mail_to)
-        assert mail.subject == 'Nya händelser i parkering e-tjänsten'
-
-        # Default should be FI thus subject should be in finnish
-        mail = extend_due_date_mail_constructor(lang=None, new_due_date=new_due_date, mail_to=mail_to)
-        assert mail.subject == "Uusi tapahtuma Pysäköinnin Asioinnissa"
+        assert mail.subject == headers["SV"]
 
         # Upon incorrect lang, default to FI
         mail = extend_due_date_mail_constructor(lang="INCORRECT_LANG", new_due_date=new_due_date, mail_to=mail_to)
-        assert mail.subject == "Uusi tapahtuma Pysäköinnin Asioinnissa"
+        assert mail.subject == headers["FI"]
 
+    def test_mail_constructor(self):
+        # Test that passed information can be found in mail
+        mail = mail_constructor(event="received", lang="FI", mail_to=mail_to)
+        assert mail.subject == headers["FI"]
+        assert events["received"]["FI"] in mail.body
+        assert mail.to[0] == mail_to
 
+        # check different languages
+        mail = mail_constructor(event="received", lang="EN", mail_to=mail_to)
+        assert mail.subject == headers["EN"]
 
+        mail = mail_constructor(event="received", lang="SV", mail_to=mail_to)
+        assert mail.subject == headers["SV"]
 
+        mail = mail_constructor(event="received", lang="INCORRECT_LANG", mail_to=mail_to)
+        assert mail.subject == headers["FI"]
         
     
        
