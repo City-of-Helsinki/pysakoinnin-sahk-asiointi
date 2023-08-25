@@ -1,9 +1,14 @@
 from unittest.mock import patch
 from django.test import TestCase
-from api.tests.mocks import MockResponse, MOCK_FOUL, MOCK_TRANSFER
-from api.api import get_foul_data, get_transfer_data
+from api.tests.mocks import MockResponse, MOCK_FOUL, MOCK_TRANSFER, MOCK_ATV_DOCUMENT_RESPONSE
+from api.api import get_foul_data, get_transfer_data, get_atv_documents
 
-
+class User:
+    def __init__(self, uuid):
+        self.uuid = uuid
+class Request:
+    def __init__(self, user):
+        self.user = user
 class TestApiFunctions(TestCase):
 
     @patch('api.views.PASIHandler.get_foul_data')
@@ -18,3 +23,10 @@ class TestApiFunctions(TestCase):
         result = get_transfer_data(request=None, transfer_number=MOCK_TRANSFER["transferNumber"], register_number=MOCK_TRANSFER["registerNumber"])
         assert result == MOCK_TRANSFER
 
+    
+    @patch('api.views.ATVHandler.get_documents')
+    def test_get_atv_documents(self, get_documents_mock):
+        get_documents_mock.return_value = MockResponse(200, MOCK_ATV_DOCUMENT_RESPONSE)
+        request =  Request(user=User("fakeid"))
+        result = get_atv_documents(request=request)
+        assert result.json() == MOCK_ATV_DOCUMENT_RESPONSE
