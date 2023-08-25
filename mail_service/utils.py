@@ -37,7 +37,7 @@ events = {
 def mail_constructor(event: str, lang: str, mail_to: str):
     now = datetime.datetime.now(tz=ZoneInfo('Europe/Helsinki'))
     formatted_time = datetime.datetime.strftime(now, '%H:%M')
-    if lang is None:
+    if lang not in headers:
         lang = 'FI'
 
     bodyTemplates = {
@@ -98,9 +98,6 @@ def extend_due_date_mail_constructor(lang: str, new_due_date: str, mail_to):
     date = datetime.datetime.strptime(new_due_date, '%Y-%m-%dT%H:%M:%S')
     formatted_time = datetime.datetime.strftime(date, '%d.%m.%Y')
 
-    if lang is None:
-        lang = 'FI'
-
     bodyTemplates = {
         'FI': """<p>Eräpäivää siirretty, uusi eräpäivä on {new_due_date}""".format(new_due_date=formatted_time),
 
@@ -108,7 +105,9 @@ def extend_due_date_mail_constructor(lang: str, new_due_date: str, mail_to):
 
         'EN': """<p>Eräpäivää siirretty, uusi eräpäivä on {new_due_date}""".format(new_due_date=formatted_time),
     }
-
+    if lang not in bodyTemplates:
+        lang = 'FI'
+    
     msg = EmailMultiAlternatives(
         headers[lang.upper()],
         bodyTemplates[lang.upper()],
