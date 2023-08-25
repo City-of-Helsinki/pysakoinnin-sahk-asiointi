@@ -86,36 +86,6 @@ MOCK_DUEDATE_REQUEST = {
     "foul_number": 113148427,
     "register_number": "HKR-999"
 }
-'''
-MOCK_ATV_DOCKUMENT_SCHEMA = {
-    "id": 0,
-    "created_at": "date",
-    "updated_at": "date",
-    "status": {},
-    "status_histories": [],
-    "type": "str",
-    "human_readable_type": {},
-    "service": "str",
-    "user_id": "Optional[str]",
-    "transaction_id": "str",
-    "business_id": "str",
-    "tos_function_id": "str",
-    "tos_record_id": "str",
-    "metadata": {},
-    "content": {},
-    "draft": False,
-    "locked_after": "Optional[str]",
-    "deletable": False,
-    "attachments": []
-}
-
-MOCK_ATV_DOCUMENT_RESPONSE = {
-    "count": 0,
-    "next": "test",
-    "previous": "test",
-    "results": [MOCK_ATV_DOCKUMENT_SCHEMA]
-}
-'''
 
 MOCK_ATV_DOCUMENT_RESPONSE = {
     
@@ -195,8 +165,6 @@ MOCK_ATV_DOCUMENT_RESPONSE = {
     }
   ]
 }
-
-
 
 class MockResponse:
     def __init__(self, status_code, json_data):
