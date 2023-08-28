@@ -11,6 +11,7 @@ class Request:
     def __init__(self, user):
         self.user = user
 
+# Part of Objection Schema
 class Address(Schema):
     addressLine1: str = "string"
     addressLine2: str = "string"
@@ -18,13 +19,13 @@ class Address(Schema):
     postCode: str = "string"
     postOffice: str = "string"
     countryName: str = "string"
-
+# Part of Objection Schema
 class Metadata(Schema):
     lang: str = "fi"
 
     def to_dict(self):
         return {'lang': self.lang}
-
+# Based on Objection Schema
 class Objection(Schema):
     foulNumber: int = 1
     transferNumber: int = 1
@@ -45,31 +46,41 @@ class Objection(Schema):
     attachments: list = []
 
 class TestApiFunctions(TestCase):
+    def setUp(self):
+        self.user = User("fakeid")
+        self.request = Request(user=self.user)
 
     @patch('api.views.PASIHandler.get_foul_data')
     def test_get_foul_data(self, get_foul_data_mock):
         get_foul_data_mock.return_value = MockResponse(200, MOCK_FOUL)
+
         result = get_foul_data(request=None, foul_number=MOCK_FOUL["foulNumber"], register_number=MOCK_FOUL["registerNumber"])
+
         assert result == MOCK_FOUL
 
     @patch('api.views.PASIHandler.get_transfer_data')
     def test_get_transfer_data(self, get_transfer_data_mock):
         get_transfer_data_mock.return_value = MockResponse(200, MOCK_TRANSFER)
+
         result = get_transfer_data(request=None, transfer_number=MOCK_TRANSFER["transferNumber"], register_number=MOCK_TRANSFER["registerNumber"])
+        
         assert result == MOCK_TRANSFER
     
     @patch('api.views.ATVHandler.get_documents')
     def test_get_atv_documents(self, get_documents_mock):
         get_documents_mock.return_value = MockResponse(200, MOCK_ATV_DOCUMENT_RESPONSE)
-        request =  Request(user=User("fakeid"))
-        result = get_atv_documents(request=request)
+
+        result = get_atv_documents(request=self.request)
+
         assert result.json() == MOCK_ATV_DOCUMENT_RESPONSE
     
     @patch('api.views.ATVHandler.get_document_by_transaction_id')
     def test_get_document_by_transaction_id(self, get_document_by_transaction_id_mock):
         get_document_by_transaction_id_mock.return_value = MockResponse(200, MOCK_ATV_DOCUMENT_RESPONSE)
+
         randomId = 12345 
         result = get_document_by_transaction_id(request=None, id=randomId)
+
         assert result.json() == MOCK_ATV_DOCUMENT_RESPONSE
     
     @patch('api.views.ATVHandler.add_document')
@@ -80,7 +91,6 @@ class TestApiFunctions(TestCase):
         save_objection_mock.return_value = MockResponse(200, {})
 
         objection = Objection()
-        request =  Request(user=User("fakeid"))
-        result = save_objection(request=request, objection=objection)
+        result = save_objection(request=self.request, objection=objection)
 
         assert result == 200
