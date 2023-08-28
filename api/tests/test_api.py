@@ -2,7 +2,7 @@ from unittest.mock import patch
 from django.test import TestCase
 from api.tests.mocks import MockResponse, MOCK_FOUL, MOCK_TRANSFER, MOCK_ATV_DOCUMENT_RESPONSE
 from api.api import get_foul_data, get_transfer_data, get_atv_documents, get_document_by_transaction_id, save_objection
-from ninja import Schema
+from ninja import Schema, errors
 
 class User:
     def __init__(self, uuid):
@@ -91,6 +91,18 @@ class TestApiFunctions(TestCase):
         save_objection_mock.return_value = MockResponse(200, {})
 
         objection = Objection()
-        result = save_objection(request=self.request, objection=objection)
+        save_obj = lambda : save_objection(request=self.request, objection=objection)
+        self.assertEqual(200, save_obj())
 
-        assert result == 200
+        # Raise httperror 422
+        objection.foulNumber = None
+        objection.transferNumber = None
+        self.assertRaises(errors.HttpError, save_obj)
+
+        # Raise httperror 500
+        objection = Objection()
+        objection.metadata = "incorrect metadata"
+        self.assertRaises(errors.HttpError, save_obj)
+
+
+        
