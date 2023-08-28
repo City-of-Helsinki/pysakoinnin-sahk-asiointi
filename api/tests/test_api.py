@@ -1,7 +1,8 @@
 from unittest.mock import patch
 from django.test import TestCase
 from api.tests.mocks import MockResponse, MOCK_FOUL, MOCK_TRANSFER, MOCK_ATV_DOCUMENT_RESPONSE
-from api.api import get_foul_data, get_transfer_data, get_atv_documents, get_document_by_transaction_id
+from api.api import get_foul_data, get_transfer_data, get_atv_documents, get_document_by_transaction_id, save_objection
+from ninja import Schema
 
 class User:
     def __init__(self, uuid):
@@ -9,6 +10,40 @@ class User:
 class Request:
     def __init__(self, user):
         self.user = user
+
+class Address(Schema):
+    addressLine1: str = "string"
+    addressLine2: str = "string"
+    streetAddress: str = "string"
+    postCode: str = "string"
+    postOffice: str = "string"
+    countryName: str = "string"
+
+class Metadata(Schema):
+    lang: str = "fi"
+
+    def to_dict(self):
+        return {'lang': self.lang}
+
+class Objection(Schema):
+    foulNumber: int = 1
+    transferNumber: int = 1
+    folderID: str = "string"
+    ssn: str = "string"
+    firstName: str = "string"
+    lastName: str = "string"
+    email: str = "string"
+    mobilePhone: str = "string"
+    bic: str = "string"
+    iban: str = "string"
+    authorRole: int = 0
+    address: Address = Address()
+    description: str = "string"
+    type: int = 0
+    sendDecisionViaEService: bool = True
+    metadata: Metadata = Metadata().dict()
+    attachments: list = []
+
 class TestApiFunctions(TestCase):
 
     @patch('api.views.PASIHandler.get_foul_data')
@@ -36,3 +71,16 @@ class TestApiFunctions(TestCase):
         randomId = 12345 
         result = get_document_by_transaction_id(request=None, id=randomId)
         assert result.json() == MOCK_ATV_DOCUMENT_RESPONSE
+    
+    @patch('api.views.ATVHandler.add_document')
+    @patch('api.views.PASIHandler.save_objection')
+    def test_save_objection(self, save_objection_mock, add_document_mock):
+        # status code is only interesting value here
+        add_document_mock.return_value = MockResponse(200, {})
+        save_objection_mock.return_value = MockResponse(200, {})
+
+        objection = Objection()
+        request =  Request(user=User("fakeid"))
+        result = save_objection(request=request, objection=objection)
+
+        assert result == 200
