@@ -4,14 +4,13 @@ from api.tests.mocks import MockResponse, MOCK_FOUL, MOCK_TRANSFER, MOCK_ATV_DOC
 from api.api import get_foul_data, get_transfer_data, get_atv_documents, get_document_by_transaction_id, save_objection, extend_due_date
 from ninja import Schema, errors
 
+# These classes are based on schemas defined in api.schemas
 class User:
     def __init__(self, uuid):
         self.uuid = uuid
 class Request:
     def __init__(self, user):
         self.user = user
-
-# Part of Objection Schema
 class Address(Schema):
     addressLine1: str = "string"
     addressLine2: str = "string"
@@ -19,14 +18,12 @@ class Address(Schema):
     postCode: str = "string"
     postOffice: str = "string"
     countryName: str = "string"
-# Part of Objection Schema
 class Metadata(Schema):
     lang: str = "fi"
     email: str = "testing@email.com"
 
     def to_dict(self):
         return {'lang': self.lang}
-# Based on Objection Schema
 class Objection(Schema):
     foulNumber: int = 1
     transferNumber: int = 1
@@ -117,10 +114,22 @@ class TestApiFunctions(TestCase):
         extend_foul_due_date_mock.return_value = MockResponse(200, MOCK_DUEDATE)
 
         foul_obj = FoulRequest()        
-
-        response = extend_due_date(request=self.request, foul_data=foul_obj)
-
+        extend = lambda : extend_due_date(request=self.request, foul_data=foul_obj)
+        response = extend()
         assert response == MOCK_DUEDATE
+        
+        foul_obj = FoulRequest()        
+        del foul_obj.foul_number
+        self.assertRaises(AttributeError, extend)
+
+        foul_obj = FoulRequest()        
+        extend_foul_due_date_mock.side_effect = errors.HttpError(500, "message")
+        self.assertRaises(errors.HttpError, extend)
+
+
+
+
+
 
 
         
