@@ -74,12 +74,12 @@ MOCK_TRANSFER = {
 }
 
 MOCK_DUEDATE = {
-    "responseCode": 0,
     "success": True,
-    "errorcode": 0,
+    "errorcode": "string",
     "internalErrorDescription": "string",
-    "dueDate": "2023-03-16T10:09:57.506Z",
-    "dueDateExtendableReason": 0
+    "dueDate": "2023-04-05T09:32:00",
+    "dueDateExtendableReason": 0,
+    "responseCode": 0
 }
 
 MOCK_DUEDATE_REQUEST = {

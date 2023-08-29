@@ -1,7 +1,7 @@
 from unittest.mock import patch
 from django.test import TestCase
-from api.tests.mocks import MockResponse, MOCK_FOUL, MOCK_TRANSFER, MOCK_ATV_DOCUMENT_RESPONSE
-from api.api import get_foul_data, get_transfer_data, get_atv_documents, get_document_by_transaction_id, save_objection
+from api.tests.mocks import MockResponse, MOCK_FOUL, MOCK_TRANSFER, MOCK_ATV_DOCUMENT_RESPONSE, MOCK_DUEDATE
+from api.api import get_foul_data, get_transfer_data, get_atv_documents, get_document_by_transaction_id, save_objection, extend_due_date
 from ninja import Schema, errors
 
 class User:
@@ -22,6 +22,7 @@ class Address(Schema):
 # Part of Objection Schema
 class Metadata(Schema):
     lang: str = "fi"
+    email: str = "testing@email.com"
 
     def to_dict(self):
         return {'lang': self.lang}
@@ -44,6 +45,10 @@ class Objection(Schema):
     sendDecisionViaEService: bool = True
     metadata: Metadata = Metadata().dict()
     attachments: list = []
+class FoulRequest(Schema):
+    foul_number: str = "fi"
+    register_number: str = "AB123"
+    metadata: Metadata = Metadata().dict()
 
 class TestApiFunctions(TestCase):
     def setUp(self):
@@ -95,6 +100,7 @@ class TestApiFunctions(TestCase):
         self.assertEqual(200, save_obj())
 
         # Raise httperror 422
+        objection = Objection()
         objection.foulNumber = None
         objection.transferNumber = None
         self.assertRaises(errors.HttpError, save_obj)
@@ -103,6 +109,18 @@ class TestApiFunctions(TestCase):
         objection = Objection()
         objection.metadata = "incorrect metadata"
         self.assertRaises(errors.HttpError, save_obj)
+    
+    @patch('api.views.ATVHandler.add_document')
+    @patch('api.views.PASIHandler.extend_foul_due_date')
+    def test_extend_due_date(self,extend_foul_due_date_mock, add_document_mock):
+        add_document_mock.return_value = MockResponse(200, {})
+        extend_foul_due_date_mock.return_value = MockResponse(200, MOCK_DUEDATE)
+
+        foul_obj = FoulRequest()        
+
+        response = extend_due_date(request=self.request, foul_data=foul_obj)
+
+        assert response == MOCK_DUEDATE
 
 
         
