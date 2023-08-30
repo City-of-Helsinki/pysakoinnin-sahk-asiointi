@@ -95,7 +95,7 @@ def save_objection(request, objection: Objection):
         except ninja.errors.HttpError as error:
             raise error
         except:
-            raise ninja.errors.HttpError(status_code=422, message="error while scanning attatchment")
+            raise ninja.errors.HttpError(status_code= 422, message="error while scanning attatchment")
 
     if hasattr(objection, 'metadata') is None:
         objection.metadata = dict
