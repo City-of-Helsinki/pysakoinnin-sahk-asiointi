@@ -94,6 +94,8 @@ def save_objection(request, objection: Objection):
                 virus_scan_attachment_file(attachment.data)
         except ninja.errors.HttpError as error:
             raise error
+        except:
+            raise ninja.errors.HttpError(status_code=422, message="error while scanning attatchment")
 
     if hasattr(objection, 'metadata') is None:
         objection.metadata = dict
