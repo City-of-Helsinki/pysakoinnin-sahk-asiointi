@@ -97,9 +97,6 @@ def save_objection(request, objection: Objection):
         except:
             raise ninja.errors.HttpError(status_code= 422, message="error while scanning attatchment")
 
-    if hasattr(objection, 'metadata') is None:
-        objection.metadata = dict
-
     objection_without_attachment_data = copy.deepcopy(objection)
     for attachment in objection_without_attachment_data.attachments:
         del attachment.data
