@@ -92,8 +92,8 @@ def save_objection(request, objection: Objection):
         try:
             for attachment in objection.attachments:
                 virus_scan_attachment_file(attachment.data)
-        except Exception:
-            raise Exception
+        except ninja.errors.HttpError as error:
+            raise error
 
     if hasattr(objection, 'metadata') is None:
         objection.metadata = dict
