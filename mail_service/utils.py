@@ -64,7 +64,7 @@ def mail_constructor(event: str, lang: str, mail_to: str):
                     Sign in to parking e-services https://pysakoinninasiointi.hel.fi
                     <br>
                     <br>
-                (This is an automated message sent by the City of Helsinki parking control e-service. 
+                (This is an automated message sent by the City of Helsinki parking control e-service.
                 Do not reply to this message.)</p>""".format(
             event=events[event][lang.upper()],
             now=formatted_time),
@@ -101,9 +101,9 @@ def extend_due_date_mail_constructor(lang: str, new_due_date: str, mail_to):
     bodyTemplates = {
         'FI': """<p>Eräpäivää siirretty, uusi eräpäivä on {new_due_date}""".format(new_due_date=formatted_time),
 
-        'SV': """<p>Eräpäivää siirretty, uusi eräpäivä on {new_due_date}""".format(new_due_date=formatted_time),
+        'SV': """<p>Förfallodagen har skjutits upp. Nytt förfallodag är {new_due_date}""".format(new_due_date=formatted_time),
 
-        'EN': """<p>Eräpäivää siirretty, uusi eräpäivä on {new_due_date}""".format(new_due_date=formatted_time),
+        'EN': """<p>The due date has been postponed. New due date is {new_due_date}""".format(new_due_date=formatted_time),
     }
     if lang not in bodyTemplates:
         lang = 'FI'
