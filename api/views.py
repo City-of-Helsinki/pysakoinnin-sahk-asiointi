@@ -78,7 +78,6 @@ class PASIHandler:
     def get_foul_data(foul_number, register_number):
         try:
             req = request("POST", url=f"{env('PASI_ENDPOINT')}/api/v1/fouls/GetFoulData",
-                          verify=False,
                           headers={'authorization': f"Basic {env('PASI_AUTH_KEY')}",
                                    'content-type': 'application/json',
                                    'x-api-version': '1.0'},
@@ -99,7 +98,6 @@ class PASIHandler:
     def get_transfer_data(transfer_number: int, register_number: str):
         try:
             req = request("POST", url=f"{env('PASI_ENDPOINT')}/api/v1/Transfers/GetTransferData",
-                          verify=False,
                           headers={'authorization': f"Basic {env('PASI_AUTH_KEY')}",
                                    'content-type': 'application/json',
                                    'x-api-version': '1.0'},
@@ -120,7 +118,6 @@ class PASIHandler:
     def extend_foul_due_date(foul_data):
         try:
             req = request("POST", url=f"{env('PASI_ENDPOINT')}/api/v1/fouls/ExtendFoulDueDate",
-                          verify=False,
                           headers={'authorization': f"Basic {env('PASI_AUTH_KEY')}",
                                    'content-type': 'application/json',
                                    'x-api-version': '1.0',
@@ -157,7 +154,6 @@ class PASIHandler:
 
         try:
             req = request("POST", url=f"{env('PASI_ENDPOINT')}/api/v1/Objections/SaveObjection",
-                          verify=False,
                           headers={'authorization': f"Basic {env('PASI_AUTH_KEY')}",
                                    'content-type': 'application/json',
                                    'x-api-version': '1.0'},
