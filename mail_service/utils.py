@@ -33,7 +33,6 @@ events = {
     }
 }
 
-
 def mail_constructor(event: str, lang: str, mail_to: str):
     now = datetime.datetime.now(tz=ZoneInfo('Europe/Helsinki'))
     formatted_time = datetime.datetime.strftime(now, '%H:%M')
@@ -64,7 +63,7 @@ def mail_constructor(event: str, lang: str, mail_to: str):
                     Sign in to parking e-services https://pysakoinninasiointi.hel.fi
                     <br>
                     <br>
-                (This is an automated message sent by the City of Helsinki parking control e-service. 
+                (This is an automated message sent by the City of Helsinki parking control e-service.
                 Do not reply to this message.)</p>""".format(
             event=events[event][lang.upper()],
             now=formatted_time),
@@ -92,7 +91,6 @@ def mail_constructor(event: str, lang: str, mail_to: str):
     msg.attach_alternative(html, "text/html")
 
     return msg
-
 
 def extend_due_date_mail_constructor(lang: str, new_due_date: str, mail_to):
     date = datetime.datetime.strptime(new_due_date, '%Y-%m-%dT%H:%M:%S')
