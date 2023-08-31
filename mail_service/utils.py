@@ -99,9 +99,9 @@ def extend_due_date_mail_constructor(lang: str, new_due_date: str, mail_to):
     bodyTemplates = {
         'FI': """<p>Eräpäivää siirretty, uusi eräpäivä on {new_due_date}""".format(new_due_date=formatted_time),
 
-        'SV': """<p>Eräpäivää siirretty, uusi eräpäivä on {new_due_date}""".format(new_due_date=formatted_time),
+        'SV': """<p>Förfallodagen har skjutits upp. Nytt förfallodag är {new_due_date}""".format(new_due_date=formatted_time),
 
-        'EN': """<p>Eräpäivää siirretty, uusi eräpäivä on {new_due_date}""".format(new_due_date=formatted_time),
+        'EN': """<p>The due date has been postponed. New due date is {new_due_date}""".format(new_due_date=formatted_time),
     }
     if lang not in bodyTemplates:
         lang = 'FI'
