@@ -42,11 +42,3 @@ class TestMailUtils(TestCase):
         # incorrect lang, default to FI
         mail = mail_constructor(event="received", lang="INCORRECT_LANG", mail_to=mail_to)
         assert mail.subject == headers["FI"]
-
-        
-    
-       
-
-
-    
-        

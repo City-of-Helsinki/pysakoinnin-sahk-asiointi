@@ -17,7 +17,7 @@ class TestEndpoints(TestCase):
         get_transfer_data_mock.return_value = MockResponse(200, MOCK_TRANSFER)
         response = self.client.get(f"{API_ROOT}/getTransferData")
         assert response.status_code == 401
-    
+
     @patch('api.views.ATVHandler.get_document_by_transaction_id')
     def test_get_document_by_transaction_id_unauth(self, get_document_by_transaction_id_mock):
         get_document_by_transaction_id_mock.return_value = MockResponse(200, MOCK_ATV_DOCUMENT_RESPONSE)

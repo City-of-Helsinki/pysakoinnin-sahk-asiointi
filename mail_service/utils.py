@@ -55,7 +55,7 @@ def mail_constructor(event: str, lang: str, mail_to: str):
                 Logga in på parkerings e-tjänster https://pysakoinninasiointi.hel.fi
                 <br>
                 <br>
-                (Detta är ett automatiskt meddelande som skickas av Helsingfors stads parkeringsövervaknings e-tjänst. 
+                (Detta är ett automatiskt meddelande som skickas av Helsingfors stads parkeringsövervaknings e-tjänst.
                 Svara inte på detta meddelande.)</p>""".format(event=events[event][lang.upper()],
                                                                now=formatted_time),
 
@@ -63,7 +63,7 @@ def mail_constructor(event: str, lang: str, mail_to: str):
                     <br>
                     Sign in to parking e-services https://pysakoinninasiointi.hel.fi
                     <br>
-                    <br>    
+                    <br>
                 (This is an automated message sent by the City of Helsinki parking control e-service. 
                 Do not reply to this message.)</p>""".format(
             event=events[event][lang.upper()],
@@ -107,7 +107,7 @@ def extend_due_date_mail_constructor(lang: str, new_due_date: str, mail_to):
     }
     if lang not in bodyTemplates:
         lang = 'FI'
-    
+
     msg = EmailMultiAlternatives(
         headers[lang.upper()],
         bodyTemplates[lang.upper()],

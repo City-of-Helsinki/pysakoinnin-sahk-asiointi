@@ -18,7 +18,8 @@ MOCK_FOUL = {
             "additionalInfo": "12 metriä"
         },
         {
-            "description": "Pysäköinti kiinteistölle johtavan ajotien kohdalle / siten, että ajoneuvoliikenne kiinteistölle tai sieltä pois on oleellisesti vaikeutunut. TLL 38 § 1 mom",
+            "description": """Pysäköinti kiinteistölle johtavan ajotien kohdalle / siten,
+                              että ajoneuvoliikenne kiinteistölle tai sieltä pois on oleellisesti vaikeutunut. TLL 38 § 1 mom""",
             "additionalInfo": "moikkaa "
         },
         {
@@ -88,7 +89,6 @@ MOCK_DUEDATE_REQUEST = {
 }
 
 MOCK_ATV_DOCUMENT_RESPONSE = {
-    
   "count": 1,
   "next": None,
   "previous": None,
