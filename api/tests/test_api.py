@@ -69,7 +69,7 @@ class TestApiFunctions(TestCase):
         result = api.get_transfer_data( request=None,
                                         transfer_number=MOCK_TRANSFER["transferNumber"],
                                         register_number=MOCK_TRANSFER["registerNumber"])
-        
+
         assert result == MOCK_TRANSFER
 
     @patch('api.views.ATVHandler.get_documents')
@@ -84,7 +84,7 @@ class TestApiFunctions(TestCase):
     def test_get_document_by_transaction_id(self, get_document_by_transaction_id_mock):
         get_document_by_transaction_id_mock.return_value = MockResponse(200, MOCK_ATV_DOCUMENT_RESPONSE)
 
-        randomId = 12345 
+        randomId = 12345
         result = api.get_document_by_transaction_id(request=None, id=randomId)
 
         assert result.json() == MOCK_ATV_DOCUMENT_RESPONSE
@@ -117,15 +117,15 @@ class TestApiFunctions(TestCase):
         add_document_mock.return_value = MockResponse(200, {})
         extend_foul_due_date_mock.return_value = MockResponse(200, MOCK_DUEDATE)
 
-        foul_obj = FoulRequest()        
+        foul_obj = FoulRequest()
         extend = lambda : api.extend_due_date(request=self.request, foul_data=foul_obj)
         response = extend()
         assert response == MOCK_DUEDATE
-        
-        foul_obj = FoulRequest()        
+
+        foul_obj = FoulRequest()
         del foul_obj.foul_number
         self.assertRaises(AttributeError, extend)
 
-        foul_obj = FoulRequest()        
+        foul_obj = FoulRequest()
         extend_foul_due_date_mock.side_effect = errors.HttpError(500, "message")
         self.assertRaises(errors.HttpError, extend)

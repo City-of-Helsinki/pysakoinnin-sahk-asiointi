@@ -19,7 +19,8 @@ MOCK_FOUL = {
         },
         {
             "description": """Pysäköinti kiinteistölle johtavan ajotien kohdalle / siten,
-                              että ajoneuvoliikenne kiinteistölle tai sieltä pois on oleellisesti vaikeutunut. TLL 38 § 1 mom""",
+                              että ajoneuvoliikenne kiinteistölle tai sieltä pois on oleellisesti
+                              vaikeutunut. TLL 38 § 1 mom""",
             "additionalInfo": "moikkaa "
         },
         {

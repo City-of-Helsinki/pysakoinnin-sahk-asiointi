@@ -161,7 +161,11 @@ class PASIHandler:
                           headers={'authorization': f"Basic {env('PASI_AUTH_KEY')}",
                                    'content-type': 'application/json',
                                    'x-api-version': '1.0'},
-                          json={**BASE_DETAILS, **Objection.dict(sanitised_objection), "customerLanguage": customerLanguage}
+                          json={
+                                **BASE_DETAILS,
+                                **Objection.dict(sanitised_objection),
+                                "customerLanguage": customerLanguage
+                                }
                           )
             if req.status_code == 422:
                 raise HttpError(422, message=req.json())
