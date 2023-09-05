@@ -7,8 +7,12 @@ from ninja.errors import HttpError
 from requests import request
 
 from api.schemas import DocumentStatusRequest, Objection
+from pysakoinnin_sahk_asiointi.utils import stringToBool
 
 env = Env()
+
+# Env variable comes as a string, and the auto convert seems not to work thus manually convert values to bool
+VALIDATE_PASI_CERTIFICATION = stringToBool(strBool=env('VALIDATE_PASI_CERTIFICATION'), default=True)
 
 LANGUAGES = {
     "fi": 0,
@@ -78,6 +82,7 @@ class PASIHandler:
     def get_foul_data(foul_number, register_number):
         try:
             req = request("POST", url=f"{env('PASI_ENDPOINT')}/api/v1/fouls/GetFoulData",
+                          verify=VALIDATE_PASI_CERTIFICATION,
                           headers={'authorization': f"Basic {env('PASI_AUTH_KEY')}",
                                    'content-type': 'application/json',
                                    'x-api-version': '1.0'},
@@ -98,6 +103,7 @@ class PASIHandler:
     def get_transfer_data(transfer_number: int, register_number: str):
         try:
             req = request("POST", url=f"{env('PASI_ENDPOINT')}/api/v1/Transfers/GetTransferData",
+                          verify=VALIDATE_PASI_CERTIFICATION,
                           headers={'authorization': f"Basic {env('PASI_AUTH_KEY')}",
                                    'content-type': 'application/json',
                                    'x-api-version': '1.0'},
@@ -118,6 +124,7 @@ class PASIHandler:
     def extend_foul_due_date(foul_data):
         try:
             req = request("POST", url=f"{env('PASI_ENDPOINT')}/api/v1/fouls/ExtendFoulDueDate",
+                          verify=VALIDATE_PASI_CERTIFICATION,
                           headers={'authorization': f"Basic {env('PASI_AUTH_KEY')}",
                                    'content-type': 'application/json',
                                    'x-api-version': '1.0',
@@ -154,6 +161,7 @@ class PASIHandler:
 
         try:
             req = request("POST", url=f"{env('PASI_ENDPOINT')}/api/v1/Objections/SaveObjection",
+                          verify=VALIDATE_PASI_CERTIFICATION,
                           headers={'authorization': f"Basic {env('PASI_AUTH_KEY')}",
                                    'content-type': 'application/json',
                                    'x-api-version': '1.0'},
