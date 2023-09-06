@@ -57,8 +57,8 @@ Note that running the app with Docker proxies the application to port `8080`
 2. In a new terminal window start a local database instance with
   `docker run --name parking-service-db -p 5432:5432 -e POSTGRES_USER=parking-user -e POSTGRES_PASSWORD=root -e POSTGRES_DB=parking-service postgres:alpine`
 3. Activate virtual environment
-  - if you are using venv, the command is `source [insert your venv directory name here]/bin/activate` on Mac and Unix and `[insert your venv directory name here]\Scripts\activate.bat` on Windows
-  - the virtual environment can be deactivated with `deactivate`
+    - if you are using venv, the command is `source [insert your venv directory name here]/bin/activate` on Mac and Unix and `[insert your venv directory name here]\Scripts\activate.bat` on Windows
+    - the virtual environment can be deactivated with `deactivate`
 4. Install dependencies with `pip install -r requirements.in`
 5. Run migrations `python manage.py migrate`
 6. Run server `python manage.py runserver`
