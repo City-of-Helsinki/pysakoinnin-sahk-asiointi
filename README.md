@@ -5,7 +5,7 @@ for [Pysäköinnin Sähköinen Asiointi](https://helsinkisolutionoffice.atlassia
 
 ## Running locally
 
-⚠️ ️Requires a `config.env` file to run, contact admin if needed
+⚠️ ️Requires a `config.env` file to run, contact admin if needed and remember to add the file to the root of the directory.
 
 ### With Docker
 
