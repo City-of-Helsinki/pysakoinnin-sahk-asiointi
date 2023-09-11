@@ -18,7 +18,9 @@ MOCK_FOUL = {
             "additionalInfo": "12 metriä"
         },
         {
-            "description": "Pysäköinti kiinteistölle johtavan ajotien kohdalle / siten, että ajoneuvoliikenne kiinteistölle tai sieltä pois on oleellisesti vaikeutunut. TLL 38 § 1 mom",
+            "description": """Pysäköinti kiinteistölle johtavan ajotien kohdalle / siten,
+                              että ajoneuvoliikenne kiinteistölle tai sieltä pois on oleellisesti
+                              vaikeutunut. TLL 38 § 1 mom""",
             "additionalInfo": "moikkaa "
         },
         {
@@ -74,12 +76,12 @@ MOCK_TRANSFER = {
 }
 
 MOCK_DUEDATE = {
-    "responseCode": 0,
     "success": True,
-    "errorcode": 0,
+    "errorcode": "string",
     "internalErrorDescription": "string",
-    "dueDate": "2023-03-16T10:09:57.506Z",
-    "dueDateExtendableReason": 0
+    "dueDate": "2023-04-05T09:32:00",
+    "dueDateExtendableReason": 0,
+    "responseCode": 0
 }
 
 MOCK_DUEDATE_REQUEST = {
@@ -87,6 +89,83 @@ MOCK_DUEDATE_REQUEST = {
     "register_number": "HKR-999"
 }
 
+MOCK_ATV_DOCUMENT_RESPONSE = {
+  "count": 1,
+  "next": None,
+  "previous": None,
+  "results": [
+    {
+      "id": "4y11fb6c-8b25-4c3c-9ea5-e62b976667e1",
+      "created_at": "2023-06-02T13:48:59.258113+03:00",
+      "updated_at": "2023-08-03T17:38:49.303800+03:00",
+      "status": {
+        "value": "received",
+        "status_display_values": {},
+        "timestamp": "2023-06-02T13:54:20.738979+03:00",
+        "activities": []
+      },
+      "status_histories": [
+        {
+          "value": "received",
+          "status_display_values": {},
+          "timestamp": "2023-06-02T13:54:20.738979+03:00",
+          "activities": []
+        },
+        {
+          "value": "sent",
+          "status_display_values": {},
+          "timestamp": "2023-06-02T13:48:59.269477+03:00",
+          "activities": []
+        }
+      ],
+      "type": "",
+      "human_readable_type": {},
+      "service": "Pysäköinnin Sähköinen Asiointi",
+      "user_id": "uuid",
+      "transaction_id": "113148474",
+      "business_id": "",
+      "tos_function_id": "12345",
+      "tos_record_id": "12345",
+      "metadata": {
+        "foulNumber": "113148474",
+        "registerNumber": "hkr-999"
+      },
+      "content": {
+        "foulNumber": 113148474,
+        "transferNumber": None,
+        "folderID": None,
+        "ssn": "210281-9988",
+        "firstName": "Nordea",
+        "lastName": "Demo",
+        "email": "test@gmail.fi",
+        "mobilePhone": "+58254545414",
+        "bic": None,
+        "iban": "FI90 1345 1234 1234 12",
+        "authorRole": 2,
+        "address": {
+          "addressLine1": None,
+          "addressLine2": None,
+          "streetAddress": "katu 8",
+          "postCode": "00580",
+          "postOffice": "jhelksini",
+          "countryName": None
+        },
+        "description": "description",
+        "attachments": [],
+        "type": 0,
+        "sendDecisionViaEService": True,
+        "metadata": {
+          "foulNumber": "113148474",
+          "registerNumber": "hkr-999"
+        }
+      },
+      "draft": False,
+      "locked_after": None,
+      "deletable": False,
+      "attachments": []
+    }
+  ]
+}
 
 class MockResponse:
     def __init__(self, status_code, json_data):

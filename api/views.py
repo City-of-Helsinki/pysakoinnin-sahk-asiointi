@@ -7,8 +7,18 @@ from ninja.errors import HttpError
 from requests import request
 
 from api.schemas import DocumentStatusRequest, Objection
+from pysakoinnin_sahk_asiointi.utils import stringToBool
 
 env = Env()
+
+# Env variable comes as a string, and the auto convert seems not to work thus manually convert values to bool
+VALIDATE_PASI_CERTIFICATION = stringToBool(strBool=env('VALIDATE_PASI_CERTIFICATION'), default=True)
+
+LANGUAGES = {
+    "fi": 0,
+    "sv": 1,
+    "en": 2
+}
 
 BASE_DETAILS = {"username": "string",
                 "password": "string",
@@ -72,7 +82,7 @@ class PASIHandler:
     def get_foul_data(foul_number, register_number):
         try:
             req = request("POST", url=f"{env('PASI_ENDPOINT')}/api/v1/fouls/GetFoulData",
-                          verify=False,
+                          verify=VALIDATE_PASI_CERTIFICATION,
                           headers={'authorization': f"Basic {env('PASI_AUTH_KEY')}",
                                    'content-type': 'application/json',
                                    'x-api-version': '1.0'},
@@ -93,7 +103,7 @@ class PASIHandler:
     def get_transfer_data(transfer_number: int, register_number: str):
         try:
             req = request("POST", url=f"{env('PASI_ENDPOINT')}/api/v1/Transfers/GetTransferData",
-                          verify=False,
+                          verify=VALIDATE_PASI_CERTIFICATION,
                           headers={'authorization': f"Basic {env('PASI_AUTH_KEY')}",
                                    'content-type': 'application/json',
                                    'x-api-version': '1.0'},
@@ -114,7 +124,7 @@ class PASIHandler:
     def extend_foul_due_date(foul_data):
         try:
             req = request("POST", url=f"{env('PASI_ENDPOINT')}/api/v1/fouls/ExtendFoulDueDate",
-                          verify=False,
+                          verify=VALIDATE_PASI_CERTIFICATION,
                           headers={'authorization': f"Basic {env('PASI_AUTH_KEY')}",
                                    'content-type': 'application/json',
                                    'x-api-version': '1.0',
@@ -138,15 +148,28 @@ class PASIHandler:
     @staticmethod
     def save_objection(objection: Objection, objection_id):
         sanitised_objection = copy.deepcopy(objection)
+        metadataLang = sanitised_objection.metadata.get('lang')
+        customerLanguage = BASE_DETAILS["customerLanguage"]
+
+        if metadataLang != None:
+            if metadataLang in LANGUAGES:
+                customerLanguage = LANGUAGES[metadataLang]
+            else:
+                raise ValueError("Unsupported language: " + metadataLang)
+
         del sanitised_objection.metadata
 
         try:
             req = request("POST", url=f"{env('PASI_ENDPOINT')}/api/v1/Objections/SaveObjection",
-                          verify=False,
+                          verify=VALIDATE_PASI_CERTIFICATION,
                           headers={'authorization': f"Basic {env('PASI_AUTH_KEY')}",
                                    'content-type': 'application/json',
                                    'x-api-version': '1.0'},
-                          json={**BASE_DETAILS, **Objection.dict(sanitised_objection)}
+                          json={
+                                **BASE_DETAILS,
+                                **Objection.dict(sanitised_objection),
+                                "customerLanguage": customerLanguage
+                                }
                           )
             if req.status_code == 422:
                 raise HttpError(422, message=req.json())
@@ -157,7 +180,6 @@ class PASIHandler:
             raise HttpError(500, message=str(error))
 
         return req
-
 
 class DocumentHandler:
 
@@ -171,7 +193,7 @@ class DocumentHandler:
                           files={"attachments": None})
 
             response_json = req.json()
-            if hasattr(response_json, "id") is None:
+            if "id" not in response_json:
                 raise HttpError(404, message="Resource not found")
             return HttpResponse(200, 'OK')
         except HttpError as error:

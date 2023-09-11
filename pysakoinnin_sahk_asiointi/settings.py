@@ -30,7 +30,8 @@ env = Env(
     GDPR_API_QUERY_SCOPE=(str, ""),
     GDPR_API_DELETE_SCOPE=(str, ""),
     STATIC_ROOT=(str, str(BASE_DIR / "static/")),
-    MAILGUN_API_KEY=(str, "")
+    MAILGUN_API_KEY=(str, ""),
+    VALIDATE_PASI_CERTIFICATION=(str, "True")
 )
 
 Env.read_env(str(BASE_DIR / "config.env"))

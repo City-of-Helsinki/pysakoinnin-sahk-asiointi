@@ -33,11 +33,10 @@ events = {
     }
 }
 
-
 def mail_constructor(event: str, lang: str, mail_to: str):
     now = datetime.datetime.now(tz=ZoneInfo('Europe/Helsinki'))
     formatted_time = datetime.datetime.strftime(now, '%H:%M')
-    if lang is None:
+    if lang not in headers:
         lang = 'FI'
 
     bodyTemplates = {
@@ -55,7 +54,7 @@ def mail_constructor(event: str, lang: str, mail_to: str):
                 Logga in på parkerings e-tjänster https://pysakoinninasiointi.hel.fi
                 <br>
                 <br>
-                (Detta är ett automatiskt meddelande som skickas av Helsingfors stads parkeringsövervaknings e-tjänst. 
+                (Detta är ett automatiskt meddelande som skickas av Helsingfors stads parkeringsövervaknings e-tjänst.
                 Svara inte på detta meddelande.)</p>""".format(event=events[event][lang.upper()],
                                                                now=formatted_time),
 
@@ -63,8 +62,8 @@ def mail_constructor(event: str, lang: str, mail_to: str):
                     <br>
                     Sign in to parking e-services https://pysakoinninasiointi.hel.fi
                     <br>
-                    <br>    
-                (This is an automated message sent by the City of Helsinki parking control e-service. 
+                    <br>
+                (This is an automated message sent by the City of Helsinki parking control e-service.
                 Do not reply to this message.)</p>""".format(
             event=events[event][lang.upper()],
             now=formatted_time),
@@ -93,21 +92,19 @@ def mail_constructor(event: str, lang: str, mail_to: str):
 
     return msg
 
-
 def extend_due_date_mail_constructor(lang: str, new_due_date: str, mail_to):
     date = datetime.datetime.strptime(new_due_date, '%Y-%m-%dT%H:%M:%S')
     formatted_time = datetime.datetime.strftime(date, '%d.%m.%Y')
 
-    if lang is None:
-        lang = 'FI'
-
     bodyTemplates = {
         'FI': """<p>Eräpäivää siirretty, uusi eräpäivä on {new_due_date}""".format(new_due_date=formatted_time),
 
-        'SV': """<p>Eräpäivää siirretty, uusi eräpäivä on {new_due_date}""".format(new_due_date=formatted_time),
+        'SV': """<p>Förfallodagen har skjutits upp. Nytt förfallodag är {new_due_date}""".format(new_due_date=formatted_time),
 
-        'EN': """<p>Eräpäivää siirretty, uusi eräpäivä on {new_due_date}""".format(new_due_date=formatted_time),
+        'EN': """<p>The due date has been postponed. New due date is {new_due_date}""".format(new_due_date=formatted_time),
     }
+    if lang not in bodyTemplates:
+        lang = 'FI'
 
     msg = EmailMultiAlternatives(
         headers[lang.upper()],
