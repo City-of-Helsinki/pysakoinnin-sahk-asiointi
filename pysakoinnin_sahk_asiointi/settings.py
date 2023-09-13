@@ -30,7 +30,6 @@ env = Env(
     GDPR_API_QUERY_SCOPE=(str, ""),
     GDPR_API_DELETE_SCOPE=(str, ""),
     STATIC_ROOT=(str, str(BASE_DIR / "static/")),
-    MAILGUN_API_KEY=(str, ""),
     VALIDATE_PASI_CERTIFICATION=(str, "True")
 )
 
@@ -166,13 +165,12 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
-# Anymail setup
-ANYMAIL = {
-    "MAILGUN_API_KEY": env('MAILGUN_API_KEY'),
-    "MAILGUN_API_URL": "https://api.eu.mailgun.net/v3"
-}
-EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
+EMAIL_HOST = "relay.hel.fi"
+EMAIL_PORT = 25
+EMAIL_USE_TLS = True
+
 DEFAULT_FROM_EMAIL = "noreply@hel.fi"
 
 # Internationalization
