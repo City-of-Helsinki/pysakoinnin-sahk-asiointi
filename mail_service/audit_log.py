@@ -15,8 +15,7 @@ def _iso8601_date(time: datetime) -> str:
     return f"{time.replace(tzinfo=None).isoformat(sep='T', timespec='milliseconds')}Z"
 
 
-def _commit_to_audit_log(mail_to, anymail_status
-                         ):
+def _commit_to_audit_log(mail_to, action):
     """
     Write an event to the audit log.
     Each audit log event has an actor (or None for system events),
@@ -27,7 +26,7 @@ def _commit_to_audit_log(mail_to, anymail_status
     current_time = _now()
     message = {"audit_event": {
         "origin": ORIGIN,
-        "status": _parse_anymail_status(anymail_status.status),
+        "action": action,
         "date_time_epoch": int(current_time.timestamp() * 1000),
         "date_time": _iso8601_date(current_time),
         "actor": {
