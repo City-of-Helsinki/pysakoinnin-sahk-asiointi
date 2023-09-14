@@ -33,11 +33,8 @@ def test_email_sending(request, recipent: str = "email@email.com"):
                             mail_to=recipent)
 
     mail.send()
-
-    if hasattr(mail, 'anymail_status'):
-        return 200
-    else:
-        return 500
+    _commit_to_audit_log(mail.to[0], "test-email-sending")
+    return 200
 
 @router.get('/getFoulData', response={200: FoulDataResponse, 404: NotFoundError}, tags=['PASI'])
 def get_foul_data(request, foul_number: int = 113148427, register_number: str = "HKR-999"):
@@ -81,8 +78,7 @@ def extend_due_date(request, foul_data: FoulRequest):
                                             mail_to=foul_data.metadata['email'])
     mail.send()
 
-    if hasattr(mail, 'anymail_status'):
-        _commit_to_audit_log(mail.to[0], mail.anymail_status)
+    _commit_to_audit_log(mail.to[0], "extend-due-date")
 
     return req.json()
 
@@ -157,4 +153,5 @@ def set_document_status(request, status_request: DocumentStatusRequest):
         mail = mail_constructor(event=status_request.status, lang=find_document_by_id['results'][0]['metadata']['lang'],
                                 mail_to=find_document_by_id['results'][0]['content']['email'])
         mail.send()
+        _commit_to_audit_log(mail.to[0], "set-document-status")
         return HttpResponse(200)

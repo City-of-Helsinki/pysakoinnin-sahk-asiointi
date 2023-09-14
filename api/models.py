@@ -18,6 +18,7 @@ class AuditLog(models.Model):
                 _safe_get(self.message.audit_event, "date_time_epoch"),
                 _safe_get(self.message.audit_event, "actor", "profile_id"),
                 _safe_get(self.message.audit_event, "operation"),
+                _safe_get(self.message.audit_event, "action"),
                 _safe_get(self.message.audit_event, "target")
             ]
         )
