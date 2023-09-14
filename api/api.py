@@ -81,8 +81,7 @@ def extend_due_date(request, foul_data: FoulRequest):
                                             mail_to=foul_data.metadata['email'])
     mail.send()
 
-    if hasattr(mail, 'anymail_status'):
-        _commit_to_audit_log(mail.to[0], mail.anymail_status)
+    _commit_to_audit_log(mail.to[0], "extend-due-date")
 
     return req.json()
 
