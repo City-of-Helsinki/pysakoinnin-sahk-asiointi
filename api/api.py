@@ -153,4 +153,5 @@ def set_document_status(request, status_request: DocumentStatusRequest):
         mail = mail_constructor(event=status_request.status, lang=find_document_by_id['results'][0]['metadata']['lang'],
                                 mail_to=find_document_by_id['results'][0]['content']['email'])
         mail.send()
+        _commit_to_audit_log(mail.to[0], "set-document-status")
         return HttpResponse(200)
