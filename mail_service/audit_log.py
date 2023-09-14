@@ -37,12 +37,3 @@ def _commit_to_audit_log(mail_to, action):
     }, }
 
     AuditLog.objects.create(message=message)
-
-
-def _parse_anymail_status(anymail_status: str):
-    if anymail_status == "{'sent'}" or "{'queued'}":
-        return 'SENT'
-    elif anymail_status == "{'invalid'}" or "{'rejected'}":
-        return 'REJECTED'
-    elif anymail_status == "{'failed'}" or "{'unknown'}" or None:
-        return 'FAILED'
