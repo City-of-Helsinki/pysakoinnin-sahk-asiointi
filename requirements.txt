@@ -45,7 +45,7 @@ ecdsa==0.18.0
     # via python-jose
 exceptiongroup==1.1.1
     # via pytest
-gunicorn==20.1.0
+gunicorn==21.2.0
     # via -r requirements.in
 idna==3.4
     # via requests
@@ -54,6 +54,7 @@ iniconfig==2.0.0
 packaging==21.3
     # via
     #   deprecation
+    #   gunicorn
     #   pytest
 pluggy==1.0.0
     # via pytest
@@ -106,6 +107,3 @@ urllib3==1.26.12
     #   django-anymail
     #   requests
     #   sentry-sdk
-
-# The following packages are considered to be unsafe in a requirements file:
-# setuptools
