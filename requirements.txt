@@ -77,7 +77,7 @@ python-jose==3.3.0
     # via django-helusers
 pytz==2022.5
     # via django
-requests==2.28.1
+requests==2.31.0
     # via
     #   django-anymail
     #   django-helusers
