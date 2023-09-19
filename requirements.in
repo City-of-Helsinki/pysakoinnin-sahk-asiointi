@@ -10,3 +10,4 @@ pyclamd
 sentry-sdk
 gunicorn
 django-anymail
+cryptography
