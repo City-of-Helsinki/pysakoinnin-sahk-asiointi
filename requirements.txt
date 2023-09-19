@@ -14,10 +14,14 @@ certifi==2023.7.22
     # via
     #   requests
     #   sentry-sdk
+cffi==1.15.1
+    # via cryptography
 charset-normalizer==2.1.1
     # via requests
 coverage[toml]==7.2.1
     # via pytest-cov
+cryptography==41.0.3
+    # via -r requirements.in
 deprecation==2.1.0
     # via django-helusers
 django==3.2.21
@@ -61,6 +65,8 @@ pyasn1==0.4.8
     #   rsa
 pyclamd==0.4.0
     # via -r requirements.in
+pycparser==2.21
+    # via cffi
 pydantic==1.10.2
     # via django-ninja
 pyparsing==3.0.9
