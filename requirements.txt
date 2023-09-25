@@ -30,6 +30,7 @@ django==3.2.21
     #   django-anymail
     #   django-cors-headers
     #   django-helusers
+    #   django-mailer
     #   django-ninja
 django-anymail==10.0
     # via -r requirements.in
@@ -38,6 +39,8 @@ django-cors-headers==3.13.0
 django-environ==0.9.0
     # via -r requirements.in
 django-helusers==0.8.1
+    # via -r requirements.in
+django-mailer==2.2.1
     # via -r requirements.in
 django-ninja==0.19.1
     # via -r requirements.in
@@ -51,6 +54,8 @@ idna==3.4
     # via requests
 iniconfig==2.0.0
     # via pytest
+lockfile==0.12.2
+    # via django-mailer
 packaging==21.3
     # via
     #   deprecation
