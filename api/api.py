@@ -12,6 +12,8 @@ from api.utils import virus_scan_attachment_file
 from api.views import PASIHandler, ATVHandler, DocumentHandler
 from mail_service.audit_log import _commit_to_audit_log
 from mail_service.utils import mail_constructor, extend_due_date_mail_constructor
+from django.core.management import call_command
+
 
 router = Router()
 env = Env()
@@ -25,6 +27,13 @@ class ApiKeyAuth(HttpBearer):
 
 class NotFoundError(Schema):
     detail: str = "Resource not found"
+
+# Can be used to test sending emails from api/v1 docs, delete after testing is done.
+@router.get('/testSendQue', response={200: None, 500: None}, tags=['email'])
+def test_send_que(request, recipent: str = "email@email.com"):
+    # triggers: python manage.py send_mail
+    call_command('send_mail')
+    return 200
 
 # Can be used to test sending emails from api/v1 docs, delete after testing is done.
 @router.get('/testEmailSending', response={200: None, 500: None}, tags=['email'])
