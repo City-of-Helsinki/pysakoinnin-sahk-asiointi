@@ -11,3 +11,4 @@ sentry-sdk
 gunicorn
 django-anymail
 cryptography
+django-mailer
