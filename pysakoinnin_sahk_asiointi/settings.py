@@ -68,6 +68,7 @@ INSTALLED_APPS = [
     "ninja",
     "corsheaders",
     "anymail",
+    "mailer"
 ]
 
 MIDDLEWARE = [
@@ -165,7 +166,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+
+EMAIL_BACKEND = "mailer.backend.DbBackend"
+# From mailer docs
+# If you were previously using a non-default EMAIL_BACKEND, you need to configure the MAILER_EMAIL_BACKEND setting, so that django-mailer knows how to actually send the mail:
+MAILER_EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
 EMAIL_HOST = "relay.hel.fi"
 EMAIL_PORT = 25
