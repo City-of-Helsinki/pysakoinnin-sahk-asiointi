@@ -5,6 +5,8 @@ from django.http import HttpResponse
 from environ import Env
 from ninja.errors import HttpError
 from requests import request
+from datetime import date
+from dateutil.relativedelta import relativedelta
 
 from api.schemas import DocumentStatusRequest, Objection
 from pysakoinnin_sahk_asiointi.utils import stringToBool
@@ -58,12 +60,15 @@ class ATVHandler:
 
     @staticmethod
     def add_document(content: dict, document_id, user_id: str, metadata: dict):
+        deleteAfter = str(date.today() + relativedelta(years=2))
+        
         try:
             req = request('POST', f"{env('ATV_ENDPOINT')}",
                           headers={"x-api-key": env('ATV_API_KEY')}, data={
                     "user_id": user_id,
                     "draft": False,
                     "deletable": False,
+                    "delete_after": deleteAfter,
                     "transaction_id": f"{str(document_id)}",
                     "tos_record_id": 12345,
                     "tos_function_id": 12345,
