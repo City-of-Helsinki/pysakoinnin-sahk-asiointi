@@ -39,7 +39,7 @@ def test_send_que(request, recipent: str = "email@email.com"):
 @router.get('/testEmailSending', response={200: None, 500: None}, tags=['email'])
 def test_email_sending(request, recipent: str = "email@email.com"):
     mail = mail_constructor(event='received', lang='fi',
-                            mail_to=recipent)
+                            mail_to=recipent, send_instantly=False)
 
     mail.send()
     _commit_to_audit_log(mail.to[0], "test-email-sending")
@@ -160,7 +160,7 @@ def set_document_status(request, status_request: DocumentStatusRequest):
 
     if req.status_code == 200:
         mail = mail_constructor(event=status_request.status, lang=find_document_by_id['results'][0]['metadata']['lang'],
-                                mail_to=find_document_by_id['results'][0]['content']['email'])
+                                mail_to=find_document_by_id['results'][0]['content']['email'], send_instantly=False)
         mail.send()
         _commit_to_audit_log(mail.to[0], "set-document-status")
         return HttpResponse(200)
