@@ -2,7 +2,11 @@ import datetime
 from zoneinfo import ZoneInfo
 
 from anymail.message import attach_inline_image_file
-from django.core.mail import EmailMultiAlternatives
+from django.core.mail import EmailMultiAlternatives, get_connection
+from pysakoinnin_sahk_asiointi import settings
+
+QUEUE_EMAIL_CONNECTION = settings.EMAIL_BACKEND
+SEND_INSTANTLY_EMAIL_CONNECTION = settings.MAILER_EMAIL_BACKEND
 
 headers = {
     'FI': 'Uusi tapahtuma Pysäköinnin Asioinnissa',
@@ -32,10 +36,15 @@ events = {
         'EN': 'Decision has been mailed'
     }
 }
+def get_email_connection(event: str):
+    if(event == 'received'):
+        return get_connection(SEND_INSTANTLY_EMAIL_CONNECTION)
+    return get_connection(QUEUE_EMAIL_CONNECTION)
 
 def mail_constructor(event: str, lang: str, mail_to: str):
     now = datetime.datetime.now(tz=ZoneInfo('Europe/Helsinki'))
     formatted_time = datetime.datetime.strftime(now, '%H:%M')
+    connection = get_email_connection(event)
     if lang not in headers:
         lang = 'FI'
 
@@ -73,7 +82,7 @@ def mail_constructor(event: str, lang: str, mail_to: str):
         headers[lang.upper()],
         bodyTemplates[lang.upper()],
         "Pysäköinnin Asiointi <noreply@hel.fi>",
-        [mail_to], )
+        [mail_to], connection=connection)
 
     logo = attach_inline_image_file(msg, 'mail_service/assets/logo.jpg')
     html = """
