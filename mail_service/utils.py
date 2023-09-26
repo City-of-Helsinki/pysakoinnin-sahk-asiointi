@@ -36,15 +36,15 @@ events = {
         'EN': 'Decision has been mailed'
     }
 }
-def get_email_connection(send_instantly: bool):
-    if(send_instantly):
+def get_email_connection(event: str):
+    if(event == 'received'):
         return get_connection(SEND_INSTANTLY_EMAIL_CONNECTION)
     return get_connection(QUEUE_EMAIL_CONNECTION)
 
-def mail_constructor(event: str, lang: str, mail_to: str, send_instantly: bool = True):
+def mail_constructor(event: str, lang: str, mail_to: str):
     now = datetime.datetime.now(tz=ZoneInfo('Europe/Helsinki'))
     formatted_time = datetime.datetime.strftime(now, '%H:%M')
-    connection = get_email_connection(send_instantly=send_instantly)
+    connection = get_email_connection(event)
     if lang not in headers:
         lang = 'FI'
 
