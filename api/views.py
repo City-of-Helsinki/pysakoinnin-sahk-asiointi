@@ -68,7 +68,7 @@ class ATVHandler:
                     "user_id": user_id,
                     "draft": False,
                     "deletable": False,
-                    "delete_after": deleteAfter,
+                    #"delete_after": deleteAfter,
                     "transaction_id": f"{str(document_id)}",
                     "tos_record_id": 12345,
                     "tos_function_id": 12345,
