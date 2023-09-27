@@ -119,7 +119,7 @@ def extend_due_date_mail_constructor(lang: str, new_due_date: str, mail_to):
         headers[lang.upper()],
         bodyTemplates[lang.upper()],
         "Pysäköinnin Asiointi <noreply@hel.fi>",
-        [mail_to], get_connection(SEND_INSTANTLY_EMAIL_CONNECTION))
+        [mail_to], connection=get_connection(SEND_INSTANTLY_EMAIL_CONNECTION))
 
     logo = attach_inline_image_file(msg, 'mail_service/assets/logo.jpg')
     html = """
