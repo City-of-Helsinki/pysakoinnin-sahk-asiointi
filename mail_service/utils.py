@@ -104,6 +104,7 @@ def mail_constructor(event: str, lang: str, mail_to: str):
 def extend_due_date_mail_constructor(lang: str, new_due_date: str, mail_to):
     date = datetime.datetime.strptime(new_due_date, '%Y-%m-%dT%H:%M:%S')
     formatted_time = datetime.datetime.strftime(date, '%d.%m.%Y')
+    connection = get_connection(SEND_INSTANTLY_EMAIL_CONNECTION)
 
     bodyTemplates = {
         'FI': """<p>Eräpäivää siirretty, uusi eräpäivä on {new_due_date}""".format(new_due_date=formatted_time),
@@ -119,7 +120,7 @@ def extend_due_date_mail_constructor(lang: str, new_due_date: str, mail_to):
         headers[lang.upper()],
         bodyTemplates[lang.upper()],
         "Pysäköinnin Asiointi <noreply@hel.fi>",
-        [mail_to], connection=get_connection(SEND_INSTANTLY_EMAIL_CONNECTION))
+        [mail_to], connection=connection)
 
     logo = attach_inline_image_file(msg, 'mail_service/assets/logo.jpg')
     html = """
