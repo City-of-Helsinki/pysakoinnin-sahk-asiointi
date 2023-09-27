@@ -36,6 +36,10 @@ events = {
         'EN': 'Decision has been mailed'
     }
 }
+
+# If the event status indicates that the user is actively interacting with the client,
+# we want to send emails instantly. Therefore, return "SEND_INSTANTLY_EMAIL_CONNECTION".
+# Otherwise, if the user is not interacting with the client, use the email queue.
 def get_email_connection(event: str):
     if(event == 'received'):
         return get_connection(SEND_INSTANTLY_EMAIL_CONNECTION)
