@@ -28,22 +28,6 @@ class ApiKeyAuth(HttpBearer):
 class NotFoundError(Schema):
     detail: str = "Resource not found"
 
-# Can be used to test sending emails from api/v1 docs, delete after testing is done.
-@router.get('/testSendQue', response={200: None, 500: None}, tags=['email'])
-def test_send_que(request, recipent: str = "email@email.com"):
-    # triggers: python manage.py send_mail
-    call_command('send_mail')
-    return 200
-
-# Can be used to test sending emails from api/v1 docs, delete after testing is done.
-@router.get('/testEmailSending', response={200: None, 500: None}, tags=['email'])
-def test_email_sending(request, recipent: str = "email@email.com", event: str = "handling"):
-    mail = mail_constructor(event=event, lang='fi',
-                            mail_to=recipent)
-
-    mail.send()
-    _commit_to_audit_log(mail.to[0], "test-email-sending")
-    return 200
 
 @router.get('/getFoulData', response={200: FoulDataResponse, 404: NotFoundError}, tags=['PASI'])
 def get_foul_data(request, foul_number: int = 113148427, register_number: str = "HKR-999"):
