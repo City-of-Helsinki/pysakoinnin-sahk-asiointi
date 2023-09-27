@@ -166,10 +166,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
+# Default backend which is responsible for putting emails so to queue
 EMAIL_BACKEND = "mailer.backend.DbBackend"
-# From mailer docs
-# If you were previously using a non-default EMAIL_BACKEND, you need to configure the MAILER_EMAIL_BACKEND setting, so that django-mailer knows how to actually send the mail:
+
+# Actual backend responsible for sending emails
+# Sometimes this is referred in code directly to skip queue
 MAILER_EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
 EMAIL_HOST = "relay.hel.fi"
