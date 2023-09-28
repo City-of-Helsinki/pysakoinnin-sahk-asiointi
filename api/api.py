@@ -12,12 +12,9 @@ from api.utils import virus_scan_attachment_file
 from api.views import PASIHandler, ATVHandler, DocumentHandler
 from mail_service.audit_log import _commit_to_audit_log
 from mail_service.utils import mail_constructor, extend_due_date_mail_constructor
-from django.core.management import call_command
-
 
 router = Router()
 env = Env()
-
 
 class ApiKeyAuth(HttpBearer):
     def authenticate(self, request: HttpRequest, token: str):
