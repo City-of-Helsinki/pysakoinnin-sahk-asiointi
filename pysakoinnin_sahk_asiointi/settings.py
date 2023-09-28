@@ -173,6 +173,11 @@ EMAIL_BACKEND = "mailer.backend.DbBackend"
 # Sometimes this is referred in code directly to skip queue
 MAILER_EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
+MAILER_ERROR_HANDLER = "mail_service.utils.custom_mailer_error_handler"
+
+# After how many failed attempts email is not being put back to queue with retry_deferred command
+MAILER_EMAIL_MAX_RETRIES = 5
+
 EMAIL_HOST = "relay.hel.fi"
 EMAIL_PORT = 25
 EMAIL_USE_TLS = True
