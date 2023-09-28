@@ -2,7 +2,11 @@ import datetime
 from zoneinfo import ZoneInfo
 
 from anymail.message import attach_inline_image_file
-from django.core.mail import EmailMultiAlternatives
+from django.core.mail import EmailMultiAlternatives, get_connection
+from pysakoinnin_sahk_asiointi import settings
+
+QUEUE_EMAIL_CONNECTION = settings.EMAIL_BACKEND
+SEND_INSTANTLY_EMAIL_CONNECTION = settings.MAILER_EMAIL_BACKEND
 
 headers = {
     'FI': 'Uusi tapahtuma Pysäköinnin Asioinnissa',
@@ -33,9 +37,18 @@ events = {
     }
 }
 
+# If the event status indicates that the user is actively interacting with the client,
+# we want to send emails instantly. Therefore, return "SEND_INSTANTLY_EMAIL_CONNECTION".
+# Otherwise, if the user is not interacting with the client, use the email queue.
+def get_email_connection(event: str):
+    if(event == 'received'):
+        return get_connection(SEND_INSTANTLY_EMAIL_CONNECTION)
+    return get_connection(QUEUE_EMAIL_CONNECTION)
+
 def mail_constructor(event: str, lang: str, mail_to: str):
     now = datetime.datetime.now(tz=ZoneInfo('Europe/Helsinki'))
     formatted_time = datetime.datetime.strftime(now, '%H:%M')
+    connection = get_email_connection(event)
     if lang not in headers:
         lang = 'FI'
 
@@ -73,7 +86,7 @@ def mail_constructor(event: str, lang: str, mail_to: str):
         headers[lang.upper()],
         bodyTemplates[lang.upper()],
         "Pysäköinnin Asiointi <noreply@hel.fi>",
-        [mail_to], )
+        [mail_to], connection=connection)
 
     logo = attach_inline_image_file(msg, 'mail_service/assets/logo.jpg')
     html = """
@@ -95,6 +108,7 @@ def mail_constructor(event: str, lang: str, mail_to: str):
 def extend_due_date_mail_constructor(lang: str, new_due_date: str, mail_to):
     date = datetime.datetime.strptime(new_due_date, '%Y-%m-%dT%H:%M:%S')
     formatted_time = datetime.datetime.strftime(date, '%d.%m.%Y')
+    connection = get_connection(SEND_INSTANTLY_EMAIL_CONNECTION)
 
     bodyTemplates = {
         'FI': """<p>Eräpäivää siirretty, uusi eräpäivä on {new_due_date}""".format(new_due_date=formatted_time),
@@ -110,7 +124,7 @@ def extend_due_date_mail_constructor(lang: str, new_due_date: str, mail_to):
         headers[lang.upper()],
         bodyTemplates[lang.upper()],
         "Pysäköinnin Asiointi <noreply@hel.fi>",
-        [mail_to], )
+        [mail_to], connection=connection)
 
     logo = attach_inline_image_file(msg, 'mail_service/assets/logo.jpg')
     html = """

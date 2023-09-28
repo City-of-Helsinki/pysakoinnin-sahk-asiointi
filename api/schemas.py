@@ -146,6 +146,7 @@ class ATVDocumentSchema(Schema):
     draft: bool
     locked_after: Optional[str]
     deletable: bool
+    delete_after: Optional[str]
     attachments: list
 
 

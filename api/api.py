@@ -12,6 +12,8 @@ from api.utils import virus_scan_attachment_file
 from api.views import PASIHandler, ATVHandler, DocumentHandler
 from mail_service.audit_log import _commit_to_audit_log
 from mail_service.utils import mail_constructor, extend_due_date_mail_constructor
+from django.core.management import call_command
+
 
 router = Router()
 env = Env()
@@ -69,8 +71,7 @@ def extend_due_date(request, foul_data: FoulRequest):
                                             mail_to=foul_data.metadata['email'])
     mail.send()
 
-    if hasattr(mail, 'anymail_status'):
-        _commit_to_audit_log(mail.to[0], mail.anymail_status)
+    _commit_to_audit_log(mail.to[0], "extend-due-date")
 
     return req.json()
 
@@ -145,4 +146,5 @@ def set_document_status(request, status_request: DocumentStatusRequest):
         mail = mail_constructor(event=status_request.status, lang=find_document_by_id['results'][0]['metadata']['lang'],
                                 mail_to=find_document_by_id['results'][0]['content']['email'])
         mail.send()
+        _commit_to_audit_log(mail.to[0], "set-document-status")
         return HttpResponse(200)

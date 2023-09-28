@@ -7,6 +7,9 @@ pytest-django
 pytest-cov
 psycopg2-binary
 pyclamd
+python-dateutil
 sentry-sdk
 gunicorn
 django-anymail
+cryptography
+django-mailer
