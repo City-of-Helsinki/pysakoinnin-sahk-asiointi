@@ -4,6 +4,8 @@ from zoneinfo import ZoneInfo
 from anymail.message import attach_inline_image_file
 from django.core.mail import EmailMultiAlternatives, get_connection
 from pysakoinnin_sahk_asiointi import settings
+from mailer import engine
+from mail_service import audit_log
 
 QUEUE_EMAIL_CONNECTION = settings.EMAIL_BACKEND
 SEND_INSTANTLY_EMAIL_CONNECTION = settings.MAILER_EMAIL_BACKEND
@@ -142,3 +144,11 @@ def extend_due_date_mail_constructor(lang: str, new_due_date: str, mail_to):
     msg.attach_alternative(html, "text/html")
 
     return msg
+
+def custom_mailer_error_handler(connection, message, exc):
+    combined_message = f"Error: {exc} Message: {message}"
+    print(combined_message)
+    audit_log._commit_to_audit_log(mail_to="Unknown", action=combined_message)
+
+    # call main handler since we just want to log stuff here
+    return engine.handle_delivery_exception(connection, message, exc)
