@@ -52,10 +52,14 @@ sentry_deny_list = DEFAULT_DENYLIST + [
     "ssn",
     "address",
     "firstName",
+    "first_name"
     "lastName",
+    "last_name",
     "mobilePhone",
+    "mobile_phone",
     "email",
     "registerNumber"
+    "register_number"
 ]
 
 sentry_sdk.init(
