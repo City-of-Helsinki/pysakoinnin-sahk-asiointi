@@ -6,6 +6,9 @@ import sentry_sdk
 from corsheaders.defaults import default_headers
 from environ import Env
 from sentry_sdk.integrations.django import DjangoIntegration
+from sentry_sdk.scrubber import EventScrubber, DEFAULT_DENYLIST
+
+from pysakoinnin_sahk_asiointi.utils import sentry_scrubber
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -45,11 +48,22 @@ if DEBUG and not SECRET_KEY:
     SECRET_KEY = 'XXX'
 
 # Sentry config
+sentry_deny_list = DEFAULT_DENYLIST + [
+    "ssn",
+    "address",
+    "firstName",
+    "lastName",
+    "mobilePhone",
+    "email",
+    "registerNumber"
+]
+
 sentry_sdk.init(
     dsn=env('SENTRY_DSN'),
     integrations=[DjangoIntegration()],
-
+    event_scrubber=EventScrubber(denylist=sentry_deny_list),
     traces_sample_rate=env('SENTRY_TRACE_SAMPLE_RATE'),
+    before_send=sentry_scrubber
 )
 
 # Application definition
