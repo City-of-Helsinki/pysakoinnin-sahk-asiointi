@@ -16,7 +16,11 @@ def sentry_scrubber(*args, **kwargs):
         return
 
     # Objection are stored in stacktrace and might contain sensitive data, and we want it to be scrubbed.
-    lookup_objects = ["objection", "sanitised_objection", "objection_without_attachment_data"]
+    lookup_objects = [
+        "objection",
+        "sanitised_objection",
+        "objection_without_attachment_data",
+    ]
     try:
         for value in event.get("exception", {}).get("values", []):
             for frame in value.get("stacktrace", {}).get("frames", []):
@@ -26,7 +30,7 @@ def sentry_scrubber(*args, **kwargs):
                     for val in (values := frame_vars.get("values", [])):
                         if val in lookup_objects:
                             values[val] = "Scrubbed"
-    except: # noqa
-        logging.error("Failed to scrub objection data")
+    except BaseException as e:  # noqa
+        logging.warning("Failed to scrub objection data", exc_info=e)
 
     return event
