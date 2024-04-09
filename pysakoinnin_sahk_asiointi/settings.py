@@ -33,7 +33,7 @@ env = Env(
     GDPR_API_QUERY_SCOPE=(str, ""),
     GDPR_API_DELETE_SCOPE=(str, ""),
     STATIC_ROOT=(str, str(BASE_DIR / "static/")),
-    VALIDATE_PASI_CERTIFICATION=(str, "True")
+    VALIDATE_PASI_CERTIFICATION=(str, "True"),
 )
 
 Env.read_env(str(BASE_DIR / "config.env"))
@@ -43,9 +43,9 @@ DEBUG = env("DEBUG")
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
 
-SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = env("SECRET_KEY")
 if DEBUG and not SECRET_KEY:
-    SECRET_KEY = 'XXX'
+    SECRET_KEY = "XXX"
 
 # Sentry config
 sentry_deny_list = DEFAULT_DENYLIST + [
@@ -59,22 +59,22 @@ sentry_deny_list = DEFAULT_DENYLIST + [
     "mobile_phone",
     "email",
     "registerNumber",
-    "register_number"
+    "register_number",
 ]
 
 sentry_sdk.init(
-    dsn=env('SENTRY_DSN'),
+    dsn=env("SENTRY_DSN"),
     integrations=[DjangoIntegration()],
     event_scrubber=EventScrubber(denylist=sentry_deny_list),
-    traces_sample_rate=env('SENTRY_TRACE_SAMPLE_RATE'),
-    before_send=sentry_scrubber
+    traces_sample_rate=env("SENTRY_TRACE_SAMPLE_RATE"),
+    before_send=sentry_scrubber,
 )
 
 # Application definition
 
 INSTALLED_APPS = [
-    'helusers.apps.HelusersConfig',
-    'helusers.apps.HelusersAdminConfig',
+    "helusers.apps.HelusersConfig",
+    "helusers.apps.HelusersAdminConfig",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -86,7 +86,7 @@ INSTALLED_APPS = [
     "ninja",
     "corsheaders",
     "anymail",
-    "mailer"
+    "mailer",
 ]
 
 MIDDLEWARE = [
@@ -101,12 +101,12 @@ MIDDLEWARE = [
     "api.audit_log.AuditLogMiddleware",
 ]
 
-CORS_ALLOWED_ORIGINS = env.list('CORS_ALLOWED_ORIGINS')
-CORS_ALLOW_HEADERS = list(default_headers) + ['baggage', 'sentry-trace']
+CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS")
+CORS_ALLOW_HEADERS = list(default_headers) + ["baggage", "sentry-trace"]
 
 ROOT_URLCONF = "pysakoinnin_sahk_asiointi.urls"
 
-AUTH_USER_MODEL = 'pysakoinnin_sahk_asiointi.User'
+AUTH_USER_MODEL = "pysakoinnin_sahk_asiointi.User"
 
 OIDC_API_TOKEN_AUTH = {
     # Audience that must be present in the token for it to be
@@ -117,29 +117,26 @@ OIDC_API_TOKEN_AUTH = {
     # so this setting can also be a list of strings.
     # This setting is required.
     "AUDIENCE": env("TOKEN_AUTH_AUDIENCE"),
-
     # Who we trust to sign the tokens. The library will request the
     # public signature keys from standard locations below this URL.
     # RequestJWTAuthentication supports multiple issuers, so this
     # setting can also be a list of strings.
-    'ISSUER': env("TOKEN_AUTH_ISSUER"),
-
+    "ISSUER": env("TOKEN_AUTH_ISSUER"),
     # The following can be used if you need certain scopes for any
     # functionality of the API. Usually this is not needed, as checking
     # the audience is enough. Default is False.
-    'REQUIRE_API_SCOPE_FOR_AUTHENTICATION': True,
+    "REQUIRE_API_SCOPE_FOR_AUTHENTICATION": True,
     # The name of the claim that is used to read in the scopes from the JWT.
-    'API_AUTHORIZATION_FIELD': env("TOKEN_AUTH_AUTHORIZATION_FIELD"),
+    "API_AUTHORIZATION_FIELD": env("TOKEN_AUTH_AUTHORIZATION_FIELD"),
     # The request will be denied if scopes don't contain anything starting
     # with the value provided here.
-    'API_SCOPE_PREFIX': env("TOKEN_AUTH_SCOPE_PREFIX"),
-
+    "API_SCOPE_PREFIX": env("TOKEN_AUTH_SCOPE_PREFIX"),
     # In order to do the authentication RequestJWTAuthentication needs
     # some facts from the authorization server, mainly its public keys for
     # verifying the JWT's signature. This setting controls the time how long
     # authorization server configuration and public keys are "remembered".
     # The value is in seconds. Default is 24 hours.
-    'OIDC_CONFIG_EXPIRATION_TIME': 600,
+    "OIDC_CONFIG_EXPIRATION_TIME": 600,
 }
 
 TEMPLATES = [
@@ -217,7 +214,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = "static/"
-STATIC_ROOT = env('STATIC_ROOT')
+STATIC_ROOT = env("STATIC_ROOT")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
