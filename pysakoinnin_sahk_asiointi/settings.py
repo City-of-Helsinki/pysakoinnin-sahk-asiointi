@@ -52,13 +52,13 @@ sentry_deny_list = DEFAULT_DENYLIST + [
     "ssn",
     "address",
     "firstName",
-    "first_name"
+    "first_name",
     "lastName",
     "last_name",
     "mobilePhone",
     "mobile_phone",
     "email",
-    "registerNumber"
+    "registerNumber",
     "register_number"
 ]
 
