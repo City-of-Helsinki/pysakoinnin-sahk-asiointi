@@ -22,8 +22,6 @@ class Metadata(Schema):
     lang: str = "fi"
     email: str = "testing@email.com"
 
-    def to_dict(self):
-        return {'lang': self.lang}
 class Objection(Schema):
     foulNumber: int = 1
     transferNumber: int = 1
@@ -40,12 +38,12 @@ class Objection(Schema):
     description: str = "string"
     type: int = 0
     sendDecisionViaEService: bool = True
-    metadata: Metadata = Metadata().dict()
+    metadata: dict = Metadata().dict()
     attachments: list = []
 class FoulRequest(Schema):
     foul_number: str = "fi"
     register_number: str = "AB123"
-    metadata: Metadata = Metadata().dict()
+    metadata: dict = Metadata().dict()
 
 class TestApiFunctions(TestCase):
     def setUp(self):
