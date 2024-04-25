@@ -5,7 +5,7 @@ django-ninja
 django-helusers
 pytest-django
 pytest-cov
-psycopg2-binary
+psycopg2
 pyclamd
 python-dateutil
 sentry-sdk
