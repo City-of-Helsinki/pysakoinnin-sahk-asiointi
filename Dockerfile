@@ -15,7 +15,7 @@ COPY requirements.txt ./
 # that is the default state of the image and development stages are
 # just extras.
 USER root
-RUN yum install -y postgresql python3
+RUN dnf install -y postgresql python3
 RUN python3 -m ensurepip
 RUN pip3 install --no-cache-dir -r ./requirements.txt
 
@@ -27,8 +27,8 @@ RUN mkdir -p /var/parking-service/static
 
 # Clean up
 USER root
-RUN yum clean all
-RUN rm -rf /var/cache/yum
+RUN dnf clean all
+RUN rm -rf /var/cache/dnf
 
 # Build production image using the appbase stage as base. This should always
 # be the last stage of Dockerfile.
