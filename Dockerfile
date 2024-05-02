@@ -27,17 +27,14 @@ RUN dnf install -y \
     && dnf remove -y \
     postgresql-devel \
     gcc \
-    python3-devel
+    python3-devel \
+    && dnf clean all \
+    && rm -rf /var/cache/dnf
 ENV STATIC_ROOT /var/parking-service/static
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 RUN mkdir -p /var/parking-service/static
-
-# Clean up
-USER root
-RUN dnf clean all
-RUN rm -rf /var/cache/dnf
 
 # Build production image using the appbase stage as base. This should always
 # be the last stage of Dockerfile.
