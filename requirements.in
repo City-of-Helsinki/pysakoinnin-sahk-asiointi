@@ -1,7 +1,7 @@
 Django~=4.2
 django-cors-headers
 django-environ
-django-ninja
+django-ninja<1
 django-helusers
 pytest-django
 pytest-cov
