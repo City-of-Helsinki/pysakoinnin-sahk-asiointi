@@ -87,7 +87,7 @@ python-dateutil==2.9.0.post0
     # via -r requirements.in
 python-jose==3.3.0
     # via django-helusers
-requests==2.32.0
+requests==2.32.3
     # via
     #   django-anymail
     #   django-helusers
