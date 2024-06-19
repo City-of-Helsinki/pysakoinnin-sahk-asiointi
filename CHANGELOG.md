@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.0.4](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v1.0.3...pysakoinnin-sahk-asiointi-v1.0.4) (2024-06-19)
+
+
+### Bug Fixes
+
+* Downgrade django-ninja to v0.x ([3509812](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/3509812568f7ee27f85ce29539e24bd349e88341))
+
+
+### Dependencies
+
+* Upgrade requests to v2.32.3 ([0b27853](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/0b278538a7e17869f80912d9c34e932acef7a057))
+
 ## [1.0.3](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v1.0.2...pysakoinnin-sahk-asiointi-v1.0.3) (2024-06-13)
 
 
