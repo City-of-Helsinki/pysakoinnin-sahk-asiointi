@@ -24,7 +24,7 @@ cryptography==42.0.7
     # via -r requirements.in
 deprecation==2.1.0
     # via django-helusers
-django==4.2.13
+django==4.2.15
     # via
     #   -r requirements.in
     #   django-anymail
