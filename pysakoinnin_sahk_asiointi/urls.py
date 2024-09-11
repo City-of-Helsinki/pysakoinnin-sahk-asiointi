@@ -1,6 +1,7 @@
 """pysakoinnin_sahk_asiointi URL Configuration """
+
 from django.http import HttpRequest, HttpResponse
-from django.urls import path
+from django.urls import include, path
 from helusers.oidc import RequestJWTAuthentication
 from ninja import NinjaAPI
 from ninja.errors import HttpError
@@ -22,19 +23,20 @@ class AuthBearer(HttpBearer):
             raise HttpError(401, message=str(error))
 
 
-api = NinjaAPI(title='Pysäköinnin asiointi', version='1.0.0', auth=AuthBearer())
+api = NinjaAPI(title="Pysäköinnin asiointi", version="1.0.0", auth=AuthBearer())
 
-api.add_router('/', api_router)
-api.add_router('/gdpr', gdrp_api_router)
+api.add_router("/", api_router)
+api.add_router("/gdpr", gdrp_api_router)
 
 
 def health(request):
-    return HttpResponse("OK", status=200, headers={'Content-Type': "application/json"})
+    return HttpResponse("OK", status=200, headers={"Content-Type": "application/json"})
 
 
 def readiness(request):
     try:
         from django.db import connections
+
         for name in connections:
             cursor = connections[name].cursor()
             cursor.execute("SELECT 1;")
@@ -51,4 +53,5 @@ urlpatterns = [
     path("health/", health),
     path("readiness/", readiness),
     path("api/v1/", api.urls),
+    path("helauth/", include("helusers.urls")),
 ]

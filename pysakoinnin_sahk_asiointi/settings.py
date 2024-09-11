@@ -32,6 +32,7 @@ env = Env(
     GDPR_API_ISSUER=(str, ""),
     GDPR_API_QUERY_SCOPE=(str, ""),
     GDPR_API_DELETE_SCOPE=(str, ""),
+    HELUSERS_BACK_CHANNEL_LOGOUT_ENABLED=(bool, True),
     STATIC_ROOT=(str, str(BASE_DIR / "static/")),
     VALIDATE_PASI_CERTIFICATION=(str, "True"),
 )
@@ -107,6 +108,8 @@ CORS_ALLOW_HEADERS = list(default_headers) + ["baggage", "sentry-trace"]
 ROOT_URLCONF = "pysakoinnin_sahk_asiointi.urls"
 
 AUTH_USER_MODEL = "pysakoinnin_sahk_asiointi.User"
+
+HELUSERS_BACK_CHANNEL_LOGOUT_ENABLED = env("HELUSERS_BACK_CHANNEL_LOGOUT_ENABLED")
 
 OIDC_API_TOKEN_AUTH = {
     # Audience that must be present in the token for it to be
