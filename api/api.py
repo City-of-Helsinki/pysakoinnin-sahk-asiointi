@@ -1,8 +1,8 @@
 import copy
 
 import ninja.errors
+from django.conf import settings
 from django.http import HttpRequest, HttpResponse
-from environ import Env
 from ninja import Router, Schema
 from ninja.security import HttpBearer
 
@@ -14,11 +14,11 @@ from mail_service.audit_log import _commit_to_audit_log
 from mail_service.utils import mail_constructor, extend_due_date_mail_constructor
 
 router = Router()
-env = Env()
+
 
 class ApiKeyAuth(HttpBearer):
     def authenticate(self, request: HttpRequest, token: str):
-        if token == env("PASI_API_KEY"):
+        if token == settings.PASI_API_KEY:
             return True
 
 

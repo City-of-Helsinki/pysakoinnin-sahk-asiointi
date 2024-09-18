@@ -1,14 +1,6 @@
 import logging
 
 
-def stringToBool(strBool: str, default: bool):
-    if strBool.lower() == "true":
-        return True
-    if strBool.lower() == "false":
-        return False
-    return default
-
-
 def sentry_scrubber(*args, **kwargs):
     event = args[0]
 
