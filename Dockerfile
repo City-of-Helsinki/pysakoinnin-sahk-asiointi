@@ -19,6 +19,7 @@ RUN dnf install -y \
     postgresql \
     postgresql-libs \
     python3 \
+    python-unversioned-command \
     postgresql-devel \
     gcc \
     python3-devel \
