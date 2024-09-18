@@ -61,8 +61,7 @@ def extend_due_date(request, foul_data: FoulRequest):
 
     json = req.json()
 
-    atv_req = ATVHandler.add_document({**json}, foul_data.foul_number, request.user.uuid, metadata={})
-    atv_req.json()
+    ATVHandler.add_document({**response_json}, foul_data.foul_number, request.user.uuid, metadata={})
 
     mail = extend_due_date_mail_constructor(new_due_date=json['dueDate'], lang=foul_data.metadata['lang'],
                                             mail_to=foul_data.metadata['email'])
