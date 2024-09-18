@@ -2,11 +2,11 @@ import copy
 import json
 from datetime import date
 
+import requests
 from dateutil.relativedelta import relativedelta
 from django.http import HttpResponse
 from environ import Env
 from ninja.errors import HttpError
-from requests import request
 
 from api.schemas import DocumentStatusRequest, Objection
 from pysakoinnin_sahk_asiointi.utils import stringToBool
@@ -34,12 +34,11 @@ class ATVHandler:
     @staticmethod
     def get_documents(user_id: str):
         try:
-            req = request(
-                "GET",
-                url=f"{env('ATV_ENDPOINT')}?user_id={user_id}&page_size=999",
+            response = requests.get(
+                f"{env('ATV_ENDPOINT')}?user_id={user_id}&page_size=999",
                 headers={"x-api-key": env("ATV_API_KEY")},
             )
-            response_json = req.json()
+            response_json = response.json()
             if hasattr(response_json, "results") and len(response_json["results"]) <= 0:
                 raise HttpError(404, message="Resource not found")
             return response_json
@@ -49,12 +48,11 @@ class ATVHandler:
     @staticmethod
     def get_document_by_transaction_id(foul_id):
         try:
-            req = request(
-                "GET",
-                url=f"{env('ATV_ENDPOINT')}?transaction_id={foul_id}",
+            response = requests.get(
+                f"{env('ATV_ENDPOINT')}?transaction_id={foul_id}",
                 headers={"x-api-key": env("ATV_API_KEY")},
             )
-            response_json = req.json()
+            response_json = response.json()
             if len(response_json["results"]) <= 0:
                 raise HttpError(404, message="Resource not found")
             return response_json
@@ -66,8 +64,7 @@ class ATVHandler:
         delete_after = str(date.today() + relativedelta(years=2))
 
         try:
-            req = request(
-                "POST",
+            response = requests.post(
                 f"{env('ATV_ENDPOINT')}",
                 headers={"x-api-key": env("ATV_API_KEY")},
                 data={
@@ -84,7 +81,7 @@ class ATVHandler:
                 },
                 files={"attachments": None},
             )
-            return req
+            return response
         except Exception as error:
             raise HttpError(500, message=str(error))
 
@@ -94,9 +91,8 @@ class PASIHandler:
     @staticmethod
     def get_foul_data(foul_number, register_number):
         try:
-            req = request(
-                "POST",
-                url=f"{env('PASI_ENDPOINT')}/api/v1/fouls/GetFoulData",
+            response = requests.post(
+                f"{env('PASI_ENDPOINT')}/api/v1/fouls/GetFoulData",
                 verify=VALIDATE_PASI_CERTIFICATION,
                 headers={
                     "authorization": f"Basic {env('PASI_AUTH_KEY')}",
@@ -109,9 +105,10 @@ class PASIHandler:
                     "registerNumber": f"{register_number}",
                 },
             )
-            if req.status_code == 404:
+            if response.status_code == 404:
                 raise HttpError(404, message="Resource not found")
-            return req
+            return response
+
         except HttpError as error:
             raise error
         except Exception as error:
@@ -120,9 +117,8 @@ class PASIHandler:
     @staticmethod
     def get_transfer_data(transfer_number: int, register_number: str):
         try:
-            req = request(
-                "POST",
-                url=f"{env('PASI_ENDPOINT')}/api/v1/Transfers/GetTransferData",
+            response = requests.post(
+                f"{env('PASI_ENDPOINT')}/api/v1/Transfers/GetTransferData",
                 verify=VALIDATE_PASI_CERTIFICATION,
                 headers={
                     "authorization": f"Basic {env('PASI_AUTH_KEY')}",
@@ -135,9 +131,9 @@ class PASIHandler:
                     "registerNumber": f"{register_number}",
                 },
             )
-            if req.status_code == 404:
+            if response.status_code == 404:
                 raise HttpError(404, message="Resource not found")
-            return req
+            return response
         except HttpError as error:
             raise error
         except Exception as error:
@@ -146,9 +142,8 @@ class PASIHandler:
     @staticmethod
     def extend_foul_due_date(foul_data):
         try:
-            req = request(
-                "POST",
-                url=f"{env('PASI_ENDPOINT')}/api/v1/fouls/ExtendFoulDueDate",
+            response = requests.post(
+                f"{env('PASI_ENDPOINT')}/api/v1/fouls/ExtendFoulDueDate",
                 verify=VALIDATE_PASI_CERTIFICATION,
                 headers={
                     "authorization": f"Basic {env('PASI_AUTH_KEY')}",
@@ -163,7 +158,7 @@ class PASIHandler:
                 },
             )
 
-            if req.status_code == 400:
+            if response.status_code == 400:
                 raise HttpError(400, message="Due date not extendable")
 
         except HttpError as error:
@@ -171,7 +166,7 @@ class PASIHandler:
         except Exception as error:
             raise HttpError(500, message=str(error))
 
-        return req
+        return response
 
     @staticmethod
     def save_objection(objection: Objection, objection_id):
@@ -188,9 +183,8 @@ class PASIHandler:
         del sanitised_objection.metadata
 
         try:
-            req = request(
-                "POST",
-                url=f"{env('PASI_ENDPOINT')}/api/v1/Objections/SaveObjection",
+            response = requests.post(
+                f"{env('PASI_ENDPOINT')}/api/v1/Objections/SaveObjection",
                 verify=VALIDATE_PASI_CERTIFICATION,
                 headers={
                     "authorization": f"Basic {env('PASI_AUTH_KEY')}",
@@ -203,15 +197,15 @@ class PASIHandler:
                     "customerLanguage": customer_language,
                 },
             )
-            if req.status_code == 422:
-                raise HttpError(422, message=req.json())
+            if response.status_code == 422:
+                raise HttpError(422, message=response.json())
 
         except HttpError as error:
             raise error
         except Exception as error:
             raise HttpError(500, message=str(error))
 
-        return req
+        return response
 
 
 class DocumentHandler:
@@ -219,15 +213,14 @@ class DocumentHandler:
     @staticmethod
     def set_document_status(document_id: str, status_request: DocumentStatusRequest):
         try:
-            req = request(
-                "PATCH",
+            response = requests.patch(
                 f"{env('ATV_ENDPOINT')}{document_id}/",
                 headers={"x-api-key": env("ATV_API_KEY"), "accept": "application/json"},
                 data={"status": status_request.status.value},
                 files={"attachments": None},
             )
 
-            response_json = req.json()
+            response_json = response.json()
             if "id" not in response_json:
                 raise HttpError(404, message="Resource not found")
             return HttpResponse(200, "OK")

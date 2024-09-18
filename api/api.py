@@ -31,9 +31,9 @@ def get_foul_data(request, foul_number: int = 113148427, register_number: str = 
     """
     Retrieve foul data from PASI by foul number and register number
     """
-    req = PASIHandler.get_foul_data(foul_number, register_number)
+    response = PASIHandler.get_foul_data(foul_number, register_number)
 
-    return req.json()
+    return response.json()
 
 
 @router.get('/getTransferData', response={200: TransferDataResponse, 404: NotFoundError}, tags=['PASI'])
@@ -41,9 +41,9 @@ def get_transfer_data(request, transfer_number: int = 11720143, register_number:
     """
     Retrieve transfer data from PASI by transfer number and register number
     """
-    req = PASIHandler.get_transfer_data(transfer_number, register_number)
+    response = PASIHandler.get_transfer_data(transfer_number, register_number)
 
-    return req.json()
+    return response.json()
 
 
 @router.post('/extendDueDate', response={200: ExtendDueDateResponse, 400: None, 422: None}, tags=['PASI'])
@@ -55,21 +55,21 @@ def extend_due_date(request, foul_data: FoulRequest):
     del foul_data_for_pasi.metadata
 
     try:
-        req = PASIHandler.extend_foul_due_date(foul_data_for_pasi)
+        response = PASIHandler.extend_foul_due_date(foul_data_for_pasi)
     except Exception as error:
         raise ninja.errors.HttpError(500, message=str(error))
 
-    json = req.json()
+    response_json = response.json()
 
     ATVHandler.add_document({**response_json}, foul_data.foul_number, request.user.uuid, metadata={})
 
-    mail = extend_due_date_mail_constructor(new_due_date=json['dueDate'], lang=foul_data.metadata['lang'],
+    mail = extend_due_date_mail_constructor(new_due_date=response_json['dueDate'], lang=foul_data.metadata['lang'],
                                             mail_to=foul_data.metadata['email'])
     mail.send()
 
     _commit_to_audit_log(mail.to[0], "extend-due-date")
 
-    return req.json()
+    return response_json
 
 
 @router.post('/saveObjection', response={200: None, 204: None, 422: None}, tags=['PASI'])
@@ -103,8 +103,8 @@ def save_objection(request, objection: Objection):
     except Exception as error:
         raise ninja.errors.HttpError(500, message=str(error))
 
-    req = PASIHandler.save_objection(objection, objection_id)
-    return req.status_code
+    response = PASIHandler.save_objection(objection, objection_id)
+    return response.status_code
 
 
 @router.get('/getDocuments/', response={200: ATVDocumentResponse}, tags=['ATV'])
@@ -112,9 +112,9 @@ def get_atv_documents(request):
     """
     Retrieve all user documents from ATV with UUID
     """
-    req = ATVHandler.get_documents(request.user.uuid)
+    response = ATVHandler.get_documents(request.user.uuid)
 
-    return req
+    return response
 
 
 @router.get('/getDocumentByTransactionId/{id}', response={200: ATVDocumentResponse, 404: NotFoundError, 500: None},
@@ -123,8 +123,9 @@ def get_document_by_transaction_id(request, id):
     """
     Get document from ATV by foul ID
     """
-    req = ATVHandler.get_document_by_transaction_id(id)
-    return req
+    response = ATVHandler.get_document_by_transaction_id(id)
+
+    return response
 
 
 @router.patch('/setDocumentStatus', response={200: None, 401: None, 404: NotFoundError, 422: None},
@@ -136,9 +137,9 @@ def set_document_status(request, status_request: DocumentStatusRequest):
     find_document_by_id = ATVHandler.get_document_by_transaction_id(status_request.id)
     document_id = find_document_by_id["results"][0]['id']
 
-    req = DocumentHandler.set_document_status(document_id, status_request)
+    response = DocumentHandler.set_document_status(document_id, status_request)
 
-    if req.status_code == 200:
+    if response.status_code == 200:
         mail = mail_constructor(event=status_request.status, lang=find_document_by_id['results'][0]['metadata']['lang'],
                                 mail_to=find_document_by_id['results'][0]['content']['email'])
         mail.send()
