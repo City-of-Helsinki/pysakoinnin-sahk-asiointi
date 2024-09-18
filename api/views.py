@@ -4,22 +4,13 @@ from datetime import date
 
 import requests
 from dateutil.relativedelta import relativedelta
+from django.conf import settings
 from django.http import HttpResponse
-from environ import Env
 from ninja.errors import HttpError
 
 from api.schemas import DocumentStatusRequest, Objection
-from pysakoinnin_sahk_asiointi.utils import stringToBool
-
-env = Env()
 
 REQUEST_TIMEOUT = 10
-
-# Env variable comes as a string, and the auto convert seems not to work thus
-# manually convert values to bool
-VALIDATE_PASI_CERTIFICATION = stringToBool(
-    strBool=env("VALIDATE_PASI_CERTIFICATION"), default=True
-)
 
 LANGUAGES = {"fi": 0, "sv": 1, "en": 2}
 
@@ -37,8 +28,8 @@ class ATVHandler:
     def get_documents(user_id: str):
         try:
             response = requests.get(
-                f"{env('ATV_ENDPOINT')}?user_id={user_id}&page_size=999",
-                headers={"x-api-key": env("ATV_API_KEY")},
+                f"{settings.ATV_ENDPOINT}?user_id={user_id}&page_size=999",
+                headers={"x-api-key": settings.ATV_API_KEY},
                 timeout=REQUEST_TIMEOUT,
             )
             response_json = response.json()
@@ -52,8 +43,8 @@ class ATVHandler:
     def get_document_by_transaction_id(foul_id):
         try:
             response = requests.get(
-                f"{env('ATV_ENDPOINT')}?transaction_id={foul_id}",
-                headers={"x-api-key": env("ATV_API_KEY")},
+                f"{settings.ATV_ENDPOINT}?transaction_id={foul_id}",
+                headers={"x-api-key": settings.ATV_API_KEY},
                 timeout=REQUEST_TIMEOUT,
             )
             response_json = response.json()
@@ -69,8 +60,8 @@ class ATVHandler:
 
         try:
             response = requests.post(
-                f"{env('ATV_ENDPOINT')}",
-                headers={"x-api-key": env("ATV_API_KEY")},
+                settings.ATV_ENDPOINT,
+                headers={"x-api-key": settings.ATV_API_KEY},
                 data={
                     "user_id": user_id,
                     "draft": False,
@@ -97,10 +88,10 @@ class PASIHandler:
     def get_foul_data(foul_number, register_number):
         try:
             response = requests.post(
-                f"{env('PASI_ENDPOINT')}/api/v1/fouls/GetFoulData",
-                verify=VALIDATE_PASI_CERTIFICATION,
+                f"{settings.PASI_ENDPOINT}/api/v1/fouls/GetFoulData",
+                verify=settings.VALIDATE_PASI_CERTIFICATION,
                 headers={
-                    "authorization": f"Basic {env('PASI_AUTH_KEY')}",
+                    "authorization": f"Basic {settings.PASI_AUTH_KEY}",
                     "content-type": "application/json",
                     "x-api-version": "1.0",
                 },
@@ -124,10 +115,10 @@ class PASIHandler:
     def get_transfer_data(transfer_number: int, register_number: str):
         try:
             response = requests.post(
-                f"{env('PASI_ENDPOINT')}/api/v1/Transfers/GetTransferData",
-                verify=VALIDATE_PASI_CERTIFICATION,
+                f"{settings.PASI_ENDPOINT}/api/v1/Transfers/GetTransferData",
+                verify=settings.VALIDATE_PASI_CERTIFICATION,
                 headers={
-                    "authorization": f"Basic {env('PASI_AUTH_KEY')}",
+                    "authorization": f"Basic {settings.PASI_AUTH_KEY}",
                     "content-type": "application/json",
                     "x-api-version": "1.0",
                 },
@@ -150,10 +141,10 @@ class PASIHandler:
     def extend_foul_due_date(foul_data):
         try:
             response = requests.post(
-                f"{env('PASI_ENDPOINT')}/api/v1/fouls/ExtendFoulDueDate",
-                verify=VALIDATE_PASI_CERTIFICATION,
+                f"{settings.PASI_ENDPOINT}/api/v1/fouls/ExtendFoulDueDate",
+                verify=settings.VALIDATE_PASI_CERTIFICATION,
                 headers={
-                    "authorization": f"Basic {env('PASI_AUTH_KEY')}",
+                    "authorization": f"Basic {settings.PASI_AUTH_KEY}",
                     "content-type": "application/json",
                     "x-api-version": "1.0",
                     "Connection": "keep-alive",
@@ -192,10 +183,10 @@ class PASIHandler:
 
         try:
             response = requests.post(
-                f"{env('PASI_ENDPOINT')}/api/v1/Objections/SaveObjection",
-                verify=VALIDATE_PASI_CERTIFICATION,
+                f"{settings.PASI_ENDPOINT}/api/v1/Objections/SaveObjection",
+                verify=settings.VALIDATE_PASI_CERTIFICATION,
                 headers={
-                    "authorization": f"Basic {env('PASI_AUTH_KEY')}",
+                    "authorization": f"Basic {settings.PASI_AUTH_KEY}",
                     "content-type": "application/json",
                     "x-api-version": "1.0",
                 },
@@ -223,8 +214,8 @@ class DocumentHandler:
     def set_document_status(document_id: str, status_request: DocumentStatusRequest):
         try:
             response = requests.patch(
-                f"{env('ATV_ENDPOINT')}{document_id}/",
-                headers={"x-api-key": env("ATV_API_KEY"), "accept": "application/json"},
+                f"{settings.ATV_ENDPOINT}{document_id}/",
+                headers={"x-api-key": settings.ATV_API_KEY, "accept": "application/json"},
                 data={"status": status_request.status.value},
                 files={"attachments": None},
                 timeout=REQUEST_TIMEOUT,
