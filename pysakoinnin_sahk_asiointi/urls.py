@@ -8,6 +8,7 @@ from ninja.errors import HttpError
 from ninja.security import HttpBearer
 
 from api.api import router as api_router
+from api.parsers import StripParser
 from gdpr_api.views import router as gdrp_api_router
 
 
@@ -23,7 +24,12 @@ class AuthBearer(HttpBearer):
             raise HttpError(401, message=str(error))
 
 
-api = NinjaAPI(title="Pysäköinnin asiointi", version="1.0.0", auth=AuthBearer())
+api = NinjaAPI(
+    title="Pysäköinnin asiointi",
+    version="1.0.0",
+    auth=AuthBearer(),
+    parser=StripParser(),
+)
 
 api.add_router("/", api_router)
 api.add_router("/gdpr", gdrp_api_router)
