@@ -18,6 +18,7 @@ env = Env(
     SECRET_KEY=(str, ""),
     ALLOWED_HOSTS=(list, []),
     DATABASE_URL=(str, "postgres://parking-user:root@localhost:5432/parking-service"),
+    DATABASE_PASSWORD=(str, ""),
     SENTRY_DSN=(str, ""),
     SENTRY_TRACE_SAMPLE_RATE=(float, 0.0),
     ATV_API_KEY=(str, ""),
@@ -168,6 +169,9 @@ WSGI_APPLICATION = "pysakoinnin_sahk_asiointi.wsgi.application"
 
 
 DATABASES = {"default": env.db()}
+
+if env("DATABASE_PASSWORD"):
+    DATABASES["default"]["PASSWORD"] = env("DATABASE_PASSWORD")
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
