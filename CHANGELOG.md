@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.1.0](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v1.0.4...pysakoinnin-sahk-asiointi-v1.1.0) (2024-10-08)
+
+
+### Features
+
+* Add django-heluser's back-channel logout ([62b7004](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/62b7004166b57b363f897794a976f8e43b9ee13c))
+* Add timeout to all requests ([c6541b8](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/c6541b84098cad98f07d7862708cefccfa47f16d))
+* Add timeout to virus scanning request ([2c2d044](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/2c2d044fe20e2b5c46f745535eeef93975c3e2b1))
+* **settings:** Use DATABASE_PASSWORD if present in env ([401128b](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/401128bb126580072972d3668366def2c3b13627))
+* Strip api parameter values ([88154c5](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/88154c5cbc141668e63663dee7e88bf3f71d888d))
+
+
+### Dependencies
+
+* Bump requirements with security fixes ([15f4e88](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/15f4e888266381ab8425df525c0276bbfda084f3))
+* Bump urllib3 from 2.2.1 to 2.2.2 ([b82346b](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/b82346b68e86667cc9258f0e636ff1da19ba4338))
+
 ## [1.0.4](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v1.0.3...pysakoinnin-sahk-asiointi-v1.0.4) (2024-06-19)
 
 
