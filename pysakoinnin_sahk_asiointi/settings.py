@@ -65,12 +65,14 @@ sentry_deny_list = DEFAULT_DENYLIST + [
     "email",
     "registerNumber",
     "register_number",
+    "request",  # WSGIRequest.__str__ may contain query params
+    "body",  # request body encoded in JSON in urllib3
 ]
 
 sentry_sdk.init(
     dsn=env("SENTRY_DSN"),
     integrations=[DjangoIntegration()],
-    event_scrubber=EventScrubber(denylist=sentry_deny_list),
+    event_scrubber=EventScrubber(denylist=sentry_deny_list, recursive=True),
     traces_sample_rate=env("SENTRY_TRACE_SAMPLE_RATE"),
     before_send=sentry_scrubber,
 )
