@@ -67,6 +67,7 @@ sentry_deny_list = DEFAULT_DENYLIST + [
     "register_number",
     "request",  # WSGIRequest.__str__ may contain query params
     "body",  # request body encoded in JSON in urllib3
+    "httplib_request_kw",  # same as "body"
 ]
 
 sentry_sdk.init(
