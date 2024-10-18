@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.1.1](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v1.1.0...pysakoinnin-sahk-asiointi-v1.1.1) (2024-10-18)
+
+
+### Bug Fixes
+
+* Add 'httplib_request_kw' to sentry scrublist ([f0bf81f](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/f0bf81fa85ffe5cc20980038b85857627719677c))
+* Sentry scrub recursively and deny "request" and "body" ([124a7ea](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/124a7ea96a8dcdaec4693e422a649aa1f134300c))
+
 ## [1.1.0](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v1.0.4...pysakoinnin-sahk-asiointi-v1.1.0) (2024-10-08)
 
 
