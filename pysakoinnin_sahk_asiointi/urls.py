@@ -19,7 +19,7 @@ class AuthBearer(HttpBearer):
             user_auth = authenticator.authenticate(request=request)
             if user_auth is not None:
                 request.user = user_auth.user
-                return True
+                return user_auth
         except Exception as error:
             raise HttpError(401, message=str(error))
 
