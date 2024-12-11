@@ -91,6 +91,9 @@ requests==2.32.3
     # via
     #   django-anymail
     #   django-helusers
+    #   requests-mock
+requests-mock==1.12.1
+    # via -r requirements.in
 rsa==4.9
     # via python-jose
 sentry-sdk==2.14.0

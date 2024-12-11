@@ -8,6 +8,7 @@ pytest-cov
 psycopg2
 pyclamd
 python-dateutil
+requests-mock
 sentry-sdk
 gunicorn
 django-anymail
