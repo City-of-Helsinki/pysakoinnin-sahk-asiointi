@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.1.1](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v1.1.0...pysakoinnin-sahk-asiointi-v1.1.1) (2024-12-17)
+
+
+### Bug Fixes
+
+* Add 'httplib_request_kw' to sentry scrublist ([f0bf81f](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/f0bf81fa85ffe5cc20980038b85857627719677c))
+* Make GDPR api more compliant with standard ([8cf6957](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/8cf69573cb00dcb6d51b5df11b7dd26748eb0fc3))
+* Sentry scrub recursively and deny "request" and "body" ([124a7ea](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/124a7ea96a8dcdaec4693e422a649aa1f134300c))
+* Support lists in token auth settings ([149adf2](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/149adf20f3160b98c70ad13b503ef8c28559c2f3))
+
+
+### Dependencies
+
+* Bump django from 4.2.16 to 4.2.17 ([029bebf](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/029bebfa8d40f3118ecabfbaa08029ed29b5d0aa))
+
 ## [1.1.0](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v1.0.4...pysakoinnin-sahk-asiointi-v1.1.0) (2024-10-08)
 
 
