@@ -81,7 +81,6 @@ class ATVHandler:
 
 
 class PASIHandler:
-
     @staticmethod
     def get_foul_data(foul_number, register_number):
         try:
@@ -207,13 +206,15 @@ class PASIHandler:
 
 
 class DocumentHandler:
-
     @staticmethod
     def set_document_status(document_id: str, status_request: DocumentStatusRequest):
         try:
             response = requests.patch(
                 f"{settings.ATV_ENDPOINT}{document_id}/",
-                headers={"x-api-key": settings.ATV_API_KEY, "accept": "application/json"},
+                headers={
+                    "x-api-key": settings.ATV_API_KEY,
+                    "accept": "application/json",
+                },
                 data={"status": status_request.status.value},
                 files={"attachments": None},
                 timeout=settings.REQUEST_TIMEOUT,

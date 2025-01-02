@@ -1,10 +1,12 @@
 from unittest.mock import patch
+
 from django.test import TestCase
+
 from api.tests.mocks import (
-    MockResponse,
+    MOCK_ATV_DOCUMENT_RESPONSE,
     MOCK_FOUL,
     MOCK_TRANSFER,
-    MOCK_ATV_DOCUMENT_RESPONSE,
+    MockResponse,
 )
 
 API_ROOT = "/api/v1"

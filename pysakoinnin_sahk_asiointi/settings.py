@@ -6,7 +6,7 @@ import sentry_sdk
 from corsheaders.defaults import default_headers
 from environ import Env
 from sentry_sdk.integrations.django import DjangoIntegration
-from sentry_sdk.scrubber import EventScrubber, DEFAULT_DENYLIST
+from sentry_sdk.scrubber import DEFAULT_DENYLIST, EventScrubber
 
 from pysakoinnin_sahk_asiointi.utils import sentry_scrubber
 

@@ -1,8 +1,7 @@
 import datetime
 
 from helusers.settings import api_token_auth_settings
-from jose import jwk
-from jose import jwt
+from jose import jwk, jwt
 from jose.constants import ALGORITHMS
 
 
@@ -67,7 +66,7 @@ RQIDAQAB
 
 
 def get_api_token_for_user_with_scopes(
-        user_uuid, scopes: list, requests_mock, amr: str = None
+    user_uuid, scopes: list, requests_mock, amr: str = None
 ):
     """Build a proper auth token with desired scopes."""
     audience = api_token_auth_settings.AUDIENCE[0]

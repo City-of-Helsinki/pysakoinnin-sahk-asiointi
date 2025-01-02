@@ -24,16 +24,18 @@ def _commit_to_audit_log(mail_to, action):
     Audit log events are written to the "audit" logger at "INFO" level.
     """
     current_time = _now()
-    message = {"audit_event": {
-        "origin": ORIGIN,
-        "action": action,
-        "date_time_epoch": int(current_time.timestamp() * 1000),
-        "date_time": _iso8601_date(current_time),
-        "actor": {
-            "profile_id": None,
+    message = {
+        "audit_event": {
+            "origin": ORIGIN,
+            "action": action,
+            "date_time_epoch": int(current_time.timestamp() * 1000),
+            "date_time": _iso8601_date(current_time),
+            "actor": {
+                "profile_id": None,
+            },
+            "operation": "send_mail",
+            "target": mail_to,
         },
-        "operation": 'send_mail',
-        "target": mail_to
-    }, }
+    }
 
     AuditLog.objects.create(message=message)

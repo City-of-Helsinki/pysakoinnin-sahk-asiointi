@@ -1,4 +1,4 @@
-"""pysakoinnin_sahk_asiointi URL Configuration """
+"""pysakoinnin_sahk_asiointi URL Configuration"""
 
 from django.http import HttpRequest, HttpResponse
 from django.urls import include, path
