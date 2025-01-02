@@ -3,12 +3,9 @@ django-cors-headers
 django-environ
 django-ninja<1
 django-helusers
-pytest-django
-pytest-cov
 psycopg2
 pyclamd
 python-dateutil
-requests-mock
 sentry-sdk
 gunicorn
 django-anymail
