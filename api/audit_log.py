@@ -16,8 +16,7 @@ def _iso8601_date(time: datetime) -> str:
     return f"{time.replace(tzinfo=None).isoformat(sep='T', timespec='milliseconds')}Z"
 
 
-def _commit_to_audit_log(request, response
-                         ):
+def _commit_to_audit_log(request, response):
     """
     Write an event to the audit log.
     Each audit log event has an actor (or None for system events),
@@ -26,17 +25,19 @@ def _commit_to_audit_log(request, response
     Audit log events are written to the "audit" logger at "INFO" level.
     """
     current_time = _now()
-    message = {"audit_event": {
-        "origin": ORIGIN,
-        "status": _get_status(response),
-        "date_time_epoch": int(current_time.timestamp() * 1000),
-        "date_time": _iso8601_date(current_time),
-        "actor": {
-            "profile_id": _get_profile_id(request),
+    message = {
+        "audit_event": {
+            "origin": ORIGIN,
+            "status": _get_status(response),
+            "date_time_epoch": int(current_time.timestamp() * 1000),
+            "date_time": _iso8601_date(current_time),
+            "actor": {
+                "profile_id": _get_profile_id(request),
+            },
+            "operation": _get_operation_name(request),
+            "target": _get_target_uri(request),
         },
-        "operation": _get_operation_name(request),
-        "target": _get_target_uri(request)
-    }, }
+    }
 
     AuditLog.objects.create(message=message)
 
@@ -44,7 +45,7 @@ def _commit_to_audit_log(request, response
 def _get_target_uri(request):
     return request.path
 
-  
+
 def _get_profile_id(request):
     if hasattr(request.user, "uuid"):
         return str(request.user.uuid)
@@ -53,13 +54,13 @@ def _get_profile_id(request):
 
 
 def _get_operation_name(request):
-    if request.method == 'GET':
+    if request.method == "GET":
         return Operation.READ.value
-    elif request.method == 'POST':
+    elif request.method == "POST":
         return Operation.CREATE.value
-    elif request.method == 'PUT' or 'PATCH':
+    elif request.method == "PUT" or "PATCH":
         return Operation.UPDATE.value
-    elif request.method == 'DELETE':
+    elif request.method == "DELETE":
         return Operation.DELETE.value
 
 

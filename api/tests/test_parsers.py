@@ -1,5 +1,6 @@
-from api.parsers import StripParser
 from django.utils.datastructures import MultiValueDict
+
+from api.parsers import StripParser
 
 
 def test_strip_parser_removes_whitespace_from_query_dict(rf):

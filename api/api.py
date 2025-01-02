@@ -6,12 +6,19 @@ from django.http import HttpRequest, HttpResponse
 from ninja import Router, Schema
 from ninja.security import HttpBearer
 
-from api.schemas import FoulDataResponse, ATVDocumentResponse, TransferDataResponse, ExtendDueDateResponse, Objection, \
-    DocumentStatusRequest, FoulRequest
+from api.schemas import (
+    ATVDocumentResponse,
+    DocumentStatusRequest,
+    ExtendDueDateResponse,
+    FoulDataResponse,
+    FoulRequest,
+    Objection,
+    TransferDataResponse,
+)
 from api.utils import virus_scan_attachment_file
-from api.views import PASIHandler, ATVHandler, DocumentHandler
+from api.views import ATVHandler, DocumentHandler, PASIHandler
 from mail_service.audit_log import _commit_to_audit_log
-from mail_service.utils import mail_constructor, extend_due_date_mail_constructor
+from mail_service.utils import extend_due_date_mail_constructor, mail_constructor
 
 router = Router()
 
@@ -26,8 +33,12 @@ class NotFoundError(Schema):
     detail: str = "Resource not found"
 
 
-@router.get('/getFoulData', response={200: FoulDataResponse, 404: NotFoundError}, tags=['PASI'])
-def get_foul_data(request, foul_number: int = 113148427, register_number: str = "HKR-999"):
+@router.get(
+    "/getFoulData", response={200: FoulDataResponse, 404: NotFoundError}, tags=["PASI"]
+)
+def get_foul_data(
+    request, foul_number: int = 113148427, register_number: str = "HKR-999"
+):
     """
     Retrieve foul data from PASI by foul number and register number
     """
@@ -36,8 +47,14 @@ def get_foul_data(request, foul_number: int = 113148427, register_number: str = 
     return response.json()
 
 
-@router.get('/getTransferData', response={200: TransferDataResponse, 404: NotFoundError}, tags=['PASI'])
-def get_transfer_data(request, transfer_number: int = 11720143, register_number: str = "HKR-999"):
+@router.get(
+    "/getTransferData",
+    response={200: TransferDataResponse, 404: NotFoundError},
+    tags=["PASI"],
+)
+def get_transfer_data(
+    request, transfer_number: int = 11720143, register_number: str = "HKR-999"
+):
     """
     Retrieve transfer data from PASI by transfer number and register number
     """
@@ -46,7 +63,11 @@ def get_transfer_data(request, transfer_number: int = 11720143, register_number:
     return response.json()
 
 
-@router.post('/extendDueDate', response={200: ExtendDueDateResponse, 400: None, 422: None}, tags=['PASI'])
+@router.post(
+    "/extendDueDate",
+    response={200: ExtendDueDateResponse, 400: None, 422: None},
+    tags=["PASI"],
+)
 def extend_due_date(request, foul_data: FoulRequest):
     """
     Extend foul due date by 30 days
@@ -61,10 +82,15 @@ def extend_due_date(request, foul_data: FoulRequest):
 
     response_json = response.json()
 
-    ATVHandler.add_document({**response_json}, foul_data.foul_number, request.user.uuid, metadata={})
+    ATVHandler.add_document(
+        {**response_json}, foul_data.foul_number, request.user.uuid, metadata={}
+    )
 
-    mail = extend_due_date_mail_constructor(new_due_date=response_json['dueDate'], lang=foul_data.metadata['lang'],
-                                            mail_to=foul_data.metadata['email'])
+    mail = extend_due_date_mail_constructor(
+        new_due_date=response_json["dueDate"],
+        lang=foul_data.metadata["lang"],
+        mail_to=foul_data.metadata["email"],
+    )
     mail.send()
 
     _commit_to_audit_log(mail.to[0], "extend-due-date")
@@ -72,7 +98,9 @@ def extend_due_date(request, foul_data: FoulRequest):
     return response_json
 
 
-@router.post('/saveObjection', response={200: None, 204: None, 422: None}, tags=['PASI'])
+@router.post(
+    "/saveObjection", response={200: None, 204: None, 422: None}, tags=["PASI"]
+)
 def save_objection(request, objection: Objection):
     """
     Send a new objection to PASI
@@ -83,7 +111,9 @@ def save_objection(request, objection: Objection):
     elif hasattr(objection, "transferNumber") and objection.transferNumber is not None:
         objection_id = objection.transferNumber
     else:
-        raise ninja.errors.HttpError(422, message="Foul number or transfer number missing")
+        raise ninja.errors.HttpError(
+            422, message="Foul number or transfer number missing"
+        )
 
     if objection.attachments is not None and len(objection.attachments) > 0:
         try:
@@ -97,9 +127,12 @@ def save_objection(request, objection: Objection):
         del attachment.data
 
     try:
-        ATVHandler.add_document(content=objection_without_attachment_data.dict(), document_id=objection_id,
-                                user_id=request.user.uuid,
-                                metadata={**objection.metadata})
+        ATVHandler.add_document(
+            content=objection_without_attachment_data.dict(),
+            document_id=objection_id,
+            user_id=request.user.uuid,
+            metadata={**objection.metadata},
+        )
     except Exception as error:
         raise ninja.errors.HttpError(500, message=str(error))
 
@@ -107,7 +140,7 @@ def save_objection(request, objection: Objection):
     return response.status_code
 
 
-@router.get('/getDocuments/', response={200: ATVDocumentResponse}, tags=['ATV'])
+@router.get("/getDocuments/", response={200: ATVDocumentResponse}, tags=["ATV"])
 def get_atv_documents(request):
     """
     Retrieve all user documents from ATV with UUID
@@ -117,8 +150,11 @@ def get_atv_documents(request):
     return response
 
 
-@router.get('/getDocumentByTransactionId/{id}', response={200: ATVDocumentResponse, 404: NotFoundError, 500: None},
-            tags=["ATV"])
+@router.get(
+    "/getDocumentByTransactionId/{id}",
+    response={200: ATVDocumentResponse, 404: NotFoundError, 500: None},
+    tags=["ATV"],
+)
 def get_document_by_transaction_id(request, id):
     """
     Get document from ATV by foul ID
@@ -128,20 +164,27 @@ def get_document_by_transaction_id(request, id):
     return response
 
 
-@router.patch('/setDocumentStatus', response={200: None, 401: None, 404: NotFoundError, 422: None},
-              tags=['Pysaköinnin asiointi'], auth=ApiKeyAuth())
+@router.patch(
+    "/setDocumentStatus",
+    response={200: None, 401: None, 404: NotFoundError, 422: None},
+    tags=["Pysaköinnin asiointi"],
+    auth=ApiKeyAuth(),
+)
 def set_document_status(request, status_request: DocumentStatusRequest):
     """
     Update document status with ID and status
     """
     find_document_by_id = ATVHandler.get_document_by_transaction_id(status_request.id)
-    document_id = find_document_by_id["results"][0]['id']
+    document_id = find_document_by_id["results"][0]["id"]
 
     response = DocumentHandler.set_document_status(document_id, status_request)
 
     if response.status_code == 200:
-        mail = mail_constructor(event=status_request.status, lang=find_document_by_id['results'][0]['metadata']['lang'],
-                                mail_to=find_document_by_id['results'][0]['content']['email'])
+        mail = mail_constructor(
+            event=status_request.status,
+            lang=find_document_by_id["results"][0]["metadata"]["lang"],
+            mail_to=find_document_by_id["results"][0]["content"]["email"],
+        )
         mail.send()
         _commit_to_audit_log(mail.to[0], "set-document-status")
         return HttpResponse(200)

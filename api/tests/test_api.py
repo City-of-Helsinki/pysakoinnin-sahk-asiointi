@@ -1,14 +1,16 @@
 from unittest.mock import patch
+
 from django.test import TestCase
+from ninja import Schema, errors
+
+from api import api
 from api.tests.mocks import (
-    MockResponse,
-    MOCK_FOUL,
-    MOCK_TRANSFER,
     MOCK_ATV_DOCUMENT_RESPONSE,
     MOCK_DUEDATE,
+    MOCK_FOUL,
+    MOCK_TRANSFER,
+    MockResponse,
 )
-from api import api
-from ninja import Schema, errors
 
 
 # These classes are based on schemas defined in api.schemas
