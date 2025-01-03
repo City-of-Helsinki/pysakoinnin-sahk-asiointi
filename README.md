@@ -72,4 +72,4 @@ Note: psycopg2 may require a local installation of PostgreSQL. Install for macOS
 ## Generating a new requirements.txt
 
 - Install [pip-tools](https://github.com/jazzband/pip-tools)
-- Run `pip-compile` to generate a new requirements.txt file 
+- Run `pip-compile` to generate a new requirements.txt file
