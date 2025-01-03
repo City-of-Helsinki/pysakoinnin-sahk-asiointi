@@ -1,4 +1,5 @@
 import datetime
+import logging
 from zoneinfo import ZoneInfo
 
 from anymail.message import attach_inline_image_file
@@ -11,6 +12,7 @@ from pysakoinnin_sahk_asiointi import settings
 QUEUE_EMAIL_CONNECTION = settings.EMAIL_BACKEND
 SEND_INSTANTLY_EMAIL_CONNECTION = settings.MAILER_EMAIL_BACKEND
 
+logger = logging.getLogger(__name__)
 headers = {
     "FI": "Uusi tapahtuma Pysäköinnin Asioinnissa",
     "SV": "Nya händelser i parkering e-tjänsten",
@@ -49,39 +51,49 @@ def mail_constructor(event: str, lang: str, mail_to: str):
     if lang not in headers:
         lang = "FI"
 
-    bodyTemplates = {
-        "FI": """<p>Pysäköinnin asiointiin on saapunut uusi tapahtuma: <i>{event}</i> klo {now}.
-                <br>
-                Kirjaudu pysäköinnin sähköiseen asiointiin https://pysakoinninasiointi.hel.fi
-                <br>
-                <br>
-                (Tämä on automaattinen viesti jonka on lähettänyt Helsingin kaupungin pysäköinninvalvonnan sähköinen
-                asiointipalvelu. Älä vastaa tähän viestiin.)</p>""".format(
-            event=events[event][lang.upper()], now=formatted_time
-        ),
-        "SV": """<p>Nya händelser har kommit in i parkering e-tjänsten: <i>{event}</i> på {now}.
-                <br>
-                Logga in på parkerings e-tjänster https://pysakoinninasiointi.hel.fi
-                <br>
-                <br>
-                (Detta är ett automatiskt meddelande som skickas av Helsingfors stads parkeringsövervaknings e-tjänst.
-                Svara inte på detta meddelande.)</p>""".format(
-            event=events[event][lang.upper()], now=formatted_time
-        ),
-        "EN": """<p>New event has arrived in the Parking e-service: <i>{event}</i> at {now}.
-                    <br>
-                    Sign in to parking e-services https://pysakoinninasiointi.hel.fi
-                    <br>
-                    <br>
-                (This is an automated message sent by the City of Helsinki parking control e-service.
-                Do not reply to this message.)</p>""".format(
-            event=events[event][lang.upper()], now=formatted_time
-        ),
+    body_templates = {
+        "FI": (
+            "<p>"
+            "Pysäköinnin asiointiin on saapunut uusi tapahtuma:"
+            " <i>{event}</i> klo {now}."
+            "<br>"
+            "Kirjaudu pysäköinnin sähköiseen asiointiin"
+            " https://pysakoinninasiointi.hel.fi"
+            "<br>"
+            "<br>"
+            "(Tämä on automaattinen viesti jonka on lähettänyt Helsingin kaupungin"
+            " pysäköinninvalvonnan sähköinen asiointipalvelu. Älä vastaa tähän"
+            " viestiin.)"
+            "</p>"
+        ).format(event=events[event][lang.upper()], now=formatted_time),
+        "SV": (
+            "<p>"
+            "Nya händelser har kommit in i parkering e-tjänsten:"
+            " <i>{event}</i> på {now}."
+            "<br>"
+            "Logga in på parkerings e-tjänster https://pysakoinninasiointi.hel.fi"
+            "<br>"
+            "<br>"
+            "(Detta är ett automatiskt meddelande som skickas av Helsingfors stads"
+            " parkeringsövervaknings e-tjänst. Svara inte på detta meddelande.)"
+            "</p>"
+        ).format(event=events[event][lang.upper()], now=formatted_time),
+        "EN": (
+            "<p>"
+            "New event has arrived in the Parking e-service: <i>{event}</i> at {now}."
+            "<br>"
+            "Sign in to parking e-services https://pysakoinninasiointi.hel.fi"
+            "<br>"
+            "<br>"
+            "(This is an automated message sent by the City of Helsinki parking control"
+            " e-service. Do not reply to this message.)"
+            "</p>"
+        ).format(event=events[event][lang.upper()], now=formatted_time),
     }
 
     msg = EmailMultiAlternatives(
         headers[lang.upper()],
-        bodyTemplates[lang.upper()],
+        body_templates[lang.upper()],
         "Pysäköinnin Asiointi <noreply@hel.fi>",
         [mail_to],
         connection=connection,
@@ -96,8 +108,8 @@ def mail_constructor(event: str, lang: str, mail_to: str):
     <h1>{header}</h1>
     {body}
     </body>
-    </html>""".format(
-        header=headers[lang.upper()], body=bodyTemplates[lang.upper()], logo=logo
+    </html>""".format(  # noqa: E501
+        header=headers[lang.upper()], body=body_templates[lang.upper()], logo=logo
     )
 
     msg.attach_alternative(html, "text/html")
@@ -110,23 +122,23 @@ def extend_due_date_mail_constructor(lang: str, new_due_date: str, mail_to):
     formatted_time = datetime.datetime.strftime(date, "%d.%m.%Y")
     connection = get_connection(SEND_INSTANTLY_EMAIL_CONNECTION)
 
-    bodyTemplates = {
-        "FI": """<p>Eräpäivää siirretty, uusi eräpäivä on {new_due_date}""".format(
+    body_templates = {
+        "FI": "<p>Eräpäivää siirretty, uusi eräpäivä on {new_due_date}".format(
             new_due_date=formatted_time
         ),
-        "SV": """<p>Förfallodagen har skjutits upp. Nytt förfallodag är {new_due_date}""".format(
-            new_due_date=formatted_time
-        ),
-        "EN": """<p>The due date has been postponed. New due date is {new_due_date}""".format(
-            new_due_date=formatted_time
-        ),
+        "SV": (
+            "<p>Förfallodagen har skjutits upp. Nytt förfallodag är {new_due_date}"
+        ).format(new_due_date=formatted_time),
+        "EN": (
+            "<p>The due date has been postponed. New due date is {new_due_date}"
+        ).format(new_due_date=formatted_time),
     }
-    if lang not in bodyTemplates:
+    if lang not in body_templates:
         lang = "FI"
 
     msg = EmailMultiAlternatives(
         headers[lang.upper()],
-        bodyTemplates[lang.upper()],
+        body_templates[lang.upper()],
         "Pysäköinnin Asiointi <noreply@hel.fi>",
         [mail_to],
         connection=connection,
@@ -141,8 +153,8 @@ def extend_due_date_mail_constructor(lang: str, new_due_date: str, mail_to):
     <h1>{header}</h1>
     {body}
     </body>
-    </html>""".format(
-        header=headers[lang.upper()], body=bodyTemplates[lang.upper()], logo=logo
+    </html>""".format(  # noqa: E501
+        header=headers[lang.upper()], body=body_templates[lang.upper()], logo=logo
     )
 
     msg.attach_alternative(html, "text/html")
@@ -152,7 +164,7 @@ def extend_due_date_mail_constructor(lang: str, new_due_date: str, mail_to):
 
 def custom_mailer_error_handler(connection, message, exc):
     combined_message = f"Error: {exc} Message: {message}"
-    print(combined_message)
+    logger.warning(message, exc_info=exc)
     audit_log._commit_to_audit_log(mail_to="Unknown", action=combined_message)
 
     # call main handler since we just want to log stuff here

@@ -179,7 +179,7 @@ if env("DATABASE_PASSWORD"):
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",  # noqa: E501
     },
     {
         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
@@ -201,7 +201,8 @@ MAILER_EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
 MAILER_ERROR_HANDLER = "mail_service.utils.custom_mailer_error_handler"
 
-# After how many failed attempts email is not being put back to queue with retry_deferred command
+# After how many failed attempts email is not being put back to queue with
+# retry_deferred command
 MAILER_EMAIL_MAX_RETRIES = 5
 
 EMAIL_HOST = "relay.hel.fi"
