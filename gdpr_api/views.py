@@ -77,15 +77,24 @@ def delete_user_info(request, user_id: str):
                 {
                     "code": "LEGAL_OBLIGATION",
                     "message": {
-                        "en": "It is not possible to delete data. The processing is necessary for "
-                        "compliance with a legal obligation of the controller "
-                        "(EU General Data Protection Regulation Article 6 C).",
-                        "fi": "Tietojen poisto ei ole mahdollista. Tietojen käsittely on tarpeen rekisterinpitäjän "
-                        "lakisääteisen velvoitteen noudattamiseksi "
-                        "(EU:n yleisen tietosuoja-asetus 6 artikla C-kohta).",
-                        "sv": "Det är inte möjligt att radera uppgifter. Behandlingen är "
-                        "nödvändig för att uppfylla en rättslig förpliktelse för den "
-                        "personuppgiftsansvarige (EU:s allmänna dataskyddsförordning Artikle 6 C).",
+                        "en": (
+                            "It is not possible to delete data. The processing is"
+                            " necessary for compliance with a legal obligation of the"
+                            " controller (EU General Data Protection Regulation Article"
+                            " 6 C)."
+                        ),
+                        "fi": (
+                            "Tietojen poisto ei ole mahdollista. Tietojen käsittely on"
+                            " tarpeen rekisterinpitäjän lakisääteisen velvoitteen"
+                            " noudattamiseksi (EU:n yleisen tietosuoja-asetus 6 artikla"
+                            " C-kohta)."
+                        ),
+                        "sv": (
+                            "Det är inte möjligt att radera uppgifter. Behandlingen är"
+                            " nödvändig för att uppfylla en rättslig förpliktelse för"
+                            " den personuppgiftsansvarige (EU:s allmänna"
+                            " dataskyddsförordning Artikle 6 C)."
+                        ),
                     },
                 }
             ]

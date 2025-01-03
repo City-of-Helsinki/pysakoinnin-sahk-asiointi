@@ -7,7 +7,8 @@ def sentry_scrubber(*args, **kwargs):
     if not event:
         return
 
-    # Objection are stored in stacktrace and might contain sensitive data, and we want it to be scrubbed.
+    # Objection are stored in stacktrace and might contain sensitive data, and we want
+    # it to be scrubbed.
     lookup_objects = [
         "objection",
         "sanitised_objection",

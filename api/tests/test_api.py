@@ -107,8 +107,8 @@ class TestApiFunctions(TestCase):
             200, MOCK_ATV_DOCUMENT_RESPONSE
         )
 
-        randomId = 12345
-        result = api.get_document_by_transaction_id(request=None, id=randomId)
+        random_id = 12345
+        result = api.get_document_by_transaction_id(request=None, id=random_id)
 
         assert result.json() == MOCK_ATV_DOCUMENT_RESPONSE
 
@@ -120,7 +120,10 @@ class TestApiFunctions(TestCase):
         save_objection_mock.return_value = MockResponse(200, {})
 
         objection = Objection()
-        save_obj = lambda: api.save_objection(request=self.request, objection=objection)
+
+        def save_obj():
+            return api.save_objection(request=self.request, objection=objection)
+
         self.assertEqual(200, save_obj())
 
         # Raise httperror 422
@@ -141,7 +144,9 @@ class TestApiFunctions(TestCase):
         extend_foul_due_date_mock.return_value = MockResponse(200, MOCK_DUEDATE)
 
         foul_obj = FoulRequest()
-        extend = lambda: api.extend_due_date(request=self.request, foul_data=foul_obj)
+
+        def extend():
+            return api.extend_due_date(request=self.request, foul_data=foul_obj)
 
         # NOTE to enable this, sending emails needs to be mocked or skipped in test runs.
         # You could also use MAILER_EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend" in test runs
