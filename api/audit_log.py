@@ -58,7 +58,7 @@ def _get_operation_name(request):
         return Operation.READ.value
     elif request.method == "POST":
         return Operation.CREATE.value
-    elif request.method == "PUT" or "PATCH":
+    elif request.method in ("PUT", "PATCH"):
         return Operation.UPDATE.value
     elif request.method == "DELETE":
         return Operation.DELETE.value
