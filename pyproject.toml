@@ -26,4 +26,4 @@ select = [
 "api/tests/test_api.py" = ["N815"]
 
 [tool.pytest.ini_options]
-DJANGO_SETTINGS_MODULE = "pysakoinnin_sahk_asiointi.settings"
+DJANGO_SETTINGS_MODULE = "pysakoinnin_sahk_asiointi.test_settings"
