@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.2](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v1.1.1...pysakoinnin-sahk-asiointi-v1.1.2) (2025-01-14)
+
+
+### Bug Fixes
+
+* Constant condition in _get_operation_name ([f3707a7](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/f3707a7eae0753579f7eac3b57ddb2ad68b8b992))
+
 ## [1.1.1](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v1.1.0...pysakoinnin-sahk-asiointi-v1.1.1) (2024-12-17)
 
 
