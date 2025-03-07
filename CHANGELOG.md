@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.1.2](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v1.1.1...pysakoinnin-sahk-asiointi-v1.1.2) (2025-03-07)
+
+
+### Bug Fixes
+
+* Constant condition in _get_operation_name ([f3707a7](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/f3707a7eae0753579f7eac3b57ddb2ad68b8b992))
+
+
+### Dependencies
+
+* Bump cryptography from 43.0.1 to 44.0.1 ([2eb33f0](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/2eb33f0e8d8a0e95d15bb61fcb406b39302833d0))
+* Bump django from 4.2.17 to 4.2.20 ([fd1f869](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/fd1f8699f6cc6d3e3857f97e8cf98fdf497d38d9))
+* Bump python-jose from 3.3.0 to 3.4.0 ([bccf71e](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/bccf71e73b4d0382efd4d0ec42dc5e0236027d25))
+
 ## [1.1.1](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v1.1.0...pysakoinnin-sahk-asiointi-v1.1.1) (2024-12-17)
 
 
