@@ -1,4 +1,5 @@
 import copy
+import logging
 
 import ninja.errors
 from django.conf import settings
@@ -17,10 +18,11 @@ from api.schemas import (
 )
 from api.utils import virus_scan_attachment_file
 from api.views import ATVHandler, DocumentHandler, PASIHandler
-from mail_service.audit_log import _commit_to_audit_log
-from mail_service.utils import extend_due_date_mail_constructor, mail_constructor
+from suomifi_messages.connector import SuomiFIMessagesConnector
+from suomifi_messages.utils import suomifi_message_constructor, extend_due_date_suomifi_message_constructor
 
 router = Router()
+sfm_logger = logging.getLogger("suomi-fi-messages")
 
 
 class ApiKeyAuth(HttpBearer):
@@ -86,14 +88,17 @@ def extend_due_date(request, foul_data: FoulRequest):
         {**response_json}, foul_data.foul_number, request.user.uuid, metadata={}
     )
 
-    mail = extend_due_date_mail_constructor(
+    sfm_connector = SuomiFIMessagesConnector()
+    sfm_connector.login()
+
+    title, body = extend_due_date_suomifi_message_constructor(
         new_due_date=response_json["dueDate"],
         lang=foul_data.metadata["lang"],
-        mail_to=foul_data.metadata["email"],
     )
-    mail.send()
 
-    _commit_to_audit_log(mail.to[0], "extend-due-date")
+    sfm_logger.debug("Sending extend due date message")
+    sfm_response_json = sfm_connector.send_message(title, body)
+    sfm_logger.debug(f"Extend due date message response: {sfm_response_json}")
 
     return response_json
 
@@ -180,11 +185,16 @@ def set_document_status(request, status_request: DocumentStatusRequest):
     response = DocumentHandler.set_document_status(document_id, status_request)
 
     if response.status_code == 200:
-        mail = mail_constructor(
+        sfm_connector = SuomiFIMessagesConnector()
+        sfm_connector.login()
+
+        title, body = suomifi_message_constructor(
             event=status_request.status,
             lang=find_document_by_id["results"][0]["metadata"]["lang"],
-            mail_to=find_document_by_id["results"][0]["content"]["email"],
         )
-        mail.send()
-        _commit_to_audit_log(mail.to[0], "set-document-status")
+
+        sfm_logger.debug("Sending set document status message")
+        sfm_response_json = sfm_connector.send_message(title, body)
+        sfm_logger.debug(f"Set document status message response: {sfm_response_json}")
+
         return HttpResponse(200)
