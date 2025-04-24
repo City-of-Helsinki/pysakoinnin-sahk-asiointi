@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.3](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v1.1.2...pysakoinnin-sahk-asiointi-v1.1.3) (2025-04-24)
+
+
+### Dependencies
+
+* Bump gunicorn from 22.0.0 to 23.0.0 ([7d76e55](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/7d76e55cef04c58815e06e0556ae9d6e09b6dd1e))
+
 ## [1.1.2](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v1.1.1...pysakoinnin-sahk-asiointi-v1.1.2) (2025-03-07)
 
 
