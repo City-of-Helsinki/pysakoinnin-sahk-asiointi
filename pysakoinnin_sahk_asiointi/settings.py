@@ -37,6 +37,10 @@ env = Env(
     PASI_ENDPOINT=(str, ""),
     PASI_AUTH_KEY=(str, ""),
     PASI_API_KEY=(str, ""),
+    SUOMIFI_USERNAME=(str, ""),
+    SUOMIFI_PASSWORD=(str, ""),
+    SUOMIFI_SERVICE_ID=(str, ""),
+    SUOMIFI_TEST_USER_SSN=(str, ""),
 )
 
 Env.read_env(str(BASE_DIR / "config.env"))
@@ -242,8 +246,27 @@ _audit_log_handler = {
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
-    "handlers": {"audit": _audit_log_handler},
-    "loggers": {"audit": {"handlers": ["audit"], "level": "ERROR", "propagate": True}},
+    "handlers": {
+        "audit": _audit_log_handler,
+        "console": {
+            "level": "DEBUG",
+            "class": "logging.StreamHandler",
+            "formatter": "suomifi",
+        },
+    },
+    "formatters": {
+        "suomifi": {
+            "format": "[%(asctime)s] %(name)s: %(message)s",
+        },
+    },
+    "loggers": {
+        "audit": {"handlers": ["audit"], "level": "ERROR", "propagate": True},
+        "suomi-fi-messages": {
+            "level": "DEBUG",
+            "handlers": ["console"],
+            "propagate": False,
+        },
+    },
 }
 
 # Malware protection
@@ -267,3 +290,8 @@ GDPR_API_DELETE_SCOPE = env("GDPR_API_DELETE_SCOPE")
 
 # Default timeout for outgoing requests
 REQUEST_TIMEOUT = 10
+
+SUOMIFI_USERNAME = env("SUOMIFI_USERNAME")
+SUOMIFI_PASSWORD = env("SUOMIFI_PASSWORD")
+SUOMIFI_SERVICE_ID = env("SUOMIFI_SERVICE_ID")
+SUOMIFI_TEST_USER_SSN = env("SUOMIFI_TEST_USER_SSN")
