@@ -22,7 +22,7 @@ cryptography==44.0.1
     # via -r requirements.in
 deprecation==2.1.0
     # via django-helusers
-django==4.2.22
+django==4.2.23
     # via
     #   -r requirements.in
     #   django-anymail
@@ -70,7 +70,7 @@ python-dateutil==2.9.0.post0
     # via -r requirements.in
 python-jose==3.4.0
     # via django-helusers
-requests==2.32.3
+requests==2.32.4
     # via
     #   django-anymail
     #   django-helusers
