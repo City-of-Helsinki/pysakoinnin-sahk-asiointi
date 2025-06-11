@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.6](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v1.1.5...pysakoinnin-sahk-asiointi-v1.1.6) (2025-06-11)
+
+
+### Dependencies
+
+* Bump django 4.2.22 -&gt; 4.2.23, requests 2.32.3 -> 2.32.4 ([f274641](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/f274641a52b0bc77ed0fc7f394de30b53fda31f3))
+
 ## [1.1.5](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v1.1.4...pysakoinnin-sahk-asiointi-v1.1.5) (2025-06-10)
 
 
