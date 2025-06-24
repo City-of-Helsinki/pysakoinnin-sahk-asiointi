@@ -2,6 +2,6 @@
 
 # Start server
 python3 manage.py migrate --noinput
-gunicorn pysakoinnin_sahk_asiointi.wsgi:application --bind 0.0.0.0:8000 --daemon --capture-output --enable-stdio-inheritance
+gunicorn -c gunicorn_config.py
 
 nginx -g "daemon off;"
