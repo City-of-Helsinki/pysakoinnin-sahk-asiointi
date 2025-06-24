@@ -1,7 +1,7 @@
 # Env related
 .venv
 config.env
-docker-compose.override.yml
+compose.override.yml
 
 # IDE files
 .idea/

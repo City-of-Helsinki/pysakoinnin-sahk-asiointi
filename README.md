@@ -9,10 +9,9 @@ for [Pysäköinnin Sähköinen Asiointi](https://helsinkisolutionoffice.atlassia
 
 ### With Docker
 
-1. To override production Docker-Compose settings create a `docker-compose.override.yml` to your root and insert the following to the file:
+1. To override production Docker Compose settings create a `compose.override.yml` to your root and insert the following to the file:
 
 ```
-version: '3'
 services:
   server:
     container_name: api-server
@@ -45,7 +44,7 @@ volumes:
     driver: local
 ```
 
-2. run `docker-compose up` and Docker will build PostgreSQL database and Django server instances
+2. run `docker compose up` and Docker will build PostgreSQL database and Django server instances
 3. you can open `http://localhost:8080/api/v1/docs` to view the API endpoints in browser
 
 Note that running the app with Docker proxies the application to port `8080`
