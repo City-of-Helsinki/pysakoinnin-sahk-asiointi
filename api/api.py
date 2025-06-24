@@ -150,20 +150,6 @@ def get_atv_documents(request):
     return response
 
 
-@router.get(
-    "/getDocumentByTransactionId/{id}",
-    response={200: ATVDocumentResponse, 404: NotFoundError, 500: None},
-    tags=["ATV"],
-)
-def get_document_by_transaction_id(request, id):
-    """
-    Get document from ATV by foul ID
-    """
-    response = ATVHandler.get_document_by_transaction_id(id)
-
-    return response
-
-
 @router.patch(
     "/setDocumentStatus",
     response={200: None, 401: None, 404: NotFoundError, 422: None},

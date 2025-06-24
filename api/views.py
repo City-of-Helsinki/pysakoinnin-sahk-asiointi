@@ -39,6 +39,9 @@ class ATVHandler:
 
     @staticmethod
     def get_document_by_transaction_id(foul_id):
+        """
+        Internal use only. Do not expose publicly as there is no user check.
+        """
         try:
             response = requests.get(
                 f"{settings.ATV_ENDPOINT}?transaction_id={foul_id}",

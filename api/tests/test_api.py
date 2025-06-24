@@ -101,17 +101,6 @@ class TestApiFunctions(TestCase):
 
         assert result.json() == MOCK_ATV_DOCUMENT_RESPONSE
 
-    @patch("api.views.ATVHandler.get_document_by_transaction_id")
-    def test_get_document_by_transaction_id(self, get_document_by_transaction_id_mock):
-        get_document_by_transaction_id_mock.return_value = MockResponse(
-            200, MOCK_ATV_DOCUMENT_RESPONSE
-        )
-
-        random_id = 12345
-        result = api.get_document_by_transaction_id(request=None, id=random_id)
-
-        assert result.json() == MOCK_ATV_DOCUMENT_RESPONSE
-
     @patch("api.views.ATVHandler.add_document")
     @patch("api.views.PASIHandler.save_objection")
     def test_save_objection(self, save_objection_mock, add_document_mock):
