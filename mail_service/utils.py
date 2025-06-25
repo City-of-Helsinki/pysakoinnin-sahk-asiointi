@@ -38,16 +38,20 @@ events = {
 # If the event status indicates that the user is actively interacting with the client,
 # we want to send emails instantly. Therefore, return "SEND_INSTANTLY_EMAIL_CONNECTION".
 # Otherwise, if the user is not interacting with the client, use the email queue.
-def get_email_connection(event: str):
-    if event == "received":
-        return get_connection(SEND_INSTANTLY_EMAIL_CONNECTION)
-    return get_connection(QUEUE_EMAIL_CONNECTION)
+def get_email_connection(send_instant: bool):
+    queue_email_connection = settings.EMAIL_BACKEND
+    send_instantly_email_connection = settings.MAILER_EMAIL_BACKEND
+
+    if send_instant:
+        return get_connection(send_instantly_email_connection)
+    return get_connection(queue_email_connection)
 
 
 def mail_constructor(event: str, lang: str, mail_to: str):
     now = datetime.datetime.now(tz=ZoneInfo("Europe/Helsinki"))
     formatted_time = datetime.datetime.strftime(now, "%H:%M")
-    connection = get_email_connection(event)
+    event_is_received = event == "received"
+    connection = get_email_connection(send_instant=event_is_received)
     if lang not in headers:
         lang = "FI"
 
@@ -99,7 +103,9 @@ def mail_constructor(event: str, lang: str, mail_to: str):
         connection=connection,
     )
 
-    logo = attach_inline_image_file(msg, "mail_service/assets/logo.jpg")
+    logo = attach_inline_image_file(
+        msg, settings.BASE_DIR / "mail_service/assets/logo.jpg"
+    )
     html = """
     <html>
     <body>
@@ -120,7 +126,7 @@ def mail_constructor(event: str, lang: str, mail_to: str):
 def extend_due_date_mail_constructor(lang: str, new_due_date: str, mail_to):
     date = datetime.datetime.strptime(new_due_date, "%Y-%m-%dT%H:%M:%S")
     formatted_time = datetime.datetime.strftime(date, "%d.%m.%Y")
-    connection = get_connection(SEND_INSTANTLY_EMAIL_CONNECTION)
+    connection = get_email_connection(send_instant=True)
 
     body_templates = {
         "FI": "<p>Eräpäivää siirretty, uusi eräpäivä on {new_due_date}".format(
@@ -144,7 +150,9 @@ def extend_due_date_mail_constructor(lang: str, new_due_date: str, mail_to):
         connection=connection,
     )
 
-    logo = attach_inline_image_file(msg, "mail_service/assets/logo.jpg")
+    logo = attach_inline_image_file(
+        msg, settings.BASE_DIR / "mail_service/assets/logo.jpg"
+    )
     html = """
     <html>
     <body>
