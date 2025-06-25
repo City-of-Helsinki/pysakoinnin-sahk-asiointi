@@ -1,5 +1,21 @@
 # Changelog
 
+## [2.0.0](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v1.1.6...pysakoinnin-sahk-asiointi-v2.0.0) (2025-06-25)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove getDocumentByTransactionId endpoint
+
+### Features
+
+* Improve Gunicorn settings ([08eec4c](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/08eec4ca980768e60b0913bed7a8c74593d23eac))
+
+
+### Bug Fixes
+
+* Remove getDocumentByTransactionId endpoint ([bafce9a](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/bafce9a45dbcb28c17c277c0671e9cfd0a3bc835))
+
 ## [1.1.6](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v1.1.5...pysakoinnin-sahk-asiointi-v1.1.6) (2025-06-11)
 
 
