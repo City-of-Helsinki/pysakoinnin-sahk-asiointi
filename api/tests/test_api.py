@@ -2,10 +2,12 @@ import json
 from unittest.mock import MagicMock, patch
 
 import pytest
-from django.test import TestCase
+from django.test import TestCase, override_settings
+from django.urls import reverse
 from ninja import Schema, errors
 
 from api import api
+from api.schemas import DocumentStatusEnum, DocumentStatusRequest
 from api.tests.mocks import (
     MOCK_ATV_DOCUMENT_RESPONSE,
     MOCK_DUEDATE,
@@ -13,6 +15,8 @@ from api.tests.mocks import (
     MOCK_TRANSFER,
     MockResponse,
 )
+
+TEST_DOCUMENT_ID = "123"
 
 
 # These classes are based on schemas defined in api.schemas
@@ -233,3 +237,82 @@ def test_extend_due_date_email_validation_missing_email(
     )
 
     assert response.status_code == 422
+
+
+@pytest.mark.parametrize(
+    "atv_get_response_status,atv_get_response_data,atv_patch_response_status,atv_patch_response_data,response_status,,email",
+    [
+        (200, {"results": []}, None, None, 404, False),
+        (500, {}, None, None, 500, False),
+        (
+            200,
+            {
+                "results": [
+                    {
+                        "id": TEST_DOCUMENT_ID,
+                        "metadata": {"lang": "fi"},
+                        "content": {"email": "test@localhost"},
+                    }
+                ],
+            },
+            200,
+            {
+                "id": TEST_DOCUMENT_ID,
+            },
+            200,
+            True,
+        ),
+    ],
+)
+@pytest.mark.django_db
+@override_settings(DEBUG=False)
+def test_set_document_status(
+    client,
+    requests_mock,
+    settings,
+    atv_get_response_status,
+    atv_get_response_data,
+    atv_patch_response_status,
+    atv_patch_response_data,
+    response_status,
+    email,
+    mailoutbox,
+):
+    settings.PASI_API_KEY = "pasi-api-key"
+    settings.ATV_ENDPOINT = "http://atv/endpoint/"
+    settings.MAILER_EMAIL_BACKEND = settings.EMAIL_BACKEND
+
+    requests_mock.get(
+        f"{settings.ATV_ENDPOINT}?transaction_id={TEST_DOCUMENT_ID}",
+        status_code=atv_get_response_status,
+        json=atv_get_response_data,
+    )
+
+    requests_mock.patch(
+        f"{settings.ATV_ENDPOINT}{TEST_DOCUMENT_ID}/",
+        status_code=atv_patch_response_status,
+        json=atv_patch_response_data,
+    )
+
+    document_status_request = DocumentStatusRequest(
+        id=TEST_DOCUMENT_ID, status=DocumentStatusEnum.received
+    )
+
+    client.raise_request_exception = False
+    response = client.patch(
+        reverse("api-1.0.0:set_document_status"),
+        data=document_status_request.json(),
+        content_type="application/json",
+        HTTP_AUTHORIZATION=f"Bearer {settings.PASI_API_KEY}",
+    )
+
+    assert response.status_code == response_status
+    if email:
+        assert len(mailoutbox) == 1
+        expected_email = atv_get_response_data["results"][0]["content"]["email"]
+        to_value = mailoutbox[0].to
+        assert len(to_value) == 1
+        assert expected_email == to_value[0]
+
+    else:
+        assert len(mailoutbox) == 0
