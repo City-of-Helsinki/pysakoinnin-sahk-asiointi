@@ -28,7 +28,7 @@ class ATVHandler:
             response = requests.get(
                 f"{settings.ATV_ENDPOINT}?user_id={user_id}&page_size=999",
                 headers={"x-api-key": settings.ATV_API_KEY},
-                timeout=settings.REQUEST_TIMEOUT,
+                timeout=settings.OUTGOING_REQUEST_TIMEOUT,
             )
             response_json = response.json()
             if hasattr(response_json, "results") and len(response_json["results"]) <= 0:
@@ -46,7 +46,7 @@ class ATVHandler:
             response = requests.get(
                 f"{settings.ATV_ENDPOINT}?transaction_id={foul_id}",
                 headers={"x-api-key": settings.ATV_API_KEY},
-                timeout=settings.REQUEST_TIMEOUT,
+                timeout=settings.OUTGOING_REQUEST_TIMEOUT,
             )
             response_json = response.json()
             if len(response_json["results"]) <= 0:
@@ -76,7 +76,7 @@ class ATVHandler:
                     "content": json.dumps(content),
                 },
                 files={"attachments": None},
-                timeout=settings.REQUEST_TIMEOUT,
+                timeout=settings.OUTGOING_REQUEST_TIMEOUT,
             )
             return response
         except Exception as error:
@@ -100,7 +100,7 @@ class PASIHandler:
                     "foulNumber": foul_number,
                     "registerNumber": f"{register_number}",
                 },
-                timeout=settings.REQUEST_TIMEOUT,
+                timeout=settings.OUTGOING_REQUEST_TIMEOUT,
             )
             if response.status_code == 404:
                 raise HttpError(404, message="Resource not found")
@@ -127,7 +127,7 @@ class PASIHandler:
                     "transferReferenceNumber": transfer_number,
                     "registerNumber": f"{register_number}",
                 },
-                timeout=settings.REQUEST_TIMEOUT,
+                timeout=settings.OUTGOING_REQUEST_TIMEOUT,
             )
             if response.status_code == 404:
                 raise HttpError(404, message="Resource not found")
@@ -154,7 +154,7 @@ class PASIHandler:
                     "foulNumber": foul_data.foul_number,
                     "registerNumber": f"{foul_data.register_number}",
                 },
-                timeout=settings.REQUEST_TIMEOUT,
+                timeout=settings.OUTGOING_REQUEST_TIMEOUT,
             )
 
             if response.status_code == 400:
@@ -195,7 +195,7 @@ class PASIHandler:
                     **Objection.dict(sanitised_objection),
                     "customerLanguage": customer_language,
                 },
-                timeout=settings.REQUEST_TIMEOUT,
+                timeout=settings.OUTGOING_REQUEST_TIMEOUT,
             )
             if response.status_code == 422:
                 raise HttpError(422, message=response.json())
@@ -220,7 +220,7 @@ class DocumentHandler:
                 },
                 data={"status": status_request.status.value},
                 files={"attachments": None},
-                timeout=settings.REQUEST_TIMEOUT,
+                timeout=settings.OUTGOING_REQUEST_TIMEOUT,
             )
 
             response_json = response.json()

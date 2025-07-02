@@ -37,6 +37,7 @@ env = Env(
     PASI_ENDPOINT=(str, ""),
     PASI_AUTH_KEY=(str, ""),
     PASI_API_KEY=(str, ""),
+    OUTGOING_REQUEST_TIMEOUT=(int, 30),
 )
 
 Env.read_env(str(BASE_DIR / "config.env"))
@@ -265,5 +266,4 @@ ATV_API_KEY = env("ATV_API_KEY")
 GDPR_API_QUERY_SCOPE = env("GDPR_API_QUERY_SCOPE")
 GDPR_API_DELETE_SCOPE = env("GDPR_API_DELETE_SCOPE")
 
-# Default timeout for outgoing requests
-REQUEST_TIMEOUT = 30
+OUTGOING_REQUEST_TIMEOUT = env("OUTGOING_REQUEST_TIMEOUT")
