@@ -10,7 +10,7 @@ def virus_scan_attachment_file(file_data):
         response = requests.post(
             settings.CLAMAV_HOST,
             files={"FILES": base64.b64decode(file_data + "==")},
-            timeout=settings.REQUEST_TIMEOUT,
+            timeout=settings.OUTGOING_REQUEST_TIMEOUT,
         )
         response_json = response.json()
         if (
