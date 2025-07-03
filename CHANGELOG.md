@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.1.0](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v2.0.0...pysakoinnin-sahk-asiointi-v2.1.0) (2025-07-03)
+
+
+### Features
+
+* Allow OUTGOING_REQUEST_TIMEOUT read from env ([22d7084](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/22d7084fed5bc5cc7d6177645cc0328dc5c76e77))
+
+
+### Bug Fixes
+
+* Increase outgoing request timeout ([3c9c47b](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/3c9c47bfececf8db568048257c3ca628a34704a6))
+
 ## [2.0.0](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v1.1.6...pysakoinnin-sahk-asiointi-v2.0.0) (2025-06-25)
 
 
