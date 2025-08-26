@@ -18,17 +18,19 @@ USER root
 RUN dnf install -y \
     postgresql \
     postgresql-libs \
-    python3 \
+    python3.12 \
     python-unversioned-command \
     postgresql-devel \
     gcc \
-    python3-devel \
+    python3.12-devel \
+    && ln -sf /usr/bin/python3.12 /usr/local/bin/python3 \
+    && ln -sf /usr/bin/python3.12 /usr/local/bin/python \
     && python3 -m ensurepip \
     && pip3 install --no-cache-dir -r ./requirements.txt \
     && dnf remove -y \
     postgresql-devel \
     gcc \
-    python3-devel \
+    python3.12-devel \
     && dnf clean all \
     && rm -rf /var/cache/dnf
 ENV STATIC_ROOT /var/parking-service/static
