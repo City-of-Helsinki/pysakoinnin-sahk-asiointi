@@ -54,7 +54,7 @@ packaging==24.0
     # via
     #   deprecation
     #   gunicorn
-psycopg2==2.9.9
+psycopg==3.2.9
     # via -r requirements.in
 pyasn1==0.4.8
     # via
@@ -87,6 +87,7 @@ sqlparse==0.5.0
 typing-extensions==4.11.0
     # via
     #   asgiref
+    #   psycopg
     #   pydantic
 urllib3==2.2.2
     # via
