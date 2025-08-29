@@ -3,7 +3,7 @@ django-cors-headers
 django-environ
 django-ninja<1
 django-helusers
-psycopg
+psycopg[c]
 pyclamd
 python-dateutil
 sentry-sdk

@@ -25,5 +25,9 @@ select = [
 "api/schemas.py" = ["N815"]
 "api/tests/test_api.py" = ["N815"]
 
+[tool.pip-tools.compile]
+generate-hashes = true
+strip-extras = true
+
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "pysakoinnin_sahk_asiointi.test_settings"
