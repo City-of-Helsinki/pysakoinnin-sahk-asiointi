@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.1](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v2.1.0...pysakoinnin-sahk-asiointi-v2.1.1) (2025-09-01)
+
+
+### Dependencies
+
+* Upgrade to python 3.12 ([9f070f3](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/9f070f3890cdda597bc6f99b3a76359733e1fcbd))
+
 ## [2.1.0](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v2.0.0...pysakoinnin-sahk-asiointi-v2.1.0) (2025-07-03)
 
 
