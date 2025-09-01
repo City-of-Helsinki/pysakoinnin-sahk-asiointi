@@ -210,7 +210,7 @@ EMAIL_HOST = "relay.hel.fi"
 EMAIL_PORT = 25
 EMAIL_USE_TLS = True
 
-DEFAULT_FROM_EMAIL = "noreply@hel.fi"
+DEFAULT_FROM_EMAIL = "pysakoinnin-asiointi-noreply@hel.fi"
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
