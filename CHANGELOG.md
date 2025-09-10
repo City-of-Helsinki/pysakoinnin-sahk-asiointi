@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.2.1](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v2.2.0...pysakoinnin-sahk-asiointi-v2.2.1) (2025-09-10)
+
+
+### Dependencies
+
+* Bump django from 4.2.23 to 4.2.24 ([4e7bc6b](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/4e7bc6b75419fc80045291188d1dda5839af9cb2))
+* Use psycopg-c ([2c6d304](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/2c6d304a870ebb5406361a000c3b34edb3323b4a))
+
 ## [2.2.0](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v2.1.1...pysakoinnin-sahk-asiointi-v2.2.0) (2025-09-01)
 
 
