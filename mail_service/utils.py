@@ -94,7 +94,7 @@ def mail_constructor(event: str, lang: str, mail_to: str):
     msg = EmailMultiAlternatives(
         headers[lang.upper()],
         body_templates[lang.upper()],
-        "Pysäköinnin Asiointi <noreply@hel.fi>",
+        f"Pysäköinnin Asiointi <{settings.DEFAULT_FROM_EMAIL}>",
         [mail_to],
         connection=connection,
     )
@@ -139,7 +139,7 @@ def extend_due_date_mail_constructor(lang: str, new_due_date: str, mail_to):
     msg = EmailMultiAlternatives(
         headers[lang.upper()],
         body_templates[lang.upper()],
-        "Pysäköinnin Asiointi <noreply@hel.fi>",
+        f"Pysäköinnin Asiointi <{settings.DEFAULT_FROM_EMAIL}>",
         [mail_to],
         connection=connection,
     )
