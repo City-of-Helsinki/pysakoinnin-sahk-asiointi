@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.test import TestCase
 
 from mail_service.utils import (
@@ -21,6 +22,7 @@ class TestMailUtils(TestCase):
         assert mail.subject == headers["FI"]
         assert mail.body == "<p>Eräpäivää siirretty, uusi eräpäivä on 01.01.2023"
         assert mail.to[0] == mail_to
+        assert settings.DEFAULT_FROM_EMAIL in mail.from_email
 
         # check different languages
         mail = extend_due_date_mail_constructor(
@@ -45,6 +47,7 @@ class TestMailUtils(TestCase):
         assert mail.subject == headers["FI"]
         assert events["received"]["FI"] in mail.body
         assert mail.to[0] == mail_to
+        assert settings.DEFAULT_FROM_EMAIL in mail.from_email
 
         # check different languages
         mail = mail_constructor(event="received", lang="EN", mail_to=mail_to)
