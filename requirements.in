@@ -1,7 +1,7 @@
-Django~=4.2
+Django~=5.2
 django-cors-headers
 django-environ
-django-ninja<1
+django-ninja
 django-helusers
 psycopg[c]
 pyclamd
