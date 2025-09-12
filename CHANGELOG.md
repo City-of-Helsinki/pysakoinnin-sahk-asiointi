@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.0](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v2.2.1...pysakoinnin-sahk-asiointi-v2.3.0) (2025-09-12)
+
+
+### Features
+
+* Use default email address in outgoing mails ([5febf39](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/5febf394eb8e77bc0bbbf377926c5193340dc649))
+
 ## [2.2.1](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v2.2.0...pysakoinnin-sahk-asiointi-v2.2.1) (2025-09-10)
 
 
