@@ -1,5 +1,5 @@
 -c requirements.txt
-pytest-django
+pip-tools
 pytest-cov
+pytest-django
 requests-mock
-ruff~=0.8.6  # Sync with .pre-commit-config
