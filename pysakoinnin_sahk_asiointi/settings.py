@@ -28,6 +28,7 @@ env = Env(
     TOKEN_AUTH_AUTHORIZATION_FIELD=(list, []),
     TOKEN_AUTH_SCOPE_PREFIX=(list, []),
     CORS_ALLOWED_ORIGINS=(list, []),
+    CORS_ALLOWED_ORIGIN_REGEXES=(list, []),
     CLAMAV_HOST=(str, ""),
     GDPR_API_QUERY_SCOPE=(str, "gdprquery"),
     GDPR_API_DELETE_SCOPE=(str, "gdprdelete"),
@@ -108,7 +109,8 @@ MIDDLEWARE = [
     "api.audit_log.AuditLogMiddleware",
 ]
 
-CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS")
+CORS_ALLOWED_ORIGINS = env("CORS_ALLOWED_ORIGINS")
+CORS_ALLOWED_ORIGIN_REGEXES = env("CORS_ALLOWED_ORIGIN_REGEXES")
 CORS_ALLOW_HEADERS = list(default_headers) + ["baggage", "sentry-trace"]
 
 ROOT_URLCONF = "pysakoinnin_sahk_asiointi.urls"
