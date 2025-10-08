@@ -2,6 +2,8 @@
 
 from django.http import HttpRequest, HttpResponse
 from django.urls import include, path
+from django.views.decorators.cache import never_cache
+from django.views.decorators.http import require_safe
 from helusers.oidc import RequestJWTAuthentication
 from ninja import NinjaAPI
 from ninja.errors import HttpError
@@ -35,11 +37,19 @@ api.add_router("/", api_router)
 api.add_router("/gdpr", gdrp_api_router)
 
 
-def health(request):
-    return HttpResponse("OK", status=200, headers={"Content-Type": "application/json"})
+#
+# Kubernetes liveness & readiness probes
+#
+@require_safe
+@never_cache
+def health(*_, **__):
+    return HttpResponse("OK", status=200)
 
 
-def readiness(request):
+@require_safe
+@never_cache
+def readiness(*_, **__):
+    failed_check = False
     try:
         from django.db import connections
 
@@ -48,11 +58,14 @@ def readiness(request):
             cursor.execute("SELECT 1;")
             row = cursor.fetchone()
             if row is None:
-                return HttpError(500, message="Invalid response from database")
+                failed_check = True
     except Exception:
-        return HttpError(500, message="Cannot connect to database")
+        failed_check = True
 
-    return HttpResponse("OK")
+    if failed_check:
+        raise HttpError(500, message="Database issue")
+
+    return HttpResponse("OK", status=200)
 
 
 urlpatterns = [
