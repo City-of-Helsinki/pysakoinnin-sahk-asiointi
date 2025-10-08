@@ -4,6 +4,7 @@ from sys import stdout
 import django.conf.global_settings
 import sentry_sdk
 from corsheaders.defaults import default_headers
+from csp.constants import NONE, SELF
 from environ import Env
 from sentry_sdk.integrations.django import DjangoIntegration
 from sentry_sdk.scrubber import DEFAULT_DENYLIST, EventScrubber
@@ -39,6 +40,8 @@ env = Env(
     PASI_AUTH_KEY=(str, ""),
     PASI_API_KEY=(str, ""),
     OUTGOING_REQUEST_TIMEOUT=(int, 30),
+    CSP_ENFORCE=(bool, False),
+    CSP_REPORT_URI=(str, None),
 )
 
 Env.read_env(str(BASE_DIR / "config.env"))
@@ -88,6 +91,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "csp",
     "pysakoinnin_sahk_asiointi",
     "api",
     "mail_service",
@@ -106,6 +110,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "csp.middleware.CSPMiddleware",
     "api.audit_log.AuditLogMiddleware",
 ]
 
@@ -269,3 +274,32 @@ GDPR_API_QUERY_SCOPE = env("GDPR_API_QUERY_SCOPE")
 GDPR_API_DELETE_SCOPE = env("GDPR_API_DELETE_SCOPE")
 
 OUTGOING_REQUEST_TIMEOUT = env("OUTGOING_REQUEST_TIMEOUT")
+
+
+content_security_policy_configuration = {
+    "DIRECTIVES": {
+        "default-src": [NONE],
+        "connect-src": [SELF],
+        "img-src": [SELF, "data:"],
+        "form-action": [SELF],
+        "frame-ancestors": [SELF],
+        "script-src": [
+            SELF,
+        ],
+        "style-src": [
+            SELF,
+        ],
+        "upgrade-insecure-requests": True,
+    },
+}
+
+if report_uri := env("CSP_REPORT_URI"):
+    content_security_policy_configuration["DIRECTIVES"]["report-uri"] = report_uri
+
+if env("CSP_ENFORCE"):
+    CONTENT_SECURITY_POLICY = content_security_policy_configuration
+    CONTENT_SECURITY_POLICY_REPORT_ONLY = None
+
+else:
+    CONTENT_SECURITY_POLICY = None
+    CONTENT_SECURITY_POLICY_REPORT_ONLY = content_security_policy_configuration
