@@ -1,5 +1,38 @@
 services:
-  server:
-    build: .
-    ports:
-      - "8080:8080"
+    postgres:
+        image: postgres:17-alpine
+        environment:
+            POSTGRES_USER: psa
+            POSTGRES_PASSWORD: psa
+            POSTGRES_DB: psa
+        ports:
+            - "127.0.0.1:5434:5432"
+        volumes:
+            - postgres-data-volume:/var/lib/postgresql/data
+        container_name: psa-postgres
+
+    django:
+        platform: linux/amd64
+        build:
+            context: .
+            target: development
+        env_file:
+            - config.env
+        environment:
+            - DATABASE_URL=postgres://psa:psa@psa-postgres:5432/psa
+            - DATABASE_HOST=psa-postgres
+        volumes:
+            - .:/app
+        ports:
+            - "127.0.0.1:8080:8080"
+        depends_on:
+            - postgres
+        container_name: psa-backend
+
+volumes:
+        postgres-data-volume:
+
+networks:
+    default:
+        name: helsinki
+        external: true

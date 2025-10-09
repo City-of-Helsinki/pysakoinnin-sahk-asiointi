@@ -1,7 +1,6 @@
 # Env related
 .venv
 config.env
-compose.override.yml
 
 # IDE files
 .idea/

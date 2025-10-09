@@ -9,43 +9,9 @@ for [Pysäköinnin Sähköinen Asiointi](https://helsinkisolutionoffice.atlassia
 
 ### With Docker
 
-1. To override production Docker Compose settings create a `compose.override.yml` to your root and insert the following to the file:
-
-```
-services:
-  server:
-    container_name: api-server
-    env_file:
-      - config.env
-    environment:
-      - DATABASE_URL=postgres://parking-user:root@api-db:5432/parking-service
-    expose:
-      - 8080
-    depends_on:
-      - db
-
-  db:
-    container_name: api-db
-    image: postgres:alpine
-    restart: always
-    environment:
-      - POSTGRES_USER=parking-user
-      - POSTGRES_PASSWORD=root
-      - POSTGRES_DB=parking-service
-    volumes:
-      - db:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
-    expose:
-      - 5432
-
-volumes:
-  db:
-    driver: local
-```
-
-2. run `docker compose up` and Docker will build PostgreSQL database and Django server instances
-3. you can open `http://localhost:8080/api/v1/docs` to view the API endpoints in browser
+1. Copy `config.env.example` to `config.env` and change the variable values to your liking.
+2. Run `docker compose up` and Docker will build PostgreSQL database and Django server instances
+3. You can open http://localhost:8080/api/v1/docs to view the API endpoints in browser
 
 Note that running the app with Docker proxies the application to port `8080`
 
@@ -65,8 +31,6 @@ Note that running the app with Docker proxies the application to port `8080`
 
 
 - Alternatively you can run server with `gunicorn pysakoinnin_sahk_asiointi.wsgi:application --bind 0.0.0.0:8000`
-
-Note: psycopg2 may require a local installation of PostgreSQL. Install for macOS with Homebrew `brew install postgresql`
 
 ## Generating a new requirements.txt
 
