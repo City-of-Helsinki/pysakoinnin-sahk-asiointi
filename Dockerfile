@@ -1,68 +1,75 @@
-# Build a base image for development and production stages.
-# Note that this stage won't get thrown out so we need to think about
-# layer sizes from this point on.
-FROM registry.access.redhat.com/ubi9/nginx-122 as appbase
+# ==============================
+FROM registry.access.redhat.com/ubi9/nginx-122 AS appbase
+# ==============================
 
-WORKDIR /usr/src/app
 USER root
-RUN chmod g+w /usr/src/app
+WORKDIR /app
 
-# Copy requirement files.
-COPY requirements.txt ./
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
-# Install main project dependencies and clean up.
-# Note that production dependencies are installed here as well since
-# that is the default state of the image and development stages are
-# just extras.
-USER root
-RUN dnf install -y \
-    postgresql \
-    postgresql-libs \
+COPY requirements.txt .
+
+RUN dnf update -y  \
+    && dnf install -y \
+    nmap-ncat \
+    libpq \
+    libpq-devel \
     python3.12 \
-    python-unversioned-command \
-    postgresql-devel \
-    gcc \
     python3.12-devel \
+    python-unversioned-command \
+    gcc \
     && ln -sf /usr/bin/python3.12 /usr/local/bin/python3 \
     && ln -sf /usr/bin/python3.12 /usr/local/bin/python \
-    && python3 -m ensurepip \
-    && pip3 install --no-cache-dir -r ./requirements.txt \
+    && python -m ensurepip --upgrade --default-pip \
+    && pip install --upgrade setuptools wheel \
+    && pip install --no-cache-dir -r ./requirements.txt \
     && dnf remove -y \
-    postgresql-devel \
-    gcc \
+    libpq-devel \
     python3.12-devel \
-    && dnf clean all \
-    && rm -rf /var/cache/dnf
-ENV STATIC_ROOT /var/parking-service/static
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+    gcc \
+    && dnf clean all
 
-RUN mkdir -p /var/parking-service/static
-
-# Build production image using the appbase stage as base. This should always
-# be the last stage of Dockerfile.
-FROM appbase as prod
-
-# Copy application code.
-COPY . ./
-
-# /app/data needs write access for Django management commands to work
-RUN mkdir -p ./data
-RUN chgrp -R 0 ./data && chmod g+w -R ./data
-
-# Collect static files
-RUN SECRET_KEY="only-used-for-collectstatic" python3 manage.py collectstatic --noinput
-
-# Copy NGINX conf
-COPY nginx.conf /etc/nginx/nginx.conf
-# link nginx logs to container stdout
-RUN ln -sf /dev/stdout /var/log/nginx/access.log && ln -sf /dev/stderr /var/log/nginx/error.log
-
-# Copy and set the entrypoint.
 COPY docker-entrypoint.sh ./
-RUN ["chmod", "+x", "/usr/src/app/docker-entrypoint.sh"]
 ENTRYPOINT ["./docker-entrypoint.sh"]
 
-# Document the port and set random user to simulate OpenShift behaviour
-USER nobody:0
+# ==============================
+FROM appbase AS development
+# ==============================
+
+RUN groupadd -g 1000 appuser \
+    && useradd -u 1000 -g appuser -ms /bin/bash appuser \
+    && chown -R appuser:root /app
+
+COPY requirements-dev.txt .
+
+RUN dnf install -y \
+    libpq-devel \
+    python3.12-devel \
+    gcc \
+    && pip install --no-cache-dir -r /app/requirements-dev.txt \
+    && dnf clean all
+
+ENV DEV_SERVER=1
+ENV PIP_TOOLS_CACHE_DIR="/tmp/pip-tools-cache"
+
+COPY --chown=appuser:root . .
+
+USER appuser
+EXPOSE 8080/tcp
+
+# ==============================
+FROM appbase AS production
+# ==============================
+
+COPY . .
+
+# Collect static files
+ENV STATIC_ROOT /var/parking-service/static
+RUN mkdir -p /var/parking-service/static
+RUN SECRET_KEY="only-used-for-collectstatic" python manage.py collectstatic --noinput
+
+COPY nginx.conf /etc/nginx/nginx.conf
+
+USER default
 EXPOSE 8080/tcp
