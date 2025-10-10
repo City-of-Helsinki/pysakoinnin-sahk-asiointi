@@ -264,6 +264,23 @@ class TestSaveObjectionEndpoint:
         call_kwargs = add_doc_mock.call_args.kwargs
         assert call_kwargs.get("document_id") == 12345
 
+    def test_save_objection_with_empty_attachments_list(
+        self, handler_mock, add_doc_mock, auth_mock, authenticated_client, user
+    ):
+        """Test saveObjection handles empty attachments list (vs None)."""
+        auth_mock.return_value = MagicMock(user=user)
+
+        objection_data = {
+            **self.VALID_OBJECTION_DATA,
+            "attachments": None,  # Explicitly test None
+        }
+
+        handler_mock.return_value = MockResponse(200, {})
+        add_doc_mock.return_value = MockResponse(200, {})
+
+        response = post_objection(authenticated_client, objection_data)
+        assert response.status_code == 200
+
 
 @pytest.mark.django_db
 class TestSaveObjectionUnauthorized:
