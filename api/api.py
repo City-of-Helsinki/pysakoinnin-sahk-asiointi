@@ -123,8 +123,9 @@ def save_objection(request, objection: Objection):
             raise error
 
     objection_without_attachment_data = copy.deepcopy(objection)
-    for attachment in objection_without_attachment_data.attachments:
-        del attachment.data
+    if objection_without_attachment_data.attachments is not None:
+        for attachment in objection_without_attachment_data.attachments:
+            del attachment.data
 
     try:
         ATVHandler.add_document(
