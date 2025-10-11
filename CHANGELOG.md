@@ -1,5 +1,24 @@
 # Changelog
 
+## [2.4.0](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v2.3.0...pysakoinnin-sahk-asiointi-v2.4.0) (2025-10-11)
+
+
+### Features
+
+* Add CSP ([41d657a](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/41d657ab9400526ccba35a845c1352812d94d818))
+
+
+### Bug Fixes
+
+* Readiness and health endpoints ([ff507dd](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/ff507ddbb70ee6305d4c984771a1252f81870c1e))
+* Support CORS_ALLOWED_ORIGIN_REGEXES ([4d5f019](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/4d5f019c8a68d26fa92845584169381c1c1f8350))
+
+
+### Dependencies
+
+* Add ipython and pip-tools, remove ruff ([fc1f2ce](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/fc1f2ce7031d259f5586c2a4801c612da7e2dbe3))
+* Upgrade to django 5.2 ([81e4c6f](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/81e4c6f9b8a97fe86df74b573f00f126815bd90e))
+
 ## [2.3.0](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v2.2.1...pysakoinnin-sahk-asiointi-v2.3.0) (2025-09-12)
 
 
