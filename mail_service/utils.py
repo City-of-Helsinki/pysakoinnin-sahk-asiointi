@@ -3,11 +3,11 @@ import logging
 from zoneinfo import ZoneInfo
 
 from anymail.message import attach_inline_image_file
+from django.conf import settings
 from django.core.mail import EmailMultiAlternatives, get_connection
 from mailer import engine
 
 from mail_service import audit_log
-from pysakoinnin_sahk_asiointi import settings
 
 QUEUE_EMAIL_CONNECTION = settings.EMAIL_BACKEND
 SEND_INSTANTLY_EMAIL_CONNECTION = settings.MAILER_EMAIL_BACKEND
