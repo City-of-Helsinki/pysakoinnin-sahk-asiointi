@@ -1,0 +1,1304 @@
+# serializer version: 1
+# name: test_api_schema_matches_the_reference
+  dict({
+    'components': dict({
+      'schemas': dict({
+        'ATVDocumentResponse': dict({
+          'properties': dict({
+            'count': dict({
+              'title': 'Count',
+              'type': 'integer',
+            }),
+            'next': dict({
+              'anyOf': list([
+                dict({
+                  'type': 'string',
+                }),
+                dict({
+                  'type': 'null',
+                }),
+              ]),
+              'title': 'Next',
+            }),
+            'previous': dict({
+              'anyOf': list([
+                dict({
+                  'type': 'string',
+                }),
+                dict({
+                  'type': 'null',
+                }),
+              ]),
+              'title': 'Previous',
+            }),
+            'results': dict({
+              'items': dict({
+                '$ref': '#/components/schemas/ATVDocumentSchema',
+              }),
+              'title': 'Results',
+              'type': 'array',
+            }),
+          }),
+          'required': list([
+            'count',
+            'results',
+          ]),
+          'title': 'ATVDocumentResponse',
+          'type': 'object',
+        }),
+        'ATVDocumentSchema': dict({
+          'properties': dict({
+            'attachments': dict({
+              'items': dict({
+              }),
+              'title': 'Attachments',
+              'type': 'array',
+            }),
+            'business_id': dict({
+              'title': 'Business Id',
+              'type': 'string',
+            }),
+            'content': dict({
+              'additionalProperties': True,
+              'title': 'Content',
+              'type': 'object',
+            }),
+            'created_at': dict({
+              'title': 'Created At',
+              'type': 'string',
+            }),
+            'deletable': dict({
+              'title': 'Deletable',
+              'type': 'boolean',
+            }),
+            'delete_after': dict({
+              'anyOf': list([
+                dict({
+                  'type': 'string',
+                }),
+                dict({
+                  'type': 'null',
+                }),
+              ]),
+              'title': 'Delete After',
+            }),
+            'draft': dict({
+              'title': 'Draft',
+              'type': 'boolean',
+            }),
+            'human_readable_type': dict({
+              'additionalProperties': True,
+              'title': 'Human Readable Type',
+              'type': 'object',
+            }),
+            'id': dict({
+              'title': 'Id',
+              'type': 'string',
+            }),
+            'locked_after': dict({
+              'anyOf': list([
+                dict({
+                  'type': 'string',
+                }),
+                dict({
+                  'type': 'null',
+                }),
+              ]),
+              'title': 'Locked After',
+            }),
+            'metadata': dict({
+              'additionalProperties': True,
+              'title': 'Metadata',
+              'type': 'object',
+            }),
+            'service': dict({
+              'title': 'Service',
+              'type': 'string',
+            }),
+            'status': dict({
+              'additionalProperties': True,
+              'title': 'Status',
+              'type': 'object',
+            }),
+            'status_histories': dict({
+              'items': dict({
+              }),
+              'title': 'Status Histories',
+              'type': 'array',
+            }),
+            'tos_function_id': dict({
+              'title': 'Tos Function Id',
+              'type': 'string',
+            }),
+            'tos_record_id': dict({
+              'title': 'Tos Record Id',
+              'type': 'string',
+            }),
+            'transaction_id': dict({
+              'title': 'Transaction Id',
+              'type': 'string',
+            }),
+            'type': dict({
+              'title': 'Type',
+              'type': 'string',
+            }),
+            'updated_at': dict({
+              'title': 'Updated At',
+              'type': 'string',
+            }),
+            'user_id': dict({
+              'anyOf': list([
+                dict({
+                  'type': 'string',
+                }),
+                dict({
+                  'type': 'null',
+                }),
+              ]),
+              'title': 'User Id',
+            }),
+          }),
+          'required': list([
+            'id',
+            'created_at',
+            'updated_at',
+            'status',
+            'status_histories',
+            'type',
+            'human_readable_type',
+            'service',
+            'transaction_id',
+            'business_id',
+            'tos_function_id',
+            'tos_record_id',
+            'metadata',
+            'content',
+            'draft',
+            'deletable',
+            'attachments',
+          ]),
+          'title': 'ATVDocumentSchema',
+          'type': 'object',
+        }),
+        'AddressField': dict({
+          'properties': dict({
+            'addressLine1': dict({
+              'anyOf': list([
+                dict({
+                  'type': 'string',
+                }),
+                dict({
+                  'type': 'null',
+                }),
+              ]),
+              'title': 'Addressline1',
+            }),
+            'addressLine2': dict({
+              'anyOf': list([
+                dict({
+                  'type': 'string',
+                }),
+                dict({
+                  'type': 'null',
+                }),
+              ]),
+              'title': 'Addressline2',
+            }),
+            'countryName': dict({
+              'anyOf': list([
+                dict({
+                  'type': 'string',
+                }),
+                dict({
+                  'type': 'null',
+                }),
+              ]),
+              'title': 'Countryname',
+            }),
+            'postCode': dict({
+              'title': 'Postcode',
+              'type': 'string',
+            }),
+            'postOffice': dict({
+              'anyOf': list([
+                dict({
+                  'type': 'string',
+                }),
+                dict({
+                  'type': 'null',
+                }),
+              ]),
+              'title': 'Postoffice',
+            }),
+            'streetAddress': dict({
+              'title': 'Streetaddress',
+              'type': 'string',
+            }),
+          }),
+          'required': list([
+            'streetAddress',
+            'postCode',
+          ]),
+          'title': 'AddressField',
+          'type': 'object',
+        }),
+        'AttachmentSchema': dict({
+          'properties': dict({
+            'data': dict({
+              'title': 'Data',
+              'type': 'string',
+            }),
+            'fileName': dict({
+              'title': 'Filename',
+              'type': 'string',
+            }),
+            'mimeType': dict({
+              'title': 'Mimetype',
+              'type': 'string',
+            }),
+          }),
+          'required': list([
+            'fileName',
+            'mimeType',
+            'data',
+          ]),
+          'title': 'AttachmentSchema',
+          'type': 'object',
+        }),
+        'AttachmentWithType': dict({
+          'properties': dict({
+            'attachmentType': dict({
+              'title': 'Attachmenttype',
+              'type': 'integer',
+            }),
+            'data': dict({
+              'title': 'Data',
+              'type': 'string',
+            }),
+            'fileName': dict({
+              'title': 'Filename',
+              'type': 'string',
+            }),
+            'mimeType': dict({
+              'title': 'Mimetype',
+              'type': 'string',
+            }),
+          }),
+          'required': list([
+            'fileName',
+            'mimeType',
+            'data',
+            'attachmentType',
+          ]),
+          'title': 'AttachmentWithType',
+          'type': 'object',
+        }),
+        'DocumentStatusEnum': dict({
+          'enum': list([
+            'sent',
+            'received',
+            'handling',
+            'resolvedViaEService',
+            'resolvedViaMail',
+          ]),
+          'title': 'DocumentStatusEnum',
+          'type': 'string',
+        }),
+        'DocumentStatusRequest': dict({
+          'properties': dict({
+            'id': dict({
+              'title': 'Id',
+              'type': 'string',
+            }),
+            'status': dict({
+              '$ref': '#/components/schemas/DocumentStatusEnum',
+            }),
+          }),
+          'required': list([
+            'id',
+            'status',
+          ]),
+          'title': 'DocumentStatusRequest',
+          'type': 'object',
+        }),
+        'ExtendDueDateResponse': dict({
+          'properties': dict({
+            'dueDate': dict({
+              'title': 'Duedate',
+              'type': 'string',
+            }),
+            'dueDateExtendableReason': dict({
+              'title': 'Duedateextendablereason',
+              'type': 'integer',
+            }),
+            'errorcode': dict({
+              'anyOf': list([
+                dict({
+                  'type': 'string',
+                }),
+                dict({
+                  'type': 'null',
+                }),
+              ]),
+              'title': 'Errorcode',
+            }),
+            'internalErrorDescription': dict({
+              'anyOf': list([
+                dict({
+                  'type': 'string',
+                }),
+                dict({
+                  'type': 'null',
+                }),
+              ]),
+              'title': 'Internalerrordescription',
+            }),
+            'responseCode': dict({
+              'title': 'Responsecode',
+              'type': 'integer',
+            }),
+            'success': dict({
+              'title': 'Success',
+              'type': 'boolean',
+            }),
+          }),
+          'required': list([
+            'success',
+            'dueDate',
+            'dueDateExtendableReason',
+            'responseCode',
+          ]),
+          'title': 'ExtendDueDateResponse',
+          'type': 'object',
+        }),
+        'FoulDataResponse': dict({
+          'properties': dict({
+            'address': dict({
+              'title': 'Address',
+              'type': 'string',
+            }),
+            'addressAdditionalInfo': dict({
+              'title': 'Addressadditionalinfo',
+              'type': 'string',
+            }),
+            'attachments': dict({
+              'items': dict({
+                '$ref': '#/components/schemas/AttachmentWithType',
+              }),
+              'title': 'Attachments',
+              'type': 'array',
+            }),
+            'barCode': dict({
+              'anyOf': list([
+                dict({
+                  'type': 'string',
+                }),
+                dict({
+                  'type': 'null',
+                }),
+              ]),
+              'title': 'Barcode',
+            }),
+            'description': dict({
+              'title': 'Description',
+              'type': 'string',
+            }),
+            'dueDate': dict({
+              'title': 'Duedate',
+              'type': 'string',
+            }),
+            'dueDateExtendable': dict({
+              'title': 'Duedateextendable',
+              'type': 'boolean',
+            }),
+            'dueDateExtendableReason': dict({
+              'title': 'Duedateextendablereason',
+              'type': 'integer',
+            }),
+            'foulDate': dict({
+              'title': 'Fouldate',
+              'type': 'string',
+            }),
+            'foulMakerAddress': dict({
+              'anyOf': list([
+                dict({
+                  'type': 'string',
+                }),
+                dict({
+                  'type': 'null',
+                }),
+              ]),
+              'title': 'Foulmakeraddress',
+            }),
+            'foulNumber': dict({
+              'title': 'Foulnumber',
+              'type': 'integer',
+            }),
+            'fouls': dict({
+              'items': dict({
+                '$ref': '#/components/schemas/FoulSchema',
+              }),
+              'title': 'Fouls',
+              'type': 'array',
+            }),
+            'iban': dict({
+              'anyOf': list([
+                dict({
+                  'type': 'string',
+                }),
+                dict({
+                  'type': 'null',
+                }),
+              ]),
+              'title': 'Iban',
+            }),
+            'invoiceSumText': dict({
+              'title': 'Invoicesumtext',
+              'type': 'string',
+            }),
+            'monitoringStart': dict({
+              'title': 'Monitoringstart',
+              'type': 'string',
+            }),
+            'openAmountText': dict({
+              'title': 'Openamounttext',
+              'type': 'string',
+            }),
+            'referenceNumber': dict({
+              'anyOf': list([
+                dict({
+                  'type': 'string',
+                }),
+                dict({
+                  'type': 'null',
+                }),
+              ]),
+              'title': 'Referencenumber',
+            }),
+            'registerNumber': dict({
+              'title': 'Registernumber',
+              'type': 'string',
+            }),
+            'responseCode': dict({
+              'title': 'Responsecode',
+              'type': 'integer',
+            }),
+            'vehicleBrand': dict({
+              'title': 'Vehiclebrand',
+              'type': 'string',
+            }),
+            'vehicleColor': dict({
+              'title': 'Vehiclecolor',
+              'type': 'string',
+            }),
+            'vehicleModel': dict({
+              'anyOf': list([
+                dict({
+                  'type': 'string',
+                }),
+                dict({
+                  'type': 'null',
+                }),
+              ]),
+              'title': 'Vehiclemodel',
+            }),
+            'vehicleType': dict({
+              'title': 'Vehicletype',
+              'type': 'string',
+            }),
+            'x_Coordinate': dict({
+              'title': 'X Coordinate',
+              'type': 'string',
+            }),
+            'y_Coordinate': dict({
+              'title': 'Y Coordinate',
+              'type': 'string',
+            }),
+          }),
+          'required': list([
+            'foulNumber',
+            'foulDate',
+            'monitoringStart',
+            'registerNumber',
+            'vehicleType',
+            'vehicleBrand',
+            'vehicleColor',
+            'address',
+            'addressAdditionalInfo',
+            'x_Coordinate',
+            'y_Coordinate',
+            'description',
+            'fouls',
+            'invoiceSumText',
+            'openAmountText',
+            'dueDate',
+            'dueDateExtendable',
+            'dueDateExtendableReason',
+            'responseCode',
+          ]),
+          'title': 'FoulDataResponse',
+          'type': 'object',
+        }),
+        'FoulRequest': dict({
+          'properties': dict({
+            'foul_number': dict({
+              'title': 'Foul Number',
+              'type': 'integer',
+            }),
+            'metadata': dict({
+              'anyOf': list([
+                dict({
+                  'additionalProperties': True,
+                  'type': 'object',
+                }),
+                dict({
+                  'type': 'null',
+                }),
+              ]),
+              'title': 'Metadata',
+            }),
+            'register_number': dict({
+              'title': 'Register Number',
+              'type': 'string',
+            }),
+          }),
+          'required': list([
+            'foul_number',
+            'register_number',
+          ]),
+          'title': 'FoulRequest',
+          'type': 'object',
+        }),
+        'FoulSchema': dict({
+          'properties': dict({
+            'additionalInfo': dict({
+              'anyOf': list([
+                dict({
+                  'type': 'string',
+                }),
+                dict({
+                  'type': 'null',
+                }),
+              ]),
+              'title': 'Additionalinfo',
+            }),
+            'description': dict({
+              'title': 'Description',
+              'type': 'string',
+            }),
+          }),
+          'required': list([
+            'description',
+          ]),
+          'title': 'FoulSchema',
+          'type': 'object',
+        }),
+        'NotFoundError': dict({
+          'properties': dict({
+            'detail': dict({
+              'default': 'Resource not found',
+              'title': 'Detail',
+              'type': 'string',
+            }),
+          }),
+          'title': 'NotFoundError',
+          'type': 'object',
+        }),
+        'Objection': dict({
+          'properties': dict({
+            'address': dict({
+              '$ref': '#/components/schemas/AddressField',
+            }),
+            'attachments': dict({
+              'anyOf': list([
+                dict({
+                  'items': dict({
+                    '$ref': '#/components/schemas/AttachmentSchema',
+                  }),
+                  'type': 'array',
+                }),
+                dict({
+                  'type': 'null',
+                }),
+              ]),
+              'title': 'Attachments',
+            }),
+            'authorRole': dict({
+              'title': 'Authorrole',
+              'type': 'integer',
+            }),
+            'bic': dict({
+              'anyOf': list([
+                dict({
+                  'type': 'string',
+                }),
+                dict({
+                  'type': 'null',
+                }),
+              ]),
+              'title': 'Bic',
+            }),
+            'description': dict({
+              'title': 'Description',
+              'type': 'string',
+            }),
+            'email': dict({
+              'title': 'Email',
+              'type': 'string',
+            }),
+            'firstName': dict({
+              'title': 'Firstname',
+              'type': 'string',
+            }),
+            'folderID': dict({
+              'anyOf': list([
+                dict({
+                  'type': 'string',
+                }),
+                dict({
+                  'type': 'null',
+                }),
+              ]),
+              'title': 'Folderid',
+            }),
+            'foulNumber': dict({
+              'anyOf': list([
+                dict({
+                  'type': 'integer',
+                }),
+                dict({
+                  'type': 'null',
+                }),
+              ]),
+              'title': 'Foulnumber',
+            }),
+            'iban': dict({
+              'title': 'Iban',
+              'type': 'string',
+            }),
+            'lastName': dict({
+              'title': 'Lastname',
+              'type': 'string',
+            }),
+            'metadata': dict({
+              'anyOf': list([
+                dict({
+                  'additionalProperties': True,
+                  'type': 'object',
+                }),
+                dict({
+                  'type': 'null',
+                }),
+              ]),
+              'title': 'Metadata',
+            }),
+            'mobilePhone': dict({
+              'title': 'Mobilephone',
+              'type': 'string',
+            }),
+            'sendDecisionViaEService': dict({
+              'title': 'Senddecisionviaeservice',
+              'type': 'boolean',
+            }),
+            'ssn': dict({
+              'title': 'Ssn',
+              'type': 'string',
+            }),
+            'transferNumber': dict({
+              'anyOf': list([
+                dict({
+                  'type': 'integer',
+                }),
+                dict({
+                  'type': 'null',
+                }),
+              ]),
+              'title': 'Transfernumber',
+            }),
+            'type': dict({
+              'title': 'Type',
+              'type': 'integer',
+            }),
+          }),
+          'required': list([
+            'ssn',
+            'firstName',
+            'lastName',
+            'email',
+            'mobilePhone',
+            'iban',
+            'authorRole',
+            'address',
+            'description',
+            'type',
+            'sendDecisionViaEService',
+          ]),
+          'title': 'Objection',
+          'type': 'object',
+        }),
+        'TransferDataResponse': dict({
+          'properties': dict({
+            'attachments': dict({
+              'items': dict({
+              }),
+              'title': 'Attachments',
+              'type': 'array',
+            }),
+            'barCode': dict({
+              'anyOf': list([
+                dict({
+                  'type': 'string',
+                }),
+                dict({
+                  'type': 'null',
+                }),
+              ]),
+              'title': 'Barcode',
+            }),
+            'description': dict({
+              'title': 'Description',
+              'type': 'string',
+            }),
+            'dueDate': dict({
+              'title': 'Duedate',
+              'type': 'string',
+            }),
+            'endAddress': dict({
+              'title': 'Endaddress',
+              'type': 'string',
+            }),
+            'endAddressAdditionalInfo': dict({
+              'title': 'Endaddressadditionalinfo',
+              'type': 'string',
+            }),
+            'foulTypes': dict({
+              'items': dict({
+              }),
+              'title': 'Foultypes',
+              'type': 'array',
+            }),
+            'fouls': dict({
+              'items': dict({
+              }),
+              'title': 'Fouls',
+              'type': 'array',
+            }),
+            'iban': dict({
+              'anyOf': list([
+                dict({
+                  'type': 'string',
+                }),
+                dict({
+                  'type': 'null',
+                }),
+              ]),
+              'title': 'Iban',
+            }),
+            'invoiceSumText': dict({
+              'title': 'Invoicesumtext',
+              'type': 'string',
+            }),
+            'openAmountText': dict({
+              'title': 'Openamounttext',
+              'type': 'string',
+            }),
+            'referenceNumber': dict({
+              'anyOf': list([
+                dict({
+                  'type': 'string',
+                }),
+                dict({
+                  'type': 'null',
+                }),
+              ]),
+              'title': 'Referencenumber',
+            }),
+            'registerNumber': dict({
+              'title': 'Registernumber',
+              'type': 'string',
+            }),
+            'responseCode': dict({
+              'title': 'Responsecode',
+              'type': 'integer',
+            }),
+            'startAddress': dict({
+              'title': 'Startaddress',
+              'type': 'string',
+            }),
+            'startAddressAdditionalInfo': dict({
+              'title': 'Startaddressadditionalinfo',
+              'type': 'string',
+            }),
+            'transferDate': dict({
+              'title': 'Transferdate',
+              'type': 'string',
+            }),
+            'transferEndDate': dict({
+              'title': 'Transferenddate',
+              'type': 'string',
+            }),
+            'transferNumber': dict({
+              'title': 'Transfernumber',
+              'type': 'integer',
+            }),
+            'transferReason': dict({
+              'title': 'Transferreason',
+              'type': 'string',
+            }),
+            'transferStartDate': dict({
+              'title': 'Transferstartdate',
+              'type': 'string',
+            }),
+            'transferStatus': dict({
+              'title': 'Transferstatus',
+              'type': 'string',
+            }),
+            'transferType': dict({
+              'title': 'Transfertype',
+              'type': 'string',
+            }),
+            'vehicleBrand': dict({
+              'title': 'Vehiclebrand',
+              'type': 'string',
+            }),
+            'vehicleChassisNumber': dict({
+              'title': 'Vehiclechassisnumber',
+              'type': 'string',
+            }),
+            'vehicleColor': dict({
+              'title': 'Vehiclecolor',
+              'type': 'string',
+            }),
+            'vehicleModel': dict({
+              'anyOf': list([
+                dict({
+                  'type': 'string',
+                }),
+                dict({
+                  'type': 'null',
+                }),
+              ]),
+              'title': 'Vehiclemodel',
+            }),
+            'vehicleOwnerAddress': dict({
+              'anyOf': list([
+                dict({
+                  'type': 'string',
+                }),
+                dict({
+                  'type': 'null',
+                }),
+              ]),
+              'title': 'Vehicleowneraddress',
+            }),
+            'vehicleType': dict({
+              'title': 'Vehicletype',
+              'type': 'string',
+            }),
+            'x_Coordinate': dict({
+              'title': 'X Coordinate',
+              'type': 'string',
+            }),
+            'y_Coordinate': dict({
+              'title': 'Y Coordinate',
+              'type': 'string',
+            }),
+          }),
+          'required': list([
+            'transferNumber',
+            'transferDate',
+            'registerNumber',
+            'vehicleType',
+            'vehicleBrand',
+            'vehicleColor',
+            'startAddress',
+            'startAddressAdditionalInfo',
+            'endAddress',
+            'endAddressAdditionalInfo',
+            'x_Coordinate',
+            'y_Coordinate',
+            'description',
+            'fouls',
+            'invoiceSumText',
+            'openAmountText',
+            'dueDate',
+            'vehicleChassisNumber',
+            'transferStartDate',
+            'transferEndDate',
+            'transferType',
+            'transferStatus',
+            'transferReason',
+            'foulTypes',
+            'responseCode',
+          ]),
+          'title': 'TransferDataResponse',
+          'type': 'object',
+        }),
+      }),
+      'securitySchemes': dict({
+        'ApiKeyAuth': dict({
+          'scheme': 'bearer',
+          'type': 'http',
+        }),
+        'AuthBearer': dict({
+          'scheme': 'bearer',
+          'type': 'http',
+        }),
+      }),
+    }),
+    'info': dict({
+      'description': '',
+      'title': 'Pysäköinnin asiointi',
+      'version': '1.0.0',
+    }),
+    'openapi': '3.1.0',
+    'paths': dict({
+      '/api/v1/extendDueDate': dict({
+        'post': dict({
+          'description': 'Extend foul due date by 30 days',
+          'operationId': 'api_api_extend_due_date',
+          'parameters': list([
+          ]),
+          'requestBody': dict({
+            'content': dict({
+              'application/json': dict({
+                'schema': dict({
+                  '$ref': '#/components/schemas/FoulRequest',
+                }),
+              }),
+            }),
+            'required': True,
+          }),
+          'responses': dict({
+            '200': dict({
+              'content': dict({
+                'application/json': dict({
+                  'schema': dict({
+                    '$ref': '#/components/schemas/ExtendDueDateResponse',
+                  }),
+                }),
+              }),
+              'description': 'OK',
+            }),
+            '400': dict({
+              'description': 'Bad Request',
+            }),
+            '422': dict({
+              'description': 'Unprocessable Entity',
+            }),
+          }),
+          'security': list([
+            dict({
+              'AuthBearer': list([
+              ]),
+            }),
+          ]),
+          'summary': 'Extend Due Date',
+          'tags': list([
+            'PASI',
+          ]),
+        }),
+      }),
+      '/api/v1/gdpr/{user_id}': dict({
+        'delete': dict({
+          'operationId': 'gdpr_api_views_delete_user_info',
+          'parameters': list([
+            dict({
+              'in': 'path',
+              'name': 'user_id',
+              'required': True,
+              'schema': dict({
+                'title': 'User Id',
+                'type': 'string',
+              }),
+            }),
+          ]),
+          'responses': dict({
+            '200': dict({
+              'description': 'OK',
+            }),
+          }),
+          'security': list([
+            dict({
+              'AuthBearer': list([
+              ]),
+            }),
+          ]),
+          'summary': 'Delete User Info',
+          'tags': list([
+            'GDPR API',
+          ]),
+        }),
+        'get': dict({
+          'operationId': 'gdpr_api_views_get_user_info',
+          'parameters': list([
+            dict({
+              'in': 'path',
+              'name': 'user_id',
+              'required': True,
+              'schema': dict({
+                'title': 'User Id',
+                'type': 'string',
+              }),
+            }),
+          ]),
+          'responses': dict({
+            '200': dict({
+              'description': 'OK',
+            }),
+          }),
+          'security': list([
+            dict({
+              'AuthBearer': list([
+              ]),
+            }),
+          ]),
+          'summary': 'Get User Info',
+          'tags': list([
+            'GDPR API',
+          ]),
+        }),
+      }),
+      '/api/v1/getDocuments/': dict({
+        'get': dict({
+          'description': 'Retrieve all user documents from ATV with UUID',
+          'operationId': 'api_api_get_atv_documents',
+          'parameters': list([
+          ]),
+          'responses': dict({
+            '200': dict({
+              'content': dict({
+                'application/json': dict({
+                  'schema': dict({
+                    '$ref': '#/components/schemas/ATVDocumentResponse',
+                  }),
+                }),
+              }),
+              'description': 'OK',
+            }),
+          }),
+          'security': list([
+            dict({
+              'AuthBearer': list([
+              ]),
+            }),
+          ]),
+          'summary': 'Get Atv Documents',
+          'tags': list([
+            'ATV',
+          ]),
+        }),
+      }),
+      '/api/v1/getFoulData': dict({
+        'get': dict({
+          'description': 'Retrieve foul data from PASI by foul number and register number',
+          'operationId': 'api_api_get_foul_data',
+          'parameters': list([
+            dict({
+              'in': 'query',
+              'name': 'foul_number',
+              'required': False,
+              'schema': dict({
+                'default': 113148427,
+                'title': 'Foul Number',
+                'type': 'integer',
+              }),
+            }),
+            dict({
+              'in': 'query',
+              'name': 'register_number',
+              'required': False,
+              'schema': dict({
+                'default': 'HKR-999',
+                'title': 'Register Number',
+                'type': 'string',
+              }),
+            }),
+          ]),
+          'responses': dict({
+            '200': dict({
+              'content': dict({
+                'application/json': dict({
+                  'schema': dict({
+                    '$ref': '#/components/schemas/FoulDataResponse',
+                  }),
+                }),
+              }),
+              'description': 'OK',
+            }),
+            '404': dict({
+              'content': dict({
+                'application/json': dict({
+                  'schema': dict({
+                    '$ref': '#/components/schemas/NotFoundError',
+                  }),
+                }),
+              }),
+              'description': 'Not Found',
+            }),
+          }),
+          'security': list([
+            dict({
+              'AuthBearer': list([
+              ]),
+            }),
+          ]),
+          'summary': 'Get Foul Data',
+          'tags': list([
+            'PASI',
+          ]),
+        }),
+      }),
+      '/api/v1/getTransferData': dict({
+        'get': dict({
+          'description': 'Retrieve transfer data from PASI by transfer number and register number',
+          'operationId': 'api_api_get_transfer_data',
+          'parameters': list([
+            dict({
+              'in': 'query',
+              'name': 'transfer_number',
+              'required': False,
+              'schema': dict({
+                'default': 11720143,
+                'title': 'Transfer Number',
+                'type': 'integer',
+              }),
+            }),
+            dict({
+              'in': 'query',
+              'name': 'register_number',
+              'required': False,
+              'schema': dict({
+                'default': 'HKR-999',
+                'title': 'Register Number',
+                'type': 'string',
+              }),
+            }),
+          ]),
+          'responses': dict({
+            '200': dict({
+              'content': dict({
+                'application/json': dict({
+                  'schema': dict({
+                    '$ref': '#/components/schemas/TransferDataResponse',
+                  }),
+                }),
+              }),
+              'description': 'OK',
+            }),
+            '404': dict({
+              'content': dict({
+                'application/json': dict({
+                  'schema': dict({
+                    '$ref': '#/components/schemas/NotFoundError',
+                  }),
+                }),
+              }),
+              'description': 'Not Found',
+            }),
+          }),
+          'security': list([
+            dict({
+              'AuthBearer': list([
+              ]),
+            }),
+          ]),
+          'summary': 'Get Transfer Data',
+          'tags': list([
+            'PASI',
+          ]),
+        }),
+      }),
+      '/api/v1/saveObjection': dict({
+        'post': dict({
+          'description': 'Send a new objection to PASI',
+          'operationId': 'api_api_save_objection',
+          'parameters': list([
+          ]),
+          'requestBody': dict({
+            'content': dict({
+              'application/json': dict({
+                'schema': dict({
+                  '$ref': '#/components/schemas/Objection',
+                }),
+              }),
+            }),
+            'required': True,
+          }),
+          'responses': dict({
+            '200': dict({
+              'description': 'OK',
+            }),
+            '204': dict({
+              'description': 'No Content',
+            }),
+            '422': dict({
+              'description': 'Unprocessable Entity',
+            }),
+          }),
+          'security': list([
+            dict({
+              'AuthBearer': list([
+              ]),
+            }),
+          ]),
+          'summary': 'Save Objection',
+          'tags': list([
+            'PASI',
+          ]),
+        }),
+      }),
+      '/api/v1/setDocumentStatus': dict({
+        'patch': dict({
+          'description': 'Update document status with ID and status',
+          'operationId': 'api_api_set_document_status',
+          'parameters': list([
+          ]),
+          'requestBody': dict({
+            'content': dict({
+              'application/json': dict({
+                'schema': dict({
+                  '$ref': '#/components/schemas/DocumentStatusRequest',
+                }),
+              }),
+            }),
+            'required': True,
+          }),
+          'responses': dict({
+            '200': dict({
+              'description': 'OK',
+            }),
+            '401': dict({
+              'description': 'Unauthorized',
+            }),
+            '404': dict({
+              'content': dict({
+                'application/json': dict({
+                  'schema': dict({
+                    '$ref': '#/components/schemas/NotFoundError',
+                  }),
+                }),
+              }),
+              'description': 'Not Found',
+            }),
+            '422': dict({
+              'description': 'Unprocessable Entity',
+            }),
+          }),
+          'security': list([
+            dict({
+              'ApiKeyAuth': list([
+              ]),
+            }),
+          ]),
+          'summary': 'Set Document Status',
+          'tags': list([
+            'Pysaköinnin asiointi',
+          ]),
+        }),
+      }),
+    }),
+    'servers': list([
+    ]),
+  })
+# ---
