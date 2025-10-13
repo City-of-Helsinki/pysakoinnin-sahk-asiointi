@@ -11,6 +11,6 @@ gunicorn
 ipython
 psycopg[c]
 pyclamd
-pydantic
+pydantic[email]
 python-dateutil
 sentry-sdk
