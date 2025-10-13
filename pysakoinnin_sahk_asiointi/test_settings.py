@@ -31,3 +31,6 @@ OIDC_API_TOKEN_AUTH = {
     "API_SCOPE_PREFIX": TOKEN_AUTH_SCOPE_PREFIX,
     "OIDC_CONFIG_EXPIRATION_TIME": 600,
 }
+
+EMAIL_BACKEND = "django.core.mail.backends.locmem.EmailBackend"
+MAILER_EMAIL_BACKEND = "django.core.mail.backends.locmem.EmailBackend"
