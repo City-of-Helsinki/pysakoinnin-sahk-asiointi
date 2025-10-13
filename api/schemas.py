@@ -1,5 +1,4 @@
 from enum import Enum
-from typing import Optional
 
 from ninja import Schema
 from pydantic import Field
@@ -8,7 +7,7 @@ from pydantic import Field
 # Parking foul related
 class FoulSchema(Schema):
     description: str
-    additionalInfo: Optional[str] = None
+    additionalInfo: str | None = None
 
 
 class AttachmentSchema(Schema):
@@ -27,7 +26,7 @@ class FoulDataResponse(Schema):
     monitoringStart: str
     registerNumber: str
     vehicleType: str
-    vehicleModel: Optional[str] = None
+    vehicleModel: str | None = None
     vehicleBrand: str
     vehicleColor: str
     address: str
@@ -39,10 +38,10 @@ class FoulDataResponse(Schema):
     invoiceSumText: str
     openAmountText: str
     dueDate: str
-    referenceNumber: Optional[str] = None
-    iban: Optional[str] = None
-    barCode: Optional[str] = None
-    foulMakerAddress: Optional[str] = None
+    referenceNumber: str | None = None
+    iban: str | None = None
+    barCode: str | None = None
+    foulMakerAddress: str | None = None
     attachments: list[AttachmentWithType] = Field(default_factory=list)
     dueDateExtendable: bool
     dueDateExtendableReason: int
@@ -51,8 +50,8 @@ class FoulDataResponse(Schema):
 
 class ExtendDueDateResponse(Schema):
     success: bool
-    errorcode: Optional[str] = None
-    internalErrorDescription: Optional[str] = None
+    errorcode: str | None = None
+    internalErrorDescription: str | None = None
     dueDate: str
     dueDateExtendableReason: int
     responseCode: int
@@ -61,36 +60,36 @@ class ExtendDueDateResponse(Schema):
 class FoulRequest(Schema):
     foul_number: int
     register_number: str
-    metadata: Optional[dict] = None
+    metadata: dict | None = None
 
 
 class AddressField(Schema):
-    addressLine1: Optional[str] = None
-    addressLine2: Optional[str] = None
+    addressLine1: str | None = None
+    addressLine2: str | None = None
     streetAddress: str
     postCode: str
-    postOffice: Optional[str] = None
-    countryName: Optional[str] = None
+    postOffice: str | None = None
+    countryName: str | None = None
 
 
 class Objection(Schema):
-    foulNumber: Optional[int] = None
-    transferNumber: Optional[int] = None
-    folderID: Optional[str] = None
+    foulNumber: int | None = None
+    transferNumber: int | None = None
+    folderID: str | None = None
     ssn: str
     firstName: str
     lastName: str
     email: str
     mobilePhone: str
-    bic: Optional[str] = None
+    bic: str | None = None
     iban: str
     authorRole: int
     address: AddressField
     description: str
-    attachments: Optional[list[AttachmentSchema]] = None
+    attachments: list[AttachmentSchema] | None = None
     type: int
     sendDecisionViaEService: bool
-    metadata: Optional[dict] = None
+    metadata: dict | None = None
 
 
 class TransferDataResponse(Schema):
@@ -98,7 +97,7 @@ class TransferDataResponse(Schema):
     transferDate: str
     registerNumber: str
     vehicleType: str
-    vehicleModel: Optional[str] = None
+    vehicleModel: str | None = None
     vehicleBrand: str
     vehicleColor: str
     startAddress: str
@@ -112,10 +111,10 @@ class TransferDataResponse(Schema):
     invoiceSumText: str
     openAmountText: str
     dueDate: str
-    referenceNumber: Optional[str] = None
-    iban: Optional[str] = None
-    barCode: Optional[str] = None
-    vehicleOwnerAddress: Optional[str] = None
+    referenceNumber: str | None = None
+    iban: str | None = None
+    barCode: str | None = None
+    vehicleOwnerAddress: str | None = None
     attachments: list = Field(default_factory=list)
     vehicleChassisNumber: str
     transferStartDate: str
@@ -137,7 +136,7 @@ class ATVDocumentSchema(Schema):
     type: str
     human_readable_type: dict
     service: str
-    user_id: Optional[str] = None
+    user_id: str | None = None
     transaction_id: str
     business_id: str
     tos_function_id: str
@@ -145,16 +144,16 @@ class ATVDocumentSchema(Schema):
     metadata: dict
     content: dict
     draft: bool
-    locked_after: Optional[str] = None
+    locked_after: str | None = None
     deletable: bool
-    delete_after: Optional[str] = None
+    delete_after: str | None = None
     attachments: list
 
 
 class ATVDocumentResponse(Schema):
     count: int
-    next: Optional[str] = None
-    previous: Optional[str] = None
+    next: str | None = None
+    previous: str | None = None
     results: list[ATVDocumentSchema]
 
 
