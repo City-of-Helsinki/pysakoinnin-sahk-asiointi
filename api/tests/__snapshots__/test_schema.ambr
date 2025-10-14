@@ -660,6 +660,7 @@
               'type': 'string',
             }),
             'email': dict({
+              'format': 'email',
               'title': 'Email',
               'type': 'string',
             }),
