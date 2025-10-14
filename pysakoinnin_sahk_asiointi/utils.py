@@ -1,5 +1,7 @@
 import logging
 
+logger = logging.getLogger(__name__)
+
 
 def sentry_scrubber(*args, **kwargs):
     event = args[0]
@@ -24,6 +26,6 @@ def sentry_scrubber(*args, **kwargs):
                         if val in lookup_objects:
                             values[val] = "Scrubbed"
     except BaseException as e:  # noqa
-        logging.warning("Failed to scrub objection data", exc_info=e)
+        logger.warning("Failed to scrub objection data", exc_info=e)
 
     return event
