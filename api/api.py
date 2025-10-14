@@ -88,8 +88,8 @@ def extend_due_date(request, foul_data: FoulRequest):
 
     mail = extend_due_date_mail_constructor(
         new_due_date=response_json["dueDate"],
-        lang=foul_data.metadata["lang"],
-        mail_to=foul_data.metadata["email"],
+        lang=foul_data.metadata.lang,
+        mail_to=foul_data.metadata.email,
     )
     mail.send()
 
