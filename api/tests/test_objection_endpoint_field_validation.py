@@ -281,6 +281,66 @@ class TestSaveObjectionEndpoint:
         response = post_objection(authenticated_client, objection_data)
         assert response.status_code == 200
 
+    def test_save_objection_email_field_validation_good_email(
+        self,
+        handler_mock,
+        add_doc_mock,
+        auth_mock,
+        authenticated_client,
+        user,
+    ):
+        auth_mock.return_value = MagicMock(user=user)
+
+        objection_data = self.VALID_OBJECTION_DATA
+        objection_data["email"] = "test@example.com"
+
+        handler_mock.return_value = MockResponse(200, {})
+        add_doc_mock.return_value = MockResponse(200, {})
+
+        response = post_objection(authenticated_client, objection_data)
+
+        assert response.status_code == 200
+
+    def test_save_objection_email_field_validation_bad_email(
+        self,
+        handler_mock,
+        add_doc_mock,
+        auth_mock,
+        authenticated_client,
+        user,
+    ):
+        auth_mock.return_value = MagicMock(user=user)
+
+        objection_data = self.VALID_OBJECTION_DATA
+        objection_data["email"] = "@example.com"
+
+        handler_mock.return_value = MockResponse(200, {})
+        add_doc_mock.return_value = MockResponse(200, {})
+
+        response = post_objection(authenticated_client, objection_data)
+
+        assert response.status_code == 422
+
+    def test_save_objection_email_field_validation_missing_email(
+        self,
+        handler_mock,
+        add_doc_mock,
+        auth_mock,
+        authenticated_client,
+        user,
+    ):
+        auth_mock.return_value = MagicMock(user=user)
+
+        objection_data = self.VALID_OBJECTION_DATA
+        del objection_data["email"]
+
+        handler_mock.return_value = MockResponse(200, {})
+        add_doc_mock.return_value = MockResponse(200, {})
+
+        response = post_objection(authenticated_client, objection_data)
+
+        assert response.status_code == 422
+
 
 @pytest.mark.django_db
 class TestSaveObjectionUnauthorized:

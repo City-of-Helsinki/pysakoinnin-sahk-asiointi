@@ -88,7 +88,7 @@ class Objection(Schema):
     ssn: str
     firstName: str
     lastName: str
-    email: str
+    email: EmailStr
     mobilePhone: str
     bic: str | None = None
     iban: str
