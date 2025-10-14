@@ -1,5 +1,7 @@
-from unittest.mock import patch
+import json
+from unittest.mock import MagicMock, patch
 
+import pytest
 from django.test import TestCase
 from ninja import Schema, errors
 
@@ -34,6 +36,7 @@ class Address(Schema):
 
 
 class Metadata(Schema):
+    dueDate: str = "2024-12-31"
     lang: str = "fi"
     email: str = "testing@email.com"
 
@@ -59,9 +62,9 @@ class Objection(Schema):
 
 
 class FoulRequest(Schema):
-    foul_number: str = "fi"
+    foul_number: int = 113148427
     register_number: str = "AB123"
-    metadata: dict = Metadata().dict()
+    metadata: dict = Metadata()
 
 
 class TestApiFunctions(TestCase):
@@ -147,3 +150,87 @@ class TestApiFunctions(TestCase):
         foul_obj = FoulRequest()
         extend_foul_due_date_mock.side_effect = errors.HttpError(500, "message")
         self.assertRaises(errors.HttpError, extend)
+
+
+@pytest.mark.django_db
+@patch("pysakoinnin_sahk_asiointi.urls.AuthBearer.authenticate")
+@patch("api.views.ATVHandler.add_document")
+@patch("api.views.PASIHandler.extend_foul_due_date")
+def test_extend_due_date_email_validation_good_email(
+    extend_foul_due_date_mock,
+    add_document_mock,
+    auth_mock,
+    authenticated_client,
+    user,
+):
+    add_document_mock.return_value = MockResponse(200, {})
+    extend_foul_due_date_mock.return_value = MockResponse(200, MOCK_DUEDATE)
+    auth_mock.return_value = MagicMock(user=user)
+
+    data = FoulRequest().dict()
+    data["metadata"]["email"] = "test@example.com"
+
+    response = authenticated_client.post(
+        "/api/v1/extendDueDate",
+        data=json.dumps(data),
+        content_type="application/json",
+        HTTP_AUTHORIZATION="Bearer fake-token",
+    )
+
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
+@patch("pysakoinnin_sahk_asiointi.urls.AuthBearer.authenticate")
+@patch("api.views.ATVHandler.add_document")
+@patch("api.views.PASIHandler.extend_foul_due_date")
+def test_extend_due_date_email_validation_bad_email(
+    extend_foul_due_date_mock,
+    add_document_mock,
+    auth_mock,
+    authenticated_client,
+    user,
+):
+    add_document_mock.return_value = MockResponse(200, {})
+    extend_foul_due_date_mock.return_value = MockResponse(200, MOCK_DUEDATE)
+    auth_mock.return_value = MagicMock(user=user)
+
+    data = FoulRequest().dict()
+    data["metadata"]["email"] = "@example.com"
+
+    response = authenticated_client.post(
+        "/api/v1/extendDueDate",
+        data=json.dumps(data),
+        content_type="application/json",
+        HTTP_AUTHORIZATION="Bearer fake-token",
+    )
+
+    assert response.status_code == 422
+
+
+@pytest.mark.django_db
+@patch("pysakoinnin_sahk_asiointi.urls.AuthBearer.authenticate")
+@patch("api.views.ATVHandler.add_document")
+@patch("api.views.PASIHandler.extend_foul_due_date")
+def test_extend_due_date_email_validation_missing_email(
+    extend_foul_due_date_mock,
+    add_document_mock,
+    auth_mock,
+    authenticated_client,
+    user,
+):
+    add_document_mock.return_value = MockResponse(200, {})
+    extend_foul_due_date_mock.return_value = MockResponse(200, MOCK_DUEDATE)
+    auth_mock.return_value = MagicMock(user=user)
+
+    data = FoulRequest().dict()
+    del data["metadata"]["email"]
+
+    response = authenticated_client.post(
+        "/api/v1/extendDueDate",
+        data=json.dumps(data),
+        content_type="application/json",
+        HTTP_AUTHORIZATION="Bearer fake-token",
+    )
+
+    assert response.status_code == 422

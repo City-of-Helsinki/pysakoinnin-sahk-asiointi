@@ -1,7 +1,7 @@
 from enum import Enum
 
 from ninja import Schema
-from pydantic import Field
+from pydantic import EmailStr, Field
 
 
 # Parking foul related
@@ -57,10 +57,19 @@ class ExtendDueDateResponse(Schema):
     responseCode: int
 
 
+class FoulRequestMetadata(Schema):
+    dueDate: str
+    lang: str
+    email: EmailStr
+
+    class Config(Schema.Config):
+        extra = "allow"
+
+
 class FoulRequest(Schema):
     foul_number: int
     register_number: str
-    metadata: dict | None = None
+    metadata: FoulRequestMetadata
 
 
 class AddressField(Schema):
