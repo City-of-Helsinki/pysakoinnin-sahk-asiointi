@@ -1,14 +1,17 @@
 import copy
 import json
+import logging
 from datetime import date
 
 import requests
 from dateutil.relativedelta import relativedelta
 from django.conf import settings
-from django.http import HttpResponse
 from ninja.errors import HttpError
+from requests import RequestException
 
 from api.schemas import DocumentStatusRequest, Objection
+
+logger = logging.getLogger(__name__)
 
 LANGUAGES = {"fi": 0, "sv": 1, "en": 2}
 
@@ -222,10 +225,15 @@ class DocumentHandler:
                 files={"attachments": None},
                 timeout=settings.OUTGOING_REQUEST_TIMEOUT,
             )
+            response.raise_for_status()
 
             response_json = response.json()
             if "id" not in response_json:
+                logger.error(
+                    f"Unexpected response from ATV for document id: {document_id}"
+                )
                 raise HttpError(404, message="Resource not found")
-            return HttpResponse(200, "OK")
-        except HttpError as error:
-            return error
+
+        except RequestException as error:
+            logger.exception(error)
+            raise HttpError(500, message="Unexpected response from ATV")

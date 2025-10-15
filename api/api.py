@@ -164,14 +164,13 @@ def set_document_status(request, status_request: DocumentStatusRequest):
     find_document_by_id = ATVHandler.get_document_by_transaction_id(status_request.id)
     document_id = find_document_by_id["results"][0]["id"]
 
-    response = DocumentHandler.set_document_status(document_id, status_request)
+    DocumentHandler.set_document_status(document_id, status_request)
 
-    if response.status_code == 200:
-        mail = mail_constructor(
-            event=status_request.status,
-            lang=find_document_by_id["results"][0]["metadata"]["lang"],
-            mail_to=find_document_by_id["results"][0]["content"]["email"],
-        )
-        mail.send()
-        _commit_to_audit_log(mail.to[0], "set-document-status")
-        return HttpResponse(200)
+    mail = mail_constructor(
+        event=status_request.status,
+        lang=find_document_by_id["results"][0]["metadata"]["lang"],
+        mail_to=find_document_by_id["results"][0]["content"]["email"],
+    )
+    mail.send()
+    _commit_to_audit_log(mail.to[0], "set-document-status")
+    return HttpResponse(200)
