@@ -1,5 +1,34 @@
 # Changelog
 
+## [2.4.0](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v2.3.0...pysakoinnin-sahk-asiointi-v2.4.0) (2025-10-16)
+
+
+### Features
+
+* Add CSP ([41d657a](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/41d657ab9400526ccba35a845c1352812d94d818))
+* Add retry_deferred_low management command ([c72a086](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/c72a0866de708f3552ba733cdc0caf7a277f305e))
+* Expect Objection.email to be an email ([f7c8280](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/f7c8280cd7f1f6a7e8f7dcb97877908c9688ea3a))
+* ExtendDueDate.metadata has required fields ([50dcd15](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/50dcd15670ebd46293759cde3375b9c407462340))
+
+
+### Bug Fixes
+
+* Check attachment existense before iterating them ([fcf4258](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/fcf4258587bac14a8b0c981a25fc3842508988dc))
+* Define return values for optional fields ([72baa3b](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/72baa3b570f2249839b3c14b8a336e043c69faa3))
+* Properly raise errors for setDocumentStatus endpoint ([d38efc7](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/d38efc7d6325ebb4350b11e95798ed8f6accfdbd))
+* Readiness and health endpoints ([ff507dd](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/ff507ddbb70ee6305d4c984771a1252f81870c1e))
+* Resolve build error when installing python modules ([69738e1](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/69738e18b76b3caccd125aa1e96e6bb40deea4ba))
+* Support CORS_ALLOWED_ORIGIN_REGEXES ([4d5f019](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/4d5f019c8a68d26fa92845584169381c1c1f8350))
+* Use logger in sentry_scrubber ([1f50cf9](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/1f50cf98e90d5381b9df8065e9116b3f7be8f824))
+
+
+### Dependencies
+
+* Add email-validator as a requirement ([15f5795](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/15f5795f8ae3e79dd3cad08a315010bb9a811a58))
+* Add ipython and pip-tools, remove ruff ([fc1f2ce](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/fc1f2ce7031d259f5586c2a4801c612da7e2dbe3))
+* Add syrupy to dev requirements ([7add9fc](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/7add9fcc8bb0d70d271b5402513b793d79d88696))
+* Upgrade to django 5.2 ([81e4c6f](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/81e4c6f9b8a97fe86df74b573f00f126815bd90e))
+
 ## [2.3.0](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v2.2.1...pysakoinnin-sahk-asiointi-v2.3.0) (2025-09-12)
 
 
