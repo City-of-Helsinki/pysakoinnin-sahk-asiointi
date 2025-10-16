@@ -22,7 +22,7 @@ RUN dnf update -y  \
     && ln -sf /usr/bin/python3.12 /usr/local/bin/python3 \
     && ln -sf /usr/bin/python3.12 /usr/local/bin/python \
     && python -m ensurepip --upgrade --default-pip \
-    && pip install --upgrade setuptools wheel \
+    && pip install --upgrade pip setuptools wheel \
     && pip install --no-cache-dir -r ./requirements.txt \
     && dnf remove -y \
     libpq-devel \
