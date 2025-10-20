@@ -8,6 +8,7 @@ from csp.constants import NONE, SELF
 from environ import Env
 from sentry_sdk.integrations.django import DjangoIntegration
 from sentry_sdk.scrubber import DEFAULT_DENYLIST, EventScrubber
+from sentry_sdk.types import SamplingContext
 
 from pysakoinnin_sahk_asiointi.utils import sentry_scrubber
 
@@ -21,7 +22,10 @@ env = Env(
     DATABASE_URL=(str, "postgres://parking-user:root@localhost:5432/parking-service"),
     DATABASE_PASSWORD=(str, ""),
     SENTRY_DSN=(str, ""),
-    SENTRY_TRACE_SAMPLE_RATE=(float, 0.0),
+    SENTRY_ENVIRONMENT=(str, "local"),
+    SENTRY_PROFILE_SESSION_SAMPLE_RATE=(float, None),
+    SENTRY_RELEASE=(str, None),
+    SENTRY_TRACES_SAMPLE_RATE=(float, None),
     ATV_API_KEY=(str, ""),
     ATV_ENDPOINT=(str, ""),
     TOKEN_AUTH_AUDIENCE=(list, []),
@@ -73,13 +77,35 @@ sentry_deny_list = DEFAULT_DENYLIST + [
     "httplib_request_kw",  # same as "body"
 ]
 
-sentry_sdk.init(
-    dsn=env("SENTRY_DSN"),
-    integrations=[DjangoIntegration()],
-    event_scrubber=EventScrubber(denylist=sentry_deny_list, recursive=True),
-    traces_sample_rate=env("SENTRY_TRACE_SAMPLE_RATE"),
-    before_send=sentry_scrubber,
-)
+SENTRY_TRACES_SAMPLE_RATE = env("SENTRY_TRACES_SAMPLE_RATE")
+
+
+def sentry_traces_sampler(sampling_context: SamplingContext) -> float:
+    # Respect parent sampling decision if one exists. Recommended by Sentry.
+    if (parent_sampled := sampling_context.get("parent_sampled")) is not None:
+        return float(parent_sampled)
+
+    # Exclude health check endpoints from tracing
+    path = sampling_context.get("wsgi_environ", {}).get("PATH_INFO", "")
+    if path.rstrip("/") in ["/health", "/readiness"]:
+        return 0
+
+    # Use configured sample rate for all other requests
+    return SENTRY_TRACES_SAMPLE_RATE or 0
+
+
+if env("SENTRY_DSN"):
+    sentry_sdk.init(
+        dsn=env("SENTRY_DSN"),
+        environment=env("SENTRY_ENVIRONMENT"),
+        release=env("SENTRY_RELEASE"),
+        integrations=[DjangoIntegration()],
+        traces_sampler=sentry_traces_sampler,
+        profile_session_sample_rate=env("SENTRY_PROFILE_SESSION_SAMPLE_RATE"),
+        profile_lifecycle="trace",
+        event_scrubber=EventScrubber(denylist=sentry_deny_list, recursive=True),
+        before_send=sentry_scrubber,
+    )
 
 # Application definition
 
@@ -116,7 +142,11 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGINS = env("CORS_ALLOWED_ORIGINS")
 CORS_ALLOWED_ORIGIN_REGEXES = env("CORS_ALLOWED_ORIGIN_REGEXES")
-CORS_ALLOW_HEADERS = list(default_headers) + ["baggage", "sentry-trace"]
+CORS_ALLOW_HEADERS = (
+    *default_headers,
+    "baggage",
+    "sentry-trace",
+)
 
 ROOT_URLCONF = "pysakoinnin_sahk_asiointi.urls"
 
