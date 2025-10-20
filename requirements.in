@@ -13,4 +13,4 @@ psycopg[c]
 pyclamd
 pydantic[email]
 python-dateutil
-sentry-sdk
+sentry-sdk[django]
