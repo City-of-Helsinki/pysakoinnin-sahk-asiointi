@@ -239,6 +239,9 @@ MAILER_EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
 MAILER_ERROR_HANDLER = "mail_service.utils.custom_mailer_error_handler"
 
+# Not required/useful in a container based environment.
+MAILER_USE_FILE_LOCK = False
+
 # After how many failed attempts email is not being put back to queue with
 # retry_deferred command
 MAILER_EMAIL_MAX_RETRIES = 5
