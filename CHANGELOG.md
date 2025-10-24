@@ -1,5 +1,22 @@
 # Changelog
 
+## [2.5.0](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v2.4.0...pysakoinnin-sahk-asiointi-v2.5.0) (2025-10-24)
+
+
+### Features
+
+* **sentry:** Update sentry configuration ([3cc636d](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/3cc636d53d97cebb32c108abc77d802cad4a7de8))
+
+
+### Bug Fixes
+
+* Disable mailer lockfile ([114eea8](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/114eea8cf2072e8779d8eb919dd6b206494355e3))
+
+
+### Dependencies
+
+* Bump sentry-sdk from 2.39.0 to 2.42.0 ([a19127e](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/a19127ebe6ee1246bb4d5e8b0bdc071d057cb76e))
+
 ## [2.4.0](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v2.3.0...pysakoinnin-sahk-asiointi-v2.4.0) (2025-10-16)
 
 
