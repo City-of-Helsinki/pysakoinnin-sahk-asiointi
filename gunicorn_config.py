@@ -1,4 +1,6 @@
 workers = 3  # Number of worker processes
+threads = 1  # Enable threads per worker (similar to enable-threads in uWSGI)
+worker_class = "sync"  # Or use "gthread" for explicit threading support
 bind = "0.0.0.0:8000"  # Bind Gunicorn to all interfaces on port 8000
 daemon = True  # Run Gunicorn in the background
 wsgi_app = "pysakoinnin_sahk_asiointi.wsgi:application"  # WSGI application entry point
