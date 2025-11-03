@@ -564,10 +564,6 @@
         'FoulRequestMetadata': dict({
           'additionalProperties': True,
           'properties': dict({
-            'dueDate': dict({
-              'title': 'Duedate',
-              'type': 'string',
-            }),
             'email': dict({
               'format': 'email',
               'title': 'Email',
@@ -579,7 +575,6 @@
             }),
           }),
           'required': list([
-            'dueDate',
             'lang',
             'email',
           ]),

@@ -58,7 +58,6 @@ class ExtendDueDateResponse(Schema):
 
 
 class FoulRequestMetadata(Schema):
-    dueDate: str
     lang: str
     email: EmailStr
 
