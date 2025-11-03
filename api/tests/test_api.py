@@ -36,7 +36,6 @@ class Address(Schema):
 
 
 class Metadata(Schema):
-    dueDate: str = "2024-12-31"
     lang: str = "fi"
     email: str = "testing@email.com"
 
