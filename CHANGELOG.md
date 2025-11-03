@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.5.1](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v2.5.0...pysakoinnin-sahk-asiointi-v2.5.1) (2025-11-03)
+
+
+### Bug Fixes
+
+* Remove dueDate from FoulRequestMetadata ([9b925f3](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/9b925f3dbd9b87503c4fb99da7bafeaa095e3a56))
+
+
+### Dependencies
+
+* Bump pip from 25.2 to 25.3 ([e1260be](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/e1260be09f8feaeb0b2f042b8de312dbd6e66807))
+
 ## [2.5.0](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v2.4.0...pysakoinnin-sahk-asiointi-v2.5.0) (2025-10-24)
 
 
