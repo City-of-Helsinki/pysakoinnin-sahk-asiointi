@@ -1,5 +1,5 @@
+import os
 from pathlib import Path
-from sys import stdout
 
 import django.conf.global_settings
 import sentry_sdk
@@ -125,12 +125,14 @@ INSTALLED_APPS = [
     "corsheaders",
     "anymail",
     "mailer",
+    "logger_extra",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "corsheaders.middleware.CorsMiddleware",
+    "logger_extra.middleware.XRequestIdMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -274,17 +276,34 @@ STATIC_ROOT = env("STATIC_ROOT")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-_audit_log_handler = {
-    "level": "INFO",
-    "class": "logging.StreamHandler",
-    "stream": stdout,
-}
 
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
-    "handlers": {"audit": _audit_log_handler},
-    "loggers": {"audit": {"handlers": ["audit"], "level": "ERROR", "propagate": True}},
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "json",
+            "filters": ["context"],
+        },
+    },
+    "filters": {
+        "context": {
+            "()": "logger_extra.filter.LoggerContextFilter",
+        }
+    },
+    "formatters": {
+        "json": {
+            "()": "logger_extra.formatter.JSONFormatter",
+        }
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": os.getenv("DJANGO_LOG_LEVEL", "INFO"),
+            "propagate": False,
+        },
+    },
 }
 
 # Malware protection

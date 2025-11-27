@@ -23,6 +23,6 @@ if [[ -n "$*" ]]; then
 elif [[ "$DEV_SERVER" = "1" ]]; then
     python -Wd ./manage.py runserver 0.0.0.0:8080
 else
-  gunicorn -c gunicorn_config.py
+  gunicorn &
   nginx -g "daemon off;"
 fi
