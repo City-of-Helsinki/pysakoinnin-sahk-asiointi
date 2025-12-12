@@ -48,7 +48,7 @@ env = Env(
     CSP_REPORT_URI=(str, None),
 )
 
-Env.read_env(str(BASE_DIR / "config.env"))
+Env.read_env(str(BASE_DIR / "config.env"))  # ?
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env("DEBUG")
