@@ -1,8 +1,7 @@
+import logging
 from datetime import datetime, timezone
 
-from api.models import AuditLog
-
-ORIGIN = "PARKING_E-SERVICE"
+from resilient_logger.sources import ResilientLogSource
 
 
 def _now() -> datetime:
@@ -16,26 +15,11 @@ def _iso8601_date(time: datetime) -> str:
 
 
 def _commit_to_audit_log(mail_to, action):
-    """
-    Write an event to the audit log.
-    Each audit log event has an actor (or None for system events),
-    an operation(e.g. READ or UPDATE), the target of the operation
-    (a Django model instance), status (e.g. SUCCESS), and a timestamp.
-    Audit log events are written to the "audit" logger at "INFO" level.
-    """
-    current_time = _now()
-    message = {
-        "audit_event": {
-            "origin": ORIGIN,
-            "action": action,
-            "date_time_epoch": int(current_time.timestamp() * 1000),
-            "date_time": _iso8601_date(current_time),
-            "actor": {
-                "profile_id": None,
-            },
-            "operation": "send_mail",
-            "target": mail_to,
-        },
-    }
-
-    AuditLog.objects.create(message=message)
+    """Email message audit log entry creation."""
+    ResilientLogSource.create_structured(
+        level=logging.NOTSET,
+        message=action,
+        actor={"name": "SYSTEM", "value": ""},
+        operation="SEND_MAIL",
+        target={"value": mail_to},
+    )
