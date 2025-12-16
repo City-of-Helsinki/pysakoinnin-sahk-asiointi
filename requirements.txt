@@ -26,6 +26,7 @@ certifi==2025.10.5 \
     --hash=sha256:0f212c2744a9bb6de0c56639a6f68afe01ecd92d91f14ae897c4fe7bbeeef0de \
     --hash=sha256:47c09d31ccf2acf0be3f701ea53595ee7e0b8fa08801c6624be771df09ae7b43
     # via
+    #   elastic-transport
     #   requests
     #   sentry-sdk
 cffi==2.0.0 \
@@ -305,6 +306,7 @@ django==5.2.9 \
     #   django-logger-extra
     #   django-mailer
     #   django-ninja
+    #   django-resilient-logger
     #   sentry-sdk
 django-anymail==13.1 \
     --hash=sha256:63e48402ec8258f17640eb73c8c64141f16d2f8ae7d448d0fb1c66e82b7cbcf6 \
@@ -338,6 +340,10 @@ django-ninja==1.4.5 \
     --hash=sha256:aa1a2ee2b22c5f1c2f4bfbc004386be7074cbfaf133680c2b359a31221965503 \
     --hash=sha256:d779702ddc6e17b10739049ddb075a6a1e6c6270bdc04e0b0429f6adbf670373
     # via -r requirements.in
+django-resilient-logger==1.1.1 \
+    --hash=sha256:3e007683d8d1e2fb1c87f81e843ce5cfbaaa9b2202428b2ba30444a69519549a \
+    --hash=sha256:7d68fc14f3c67158653e08c3007875682b031c70ab43998b30be3f451bac07bd
+    # via -r requirements.in
 dnspython==2.8.0 \
     --hash=sha256:01d9bbc4a2d76bf0db7c1f729812ded6d912bd318d3b1cf81d30c0f845dbf3af \
     --hash=sha256:181d3c6996452cb1189c4046c61599b84a5a86e099562ffde77d26984ff26d0f
@@ -346,6 +352,14 @@ ecdsa==0.19.1 \
     --hash=sha256:30638e27cf77b7e15c4c4cc1973720149e1033827cfd00661ca5c8cc0cdb24c3 \
     --hash=sha256:478cba7b62555866fcb3bb3fe985e06decbdb68ef55713c4e5ab98c57d508e61
     # via python-jose
+elastic-transport==8.17.1 \
+    --hash=sha256:192718f498f1d10c5e9aa8b9cf32aed405e469a7f0e9d6a8923431dbb2c59fb8 \
+    --hash=sha256:5edef32ac864dca8e2f0a613ef63491ee8d6b8cfb52881fa7313ba9290cac6d2
+    # via elasticsearch
+elasticsearch==8.19.2 \
+    --hash=sha256:622efa6a3e662db45285f16ab57bf198ea73ac9e137e7ed8b1d1d1e47638959d \
+    --hash=sha256:c16ba20c4c76cf6952e836dae7f4e724e00ba7bf31b94b79472b873683accdd4
+    # via django-resilient-logger
 email-validator==2.3.0 \
     --hash=sha256:80f13f623413e6b197ae73bb10bf4eb0908faf509ad8362c5edeb0be7fd450b4 \
     --hash=sha256:9fc05c37f2f6cf439ff414f8fc46d917929974a82244c20eb10231ba60c54426
@@ -565,7 +579,9 @@ pygments==2.19.2 \
 python-dateutil==2.9.0.post0 \
     --hash=sha256:37dd54208da7e1cd875388217d5e00ebd4179249f90fb72437e91a35459a0ad3 \
     --hash=sha256:a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427
-    # via -r requirements.in
+    # via
+    #   -r requirements.in
+    #   elasticsearch
 python-jose==3.5.0 \
     --hash=sha256:abd1202f23d34dfad2c3d28cb8617b90acf34132c7afd60abd0b0b7d3cb55771 \
     --hash=sha256:fb4eaa44dbeb1c26dcc69e4bd7ec54a1cb8dd64d3b4d81ef08d90ff453f2b01b
@@ -608,6 +624,7 @@ typing-extensions==4.15.0 \
     --hash=sha256:0cea48d173cc12fa28ecabc3b837ea3cf6f38c6d1136f85cbaaf598984861466 \
     --hash=sha256:f0fa19c6845758ab08074a0cfa8b7aecb71c999ca73d62883bc25cc018c4e548
     # via
+    #   elasticsearch
     #   psycopg
     #   pydantic
     #   pydantic-core
@@ -621,6 +638,7 @@ urllib3==2.5.0 \
     --hash=sha256:e6b01673c0fa6a13e374b50871808eb3bf7046c4b125b216f6bf1cc604cff0dc
     # via
     #   django-anymail
+    #   elastic-transport
     #   requests
     #   sentry-sdk
 wcwidth==0.2.14 \
