@@ -16,6 +16,12 @@ from pysakoinnin_sahk_asiointi.utils import sentry_scrubber
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 env = Env(
+    # Resilient logger config
+    AUDIT_LOG_ENVIRONMENT=(str, ""),
+    AUDIT_LOG_ES_URL=(str, ""),
+    AUDIT_LOG_ES_INDEX=(str, ""),
+    AUDIT_LOG_ES_USERNAME=(str, ""),
+    AUDIT_LOG_ES_PASSWORD=(str, ""),
     DEBUG=(bool, False),
     SECRET_KEY=(str, ""),
     ALLOWED_HOSTS=(list, []),
@@ -128,6 +134,7 @@ INSTALLED_APPS = [
     "anymail",
     "mailer",
     "logger_extra",
+    "resilient_logger",
 ]
 
 MIDDLEWARE = [
@@ -306,6 +313,31 @@ LOGGING = {
             "propagate": False,
         },
     },
+}
+
+# Resilient logger settings
+RESILIENT_LOGGER = {
+    "origin": "pysakoinnin-sahkoinen-asiointi-api",
+    "environment": env("AUDIT_LOG_ENVIRONMENT"),
+    "sources": [
+        {
+            "class": "resilient_logger.sources.ResilientLogSource",
+        }
+    ],
+    "targets": [
+        {
+            "class": "resilient_logger.targets.ElasticsearchLogTarget",
+            "es_url": env("AUDIT_LOG_ES_URL"),
+            "es_username": env("AUDIT_LOG_ES_USERNAME"),
+            "es_password": env("AUDIT_LOG_ES_PASSWORD"),
+            "es_index": env("AUDIT_LOG_ES_INDEX"),
+            "required": True,
+        }
+    ],
+    "batch_limit": 5000,
+    "chunk_size": 500,
+    "submit_unsent_entries": True,
+    "clear_sent_entries": True,
 }
 
 # Malware protection
