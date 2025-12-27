@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.6.0](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v2.5.3...pysakoinnin-sahk-asiointi-v2.6.0) (2025-12-27)
+
+
+### Features
+
+* Add json application logging to gunicorn ([595bc9f](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/595bc9fa63c5facd52e81705050bdaf9f8b30f47))
+* Change audit log to use resilient logger ([9235906](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/9235906ef7a8a9e6f6d5879fc6c0d85d4fb53558))
+
+
+### Dependencies
+
+* Add django logger extra ([4f88763](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/4f88763846f4bb3e82f03f43b2b9ecf0160994f2))
+* Add resilient logger dependency ([297bc1d](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/297bc1da6b6acf6e644ec386726556be9b4ef1e4))
+
 ## [2.5.3](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v2.5.2...pysakoinnin-sahk-asiointi-v2.5.3) (2025-12-04)
 
 
