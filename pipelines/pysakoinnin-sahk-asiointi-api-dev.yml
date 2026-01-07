@@ -38,7 +38,7 @@ resources:
 
 extends:
   # Filename in Azure DevOps Repository
-  template: azure-pipelines-pysakoinnin-sahk-asiointi-api-dev.yml@pysakoinnin-sahk-asiointi-pipelines
+  template: components/pysakoinnin-sahk-asiointi-api/pipelines/pysakoinnin-sahk-asiointi-api-dev.yml@pysakoinnin-sahk-asiointi-pipelines
   # parameters:
     # Application build arguments and config map values as key value pairs.
     # Does not contain all buildArguments or configMap values, the rest located in pysakoinnin-sahk-asiointi-pipelines
