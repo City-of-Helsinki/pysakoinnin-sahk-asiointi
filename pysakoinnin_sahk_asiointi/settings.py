@@ -17,7 +17,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 env = Env(
     # Resilient logger config
-    AUDIT_LOG_ENVIRONMENT=(str, ""),
+    AUDIT_LOG_ENV=(str, ""),
     AUDIT_LOG_ES_URL=(str, ""),
     AUDIT_LOG_ES_INDEX=(str, ""),
     AUDIT_LOG_ES_USERNAME=(str, ""),
@@ -318,7 +318,7 @@ LOGGING = {
 # Resilient logger settings
 RESILIENT_LOGGER = {
     "origin": "pysakoinnin-sahkoinen-asiointi-api",
-    "environment": env("AUDIT_LOG_ENVIRONMENT"),
+    "environment": env("AUDIT_LOG_ENV"),
     "sources": [
         {
             "class": "resilient_logger.sources.ResilientLogSource",
