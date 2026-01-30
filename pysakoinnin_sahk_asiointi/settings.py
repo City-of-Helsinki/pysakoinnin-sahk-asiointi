@@ -53,6 +53,7 @@ env = Env(
     OUTGOING_REQUEST_TIMEOUT=(int, 30),
     CSP_ENFORCE=(bool, False),
     CSP_REPORT_URI=(str, None),
+    STALE_MESSAGE_THRESHOLD_DAYS=(int, 2),
 )
 
 env_file_path = str(BASE_DIR / "config.env")
@@ -362,6 +363,9 @@ GDPR_API_QUERY_SCOPE = env("GDPR_API_QUERY_SCOPE")
 GDPR_API_DELETE_SCOPE = env("GDPR_API_DELETE_SCOPE")
 
 OUTGOING_REQUEST_TIMEOUT = env("OUTGOING_REQUEST_TIMEOUT")
+
+# Stale message check settings
+STALE_MESSAGE_THRESHOLD_DAYS = env("STALE_MESSAGE_THRESHOLD_DAYS")
 
 
 content_security_policy_configuration = {
