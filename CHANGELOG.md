@@ -1,5 +1,30 @@
 # Changelog
 
+## [2.6.0](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v2.5.3...pysakoinnin-sahk-asiointi-v2.6.0) (2026-02-09)
+
+
+### Features
+
+* Add json application logging to gunicorn ([595bc9f](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/595bc9fa63c5facd52e81705050bdaf9f8b30f47))
+* Allow dynamic sentry trace ignore paths ([b51b0fc](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/b51b0fc0e2442d278b6a150ad2a67f6db792fa87))
+* Change audit log to use resilient logger ([9235906](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/9235906ef7a8a9e6f6d5879fc6c0d85d4fb53558))
+
+
+### Bug Fixes
+
+* Change audit log environment variable audit_log_env ([297734d](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/297734df3da615d8494cef993b54fcd7c986bfdb))
+* Refactor pipelines ([#239](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/issues/239)) ([b64bd72](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/b64bd72ed7e771e5908e33d84df654e5f5213db2))
+
+
+### Dependencies
+
+* Add django logger extra ([4f88763](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/4f88763846f4bb3e82f03f43b2b9ecf0160994f2))
+* Add resilient logger dependency ([297bc1d](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/297bc1da6b6acf6e644ec386726556be9b4ef1e4))
+* Bump django from 5.2.9 to 5.2.11 ([887bad4](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/887bad44f253fa1f27757fd591b807ddfb0c38c0))
+* Bump pip from 25.3 to 26.0 ([fe52d6a](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/fe52d6ad9cfcea5ba4feadc0687644e94f160785))
+* Bump pyasn1 from 0.6.1 to 0.6.2 ([f9a94e2](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/f9a94e2e3bdb60a73c80fdf76dc115c32c67808b))
+* Bump wheel from 0.45.1 to 0.46.2 ([42223f8](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/42223f81f4e3adfe3029fad08b6257c4eb0bbd24))
+
 ## [2.5.3](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v2.5.2...pysakoinnin-sahk-asiointi-v2.5.3) (2025-12-04)
 
 
