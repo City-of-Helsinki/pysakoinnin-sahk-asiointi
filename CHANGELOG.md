@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.1](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v2.6.0...pysakoinnin-sahk-asiointi-v2.6.1) (2026-02-11)
+
+
+### Dependencies
+
+* Bump cryptography from 46.0.3 to 46.0.5 ([ba42ff5](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/ba42ff5c7fef56efcd5e62391ff52e13004fb25c))
+
 ## [2.6.0](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v2.5.3...pysakoinnin-sahk-asiointi-v2.6.0) (2026-02-09)
 
 
