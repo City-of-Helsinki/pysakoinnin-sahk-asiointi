@@ -1,5 +1,16 @@
 # Changelog
 
+## [3.0.0](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v2.6.1...pysakoinnin-sahk-asiointi-v3.0.0) (2026-02-15)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove obsolete AuditLog model
+
+### Features
+
+* Remove obsolete AuditLog model ([deacd7e](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/deacd7efc3bcd5b6d4ec65fd16adb47a3f2d4f3d))
+
 ## [2.6.1](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v2.6.0...pysakoinnin-sahk-asiointi-v2.6.1) (2026-02-11)
 
 
