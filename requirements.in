@@ -16,3 +16,4 @@ pyclamd
 pydantic[email]
 python-dateutil
 sentry-sdk[django]
+suomifi-messages @ https://github.com/City-of-Helsinki/django-helsinki-suomifi-messages/archive/556150e2f0ba8255b721f1f8fa6c47a869e7b656.tar.gz

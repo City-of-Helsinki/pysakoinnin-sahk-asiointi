@@ -5,6 +5,7 @@ import django.conf.global_settings
 import sentry_sdk
 from corsheaders.defaults import default_headers
 from csp.constants import NONE, SELF
+from django.utils.translation import gettext_lazy as _
 from environ import Env
 from sentry_sdk.integrations.django import DjangoIntegration
 from sentry_sdk.scrubber import DEFAULT_DENYLIST, EventScrubber
@@ -54,6 +55,11 @@ env = Env(
     CSP_ENFORCE=(bool, False),
     CSP_REPORT_URI=(str, None),
     STALE_MESSAGE_THRESHOLD_DAYS=(int, 2),
+    SUOMIFI_MESSAGES_ENABLED=(bool, False),
+    SUOMIFI_ENVIRONMENT=(str, "qa"),
+    SUOMIFI_USERNAME=(str, ""),
+    SUOMIFI_PASSWORD=(str, ""),
+    SUOMIFI_SERVICE_ID=(str, ""),
 )
 
 env_file_path = str(BASE_DIR / "config.env")
@@ -132,6 +138,7 @@ INSTALLED_APPS = [
     "pysakoinnin_sahk_asiointi",
     "api",
     "mail_service",
+    "message_service",
     "ninja",
     "corsheaders",
     "anymail",
@@ -143,6 +150,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "logger_extra.middleware.XRequestIdMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -271,6 +279,14 @@ DEFAULT_FROM_EMAIL = "pysakoinnin-asiointi-noreply@hel.fi"
 
 LANGUAGE_CODE = "en-us"
 
+LANGUAGES = (
+    ("fi", _("Finnish")),
+    ("sv", _("Swedish")),
+    ("en", _("English")),
+)
+
+LOCALE_PATHS = ["locale"]
+
 TIME_ZONE = "UTC"
 
 USE_I18N = True
@@ -395,3 +411,9 @@ if env("CSP_ENFORCE"):
 else:
     CONTENT_SECURITY_POLICY = None
     CONTENT_SECURITY_POLICY_REPORT_ONLY = content_security_policy_configuration
+
+SUOMIFI_MESSAGES_ENABLED = env("SUOMIFI_MESSAGES_ENABLED")
+SUOMIFI_ENVIRONMENT = env("SUOMIFI_ENVIRONMENT")
+SUOMIFI_USERNAME = env("SUOMIFI_USERNAME")
+SUOMIFI_PASSWORD = env("SUOMIFI_PASSWORD")
+SUOMIFI_SERVICE_ID = env("SUOMIFI_SERVICE_ID")

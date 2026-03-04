@@ -15,6 +15,7 @@ from api.tests.mocks import (
     MOCK_TRANSFER,
     MockResponse,
 )
+from message_service.models import Message
 
 TEST_DOCUMENT_ID = "123"
 
@@ -134,7 +135,9 @@ class TestApiFunctions(TestCase):
 
     @patch("api.views.ATVHandler.add_document")
     @patch("api.views.PASIHandler.extend_foul_due_date")
-    def test_extend_due_date(self, extend_foul_due_date_mock, add_document_mock):
+    def test_extend_due_date_without_suomifi(
+        self, extend_foul_due_date_mock, add_document_mock
+    ):
         add_document_mock.return_value = MockResponse(200, {})
         extend_foul_due_date_mock.return_value = MockResponse(200, MOCK_DUEDATE)
 
@@ -145,6 +148,36 @@ class TestApiFunctions(TestCase):
 
         response = extend()
         assert response == MOCK_DUEDATE
+
+        foul_obj = FoulRequest()
+        del foul_obj.foul_number
+        self.assertRaises(AttributeError, extend)
+
+        foul_obj = FoulRequest()
+        extend_foul_due_date_mock.side_effect = errors.HttpError(500, "message")
+        self.assertRaises(errors.HttpError, extend)
+
+    @patch("message_service.models.Message.send")
+    @patch("api.views.ATVHandler.add_document")
+    @patch("api.views.PASIHandler.extend_foul_due_date")
+    @override_settings(SUOMIFI_MESSAGES_ENABLED=True)
+    def test_extend_due_date_with_suomifi(
+        self, extend_foul_due_date_mock, add_document_mock, message_send_mock
+    ):
+        add_document_mock.return_value = MockResponse(200, {})
+        extend_foul_due_date_mock.return_value = MockResponse(200, MOCK_DUEDATE)
+
+        foul_obj = FoulRequest()
+
+        def extend():
+            return api.extend_due_date(request=self.request, foul_data=foul_obj)
+
+        response = extend()
+        assert response == MOCK_DUEDATE
+        messages = Message.objects.all()
+        assert len(messages) == 1
+        assert not messages[0].queued
+        assert message_send_mock.called
 
         foul_obj = FoulRequest()
         del foul_obj.foul_number
@@ -266,7 +299,7 @@ def test_extend_due_date_email_validation_missing_email(
 )
 @pytest.mark.django_db
 @override_settings(DEBUG=False)
-def test_set_document_status(
+def test_set_document_status_without_suomifi(
     client,
     requests_mock,
     settings,
@@ -316,3 +349,36 @@ def test_set_document_status(
 
     else:
         assert len(mailoutbox) == 0
+
+
+@pytest.mark.django_db
+@pytest.mark.parametrize(
+    "status,queued",
+    [
+        (DocumentStatusEnum.sent, True),
+        (DocumentStatusEnum.received, False),
+        (DocumentStatusEnum.handling, True),
+        (DocumentStatusEnum.resolvedViaEService, True),
+        (DocumentStatusEnum.resolvedViaMail, True),
+    ],
+)
+@patch("message_service.models.Message.send")
+@patch("api.api.DocumentHandler.set_document_status")
+@patch("api.api.ATVHandler.get_document_by_transaction_id")
+def test_set_document_status_with_suomifi(
+    get_document_by_transaction_id_mock,
+    document_status_mock,
+    message_send_mock,
+    status,
+    queued,
+    settings,
+):
+    settings.SUOMIFI_MESSAGES_ENABLED = True
+    request = MagicMock(Request)
+    status_request = DocumentStatusRequest(id="1", status=status)
+    api.set_document_status(request, status_request)
+
+    messages = Message.objects.all()
+    assert len(messages) == 1
+    assert messages[0].queued == queued
+    assert message_send_mock.called != queued

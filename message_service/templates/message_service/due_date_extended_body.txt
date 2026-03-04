@@ -1,0 +1,2 @@
+{% load i18n %}
+{% translate "The due date has been postponed. New due date is" %} {{formatted_due_date}}
