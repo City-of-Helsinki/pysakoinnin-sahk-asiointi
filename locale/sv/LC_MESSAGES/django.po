@@ -1,0 +1,106 @@
+# Pysäköinnin sähköinen asiointi SV translations.
+# Copyright (C) 2026 City of Helsinki
+# This file is distributed under the same license as the PACKAGE package.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-10 13:14+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: message_service/models.py:50
+msgid "Queued"
+msgstr ""
+
+#: message_service/models.py:51
+msgid "Sent via Suomi.fi messages"
+msgstr ""
+
+#: message_service/models.py:52
+msgid "Sent via e-mail"
+msgstr ""
+
+#: message_service/models.py:53
+msgid "Failed"
+msgstr ""
+
+#: message_service/templates/message_service/due_date_extended_body.html:7
+#: message_service/templates/message_service/event_body.html:7
+#: message_service/utils.py:74 message_service/utils.py:98
+msgid "New event in Parking e-service"
+msgstr "Nya händelser i parkering e-tjänsten"
+
+#: message_service/templates/message_service/due_date_extended_body.html:10
+#: message_service/templates/message_service/due_date_extended_body.txt:2
+msgid "The due date has been postponed. New due date is"
+msgstr "Förfallodagen har skjutits upp. Nytt förfallodag är"
+
+#: message_service/templates/message_service/event_body.html:9
+#: message_service/templates/message_service/event_body.txt:2
+msgid "New event has arrived in the Parking e-service"
+msgstr "Nya händelser har kommit in i parkering e-tjänsten"
+
+#: message_service/templates/message_service/event_body.html:9
+#: message_service/templates/message_service/event_body.txt:2
+msgid "at"
+msgstr "på"
+
+#: message_service/templates/message_service/event_body.html:11
+#: message_service/templates/message_service/event_body.txt:3
+msgid "Sign in to parking e-services"
+msgstr "Logga in på parkerings e-tjänster"
+
+#: message_service/templates/message_service/event_body.html:14
+#: message_service/templates/message_service/event_body.txt:5
+msgid ""
+"This is an automated message sent by the City of Helsinki parking control e-"
+"service."
+msgstr ""
+"Detta är ett automatiskt meddelande som skickas av Helsingfors stads "
+"parkeringsövervaknings e-tjänst."
+
+#: message_service/templates/message_service/event_body.html:15
+#: message_service/templates/message_service/event_body.txt:6
+msgid "Do not reply to this message."
+msgstr "Svara inte på detta meddelande."
+
+#: message_service/utils.py:40
+msgid "Sent"
+msgstr "Skickat"
+
+#: message_service/utils.py:42
+msgid "Received"
+msgstr "Mottaget"
+
+#: message_service/utils.py:44
+msgid "In process"
+msgstr "Bearbetning"
+
+#: message_service/utils.py:46
+msgid "Decision in e-services"
+msgstr "Beslut i e-tjänster"
+
+#: message_service/utils.py:48
+msgid "Decision has been mailed"
+msgstr "Beslutsbrev postat"
+
+#: pysakoinnin_sahk_asiointi/settings.py:283
+msgid "Finnish"
+msgstr ""
+
+#: pysakoinnin_sahk_asiointi/settings.py:284
+msgid "Swedish"
+msgstr ""
+
+#: pysakoinnin_sahk_asiointi/settings.py:285
+msgid "English"
+msgstr ""
