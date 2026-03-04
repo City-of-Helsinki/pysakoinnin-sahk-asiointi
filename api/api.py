@@ -6,8 +6,10 @@ from django.http import HttpRequest, HttpResponse
 from ninja import Router, Schema
 from ninja.security import HttpBearer
 
+import message_service.utils
 from api.schemas import (
     ATVDocumentResponse,
+    DocumentStatusEnum,
     DocumentStatusRequest,
     ExtendDueDateResponse,
     FoulDataResponse,
@@ -86,12 +88,19 @@ def extend_due_date(request, foul_data: FoulRequest):
         {**response_json}, foul_data.foul_number, request.user.uuid, metadata={}
     )
 
-    mail = extend_due_date_mail_constructor(
-        new_due_date=response_json["dueDate"],
-        lang=foul_data.metadata.lang,
-        mail_to=foul_data.metadata.email,
-    )
-    mail.send()
+    if settings.SUOMIFI_MESSAGES_ENABLED:
+        lang = foul_data.metadata.lang
+        message = message_service.utils.due_date_extended_message(
+            str(foul_data.foul_number), response_json["dueDate"], lang
+        )
+        message.send()
+    else:
+        mail = extend_due_date_mail_constructor(
+            new_due_date=response_json["dueDate"],
+            lang=foul_data.metadata.lang,
+            mail_to=foul_data.metadata.email,
+        )
+        mail.send()
 
     _commit_to_audit_log(mail.to[0], "extend-due-date")
 
@@ -166,11 +175,23 @@ def set_document_status(request, status_request: DocumentStatusRequest):
 
     DocumentHandler.set_document_status(document_id, status_request)
 
-    mail = mail_constructor(
-        event=status_request.status,
-        lang=find_document_by_id["results"][0]["metadata"]["lang"],
-        mail_to=find_document_by_id["results"][0]["content"]["email"],
-    )
-    mail.send()
+    if settings.SUOMIFI_MESSAGES_ENABLED:
+        lang = find_document_by_id["results"][0]["metadata"]["lang"]
+        message = message_service.utils.event_message(
+            status_request.id, status_request.status, lang
+        )
+        if status_request.status == DocumentStatusEnum.received:
+            message.send()
+        else:
+            message.queued = True
+            message.save()
+
+    else:
+        mail = mail_constructor(
+            event=status_request.status,
+            lang=find_document_by_id["results"][0]["metadata"]["lang"],
+            mail_to=find_document_by_id["results"][0]["content"]["email"],
+        )
+        mail.send()
     _commit_to_audit_log(mail.to[0], "set-document-status")
     return HttpResponse(200)

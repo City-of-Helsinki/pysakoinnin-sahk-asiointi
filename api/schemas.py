@@ -1,5 +1,6 @@
-from enum import Enum
+from enum import StrEnum
 
+from django.utils.translation import gettext as _
 from ninja import Schema
 from pydantic import EmailStr, Field
 
@@ -165,12 +166,25 @@ class ATVDocumentResponse(Schema):
     results: list[ATVDocumentSchema]
 
 
-class DocumentStatusEnum(str, Enum):
+class DocumentStatusEnum(StrEnum):
     sent = "sent"
     received = "received"
     handling = "handling"
     resolvedViaEService = "resolvedViaEService"
     resolvedViaMail = "resolvedViaMail"
+
+    def label(self) -> str:
+        match self:
+            case DocumentStatusEnum.sent:
+                return _("Sent")
+            case DocumentStatusEnum.received:
+                return _("Received")
+            case DocumentStatusEnum.handling:
+                return _("In process")
+            case DocumentStatusEnum.resolvedViaEService:
+                return _("Decision in e-services")
+            case DocumentStatusEnum.resolvedViaMail:
+                return _("Decision has been mailed")
 
 
 class DocumentStatusRequest(Schema):
