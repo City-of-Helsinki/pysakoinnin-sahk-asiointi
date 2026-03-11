@@ -1,7 +1,7 @@
-from enum import StrEnum
-
 from ninja import Schema
 from pydantic import EmailStr, Field
+
+from api.enums import DocumentStatusEnum
 
 
 # Parking foul related
@@ -163,14 +163,6 @@ class ATVDocumentResponse(Schema):
     next: str | None = None
     previous: str | None = None
     results: list[ATVDocumentSchema]
-
-
-class DocumentStatusEnum(StrEnum):
-    sent = "sent"
-    received = "received"
-    handling = "handling"
-    resolvedViaEService = "resolvedViaEService"
-    resolvedViaMail = "resolvedViaMail"
 
 
 class DocumentStatusRequest(Schema):

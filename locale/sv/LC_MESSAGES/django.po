@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-10 13:14+0000\n"
+"POT-Creation-Date: 2026-03-12 09:25+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,25 +17,53 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: message_service/models.py:50
+#: message_service/enums.py:10
 msgid "Queued"
-msgstr ""
+msgstr "I kö"
 
-#: message_service/models.py:51
+#: message_service/enums.py:11
 msgid "Sent via Suomi.fi messages"
-msgstr ""
+msgstr "Skickat via Suomi.fi-meddelanden"
 
-#: message_service/models.py:52
+#: message_service/enums.py:12
 msgid "Sent via e-mail"
-msgstr ""
+msgstr "Skickat via e-post"
 
-#: message_service/models.py:53
+#: message_service/enums.py:13
+msgid "Read via Suomi.fi messages"
+msgstr "Läst via Suomi.fi-meddelanden"
+
+#: message_service/enums.py:14
 msgid "Failed"
-msgstr ""
+msgstr "Misslyckades"
 
+#: message_service/enums.py:19
+msgid "Due date extended"
+msgstr "Förfallodagen förlängd"
+
+#: message_service/enums.py:20
+msgid "Status: sent"
+msgstr "Status: skickat"
+
+#: message_service/enums.py:21
+msgid "Status: received"
+msgstr "Status: mottaget"
+
+#: message_service/enums.py:22
+msgid "Status: handling"
+msgstr "Status: behandlas"
+
+#: message_service/enums.py:25
+msgid "Status: resolved via e-service"
+msgstr "Status: löst via e-tjänst"
+
+#: message_service/enums.py:29
+msgid "Status: resolved via mail"
+msgstr "Status: löst via post"
+
+#: message_service/models.py:163 message_service/models.py:190
 #: message_service/templates/message_service/due_date_extended_body.html:7
 #: message_service/templates/message_service/event_body.html:7
-#: message_service/utils.py:74 message_service/utils.py:98
 msgid "New event in Parking e-service"
 msgstr "Nya händelser i parkering e-tjänsten"
 
@@ -73,34 +101,38 @@ msgstr ""
 msgid "Do not reply to this message."
 msgstr "Svara inte på detta meddelande."
 
-#: message_service/utils.py:40
+#: message_service/utils.py:24
 msgid "Sent"
 msgstr "Skickat"
 
-#: message_service/utils.py:42
+#: message_service/utils.py:26
 msgid "Received"
 msgstr "Mottaget"
 
-#: message_service/utils.py:44
+#: message_service/utils.py:28
 msgid "In process"
 msgstr "Bearbetning"
 
-#: message_service/utils.py:46
+#: message_service/utils.py:30
 msgid "Decision in e-services"
 msgstr "Beslut i e-tjänster"
 
-#: message_service/utils.py:48
+#: message_service/utils.py:32
 msgid "Decision has been mailed"
 msgstr "Beslutsbrev postat"
 
-#: pysakoinnin_sahk_asiointi/settings.py:283
-msgid "Finnish"
-msgstr ""
+#: message_service/utils.py:35
+msgid "Other"
+msgstr "Annat"
 
 #: pysakoinnin_sahk_asiointi/settings.py:284
-msgid "Swedish"
-msgstr ""
+msgid "Finnish"
+msgstr "finska"
 
 #: pysakoinnin_sahk_asiointi/settings.py:285
+msgid "Swedish"
+msgstr "svenska"
+
+#: pysakoinnin_sahk_asiointi/settings.py:286
 msgid "English"
-msgstr ""
+msgstr "engelska"

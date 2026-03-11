@@ -1,4 +1,5 @@
 import logging
+from typing import assert_never
 from zoneinfo import ZoneInfo
 
 from django.conf import settings
@@ -6,8 +7,9 @@ from django.utils.translation import gettext as _
 from suomifi_messages.client import SuomiFiClient
 from suomifi_messages.schemas import EventType
 
-from api.schemas import DocumentStatusEnum
+from api.enums import DocumentStatusEnum
 from api.views import ATVHandler
+from message_service.enums import DeliveryStatus
 
 logger = logging.getLogger(__name__)
 
@@ -28,6 +30,8 @@ def status_label(event: DocumentStatusEnum) -> str:
             label = _("Decision in e-services")
         case DocumentStatusEnum.resolvedViaMail:
             label = _("Decision has been mailed")
+        case _:
+            assert_never(event)
 
     return label
 
@@ -81,11 +85,17 @@ def check_suomifi_events():
 
     for event in events:
         if event.type == EventType.ELECTRONIC_MESSAGE_READ:
-            delivery_report, _ = DeliveryReport.objects.get_or_create(
-                suomifi_id=event.metadata.message_id
-            )
-            delivery_report.read_at = event.event_time
-            delivery_report.save()
+            suomifi_id = event.metadata.message_id
+            try:
+                delivery_report = DeliveryReport.objects.get(suomifi_id=suomifi_id)
+                delivery_report.read_at = event.event_time
+                delivery_report.status = DeliveryStatus.READ_SUOMIFI
+                delivery_report.save()
+            except DeliveryReport.DoesNotExist:
+                logger.warning(
+                    f"Not updating DeliveryReport for message {suomifi_id} because it "
+                    "does not exist in the database."
+                )
 
     persistence.continuation_token = continuation_token
     persistence.save()

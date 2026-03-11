@@ -1,9 +1,10 @@
 import datetime
+from datetime import timedelta
 
 import pytest
 from syrupy.assertion import SnapshotAssertion
 
-from api.schemas import DocumentStatusEnum
+from api.enums import DocumentStatusEnum
 from message_service.models import Message
 
 
@@ -25,3 +26,29 @@ def test_event_message(
 def test_due_date_extended_message(snapshot: SnapshotAssertion, lang: str):
     message = Message.due_date_extended_message("1", "2025-07-01T00:00:00", lang)
     assert (message.subject, message.body_html, message.body_text) == snapshot
+
+
+@pytest.mark.django_db
+def test_queue_retry_within_retry_window(message, freezer, settings):
+    settings.SUOMIFI_SEND_RETRY_HOURS = 24
+    freezer.move_to(
+        message.created_at + timedelta(hours=settings.SUOMIFI_SEND_RETRY_HOURS - 1)
+    )
+    message._queue_retry()
+
+    message.refresh_from_db()
+    assert message.queued is True
+    assert message.send_attempt_count == 1
+
+
+@pytest.mark.django_db
+def test_queue_retry_past_retry_window(message, freezer, settings):
+    settings.SUOMIFI_SEND_RETRY_HOURS = 24
+    freezer.move_to(
+        message.created_at + timedelta(hours=settings.SUOMIFI_SEND_RETRY_HOURS + 1)
+    )
+    message._queue_retry()
+
+    message.refresh_from_db()
+    assert message.queued is False
+    assert message.send_attempt_count == 1

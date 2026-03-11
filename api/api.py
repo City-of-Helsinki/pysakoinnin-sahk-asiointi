@@ -4,11 +4,12 @@ import ninja.errors
 from django.conf import settings
 from django.http import HttpRequest, HttpResponse
 from ninja import Router, Schema
+from ninja.pagination import paginate
 from ninja.security import HttpBearer
 
+from api.enums import DocumentStatusEnum
 from api.schemas import (
     ATVDocumentResponse,
-    DocumentStatusEnum,
     DocumentStatusRequest,
     ExtendDueDateResponse,
     FoulDataResponse,
@@ -20,7 +21,8 @@ from api.utils import virus_scan_attachment_file
 from api.views import ATVHandler, DocumentHandler, PASIHandler
 from mail_service.audit_log import _commit_to_audit_log
 from mail_service.utils import extend_due_date_mail_constructor, mail_constructor
-from message_service.models import Message
+from message_service.models import DeliveryReport, Message
+from message_service.schemas import DeliveryReportSchema
 
 router = Router()
 
@@ -192,3 +194,17 @@ def set_document_status(request, status_request: DocumentStatusRequest):
         mail.send()
         _commit_to_audit_log(mail.to[0], "set-document-status")
     return HttpResponse(200)
+
+
+@router.get(
+    "/getDeliveryReports",
+    response=list[DeliveryReportSchema],
+    tags=["Pysaköinnin asiointi"],
+    auth=ApiKeyAuth(),
+)
+@paginate
+def get_delivery_reports(request, transaction_id: str | None = None):
+    qs = DeliveryReport.objects.all().order_by("pk")
+    if transaction_id is not None:
+        qs = qs.filter(transaction_id=transaction_id)
+    return qs
