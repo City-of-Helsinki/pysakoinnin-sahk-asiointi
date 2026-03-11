@@ -293,6 +293,76 @@
           'title': 'AttachmentWithType',
           'type': 'object',
         }),
+        'DeliveryReportSchema': dict({
+          'properties': dict({
+            'created_at': dict({
+              'format': 'date-time',
+              'title': 'Created At',
+              'type': 'string',
+            }),
+            'message_type': dict({
+              'default': 'other',
+              'title': 'Message Type',
+              'type': 'string',
+            }),
+            'read_at': dict({
+              'anyOf': list([
+                dict({
+                  'format': 'date-time',
+                  'type': 'string',
+                }),
+                dict({
+                  'type': 'null',
+                }),
+              ]),
+              'title': 'Read At',
+            }),
+            'sent_at': dict({
+              'anyOf': list([
+                dict({
+                  'format': 'date-time',
+                  'type': 'string',
+                }),
+                dict({
+                  'type': 'null',
+                }),
+              ]),
+              'title': 'Sent At',
+            }),
+            'status': dict({
+              'default': 'queued',
+              'title': 'Status',
+              'type': 'string',
+            }),
+            'suomifi_id': dict({
+              'anyOf': list([
+                dict({
+                  'type': 'integer',
+                }),
+                dict({
+                  'type': 'null',
+                }),
+              ]),
+              'title': 'Suomifi Id',
+            }),
+            'transaction_id': dict({
+              'title': 'Transaction Id',
+              'type': 'string',
+            }),
+            'updated_at': dict({
+              'format': 'date-time',
+              'title': 'Updated At',
+              'type': 'string',
+            }),
+          }),
+          'required': list([
+            'transaction_id',
+            'created_at',
+            'updated_at',
+          ]),
+          'title': 'DeliveryReportSchema',
+          'type': 'object',
+        }),
         'DocumentStatusEnum': dict({
           'enum': list([
             'sent',
@@ -605,6 +675,24 @@
           'title': 'FoulSchema',
           'type': 'object',
         }),
+        'Input': dict({
+          'properties': dict({
+            'limit': dict({
+              'default': 100,
+              'minimum': 1,
+              'title': 'Limit',
+              'type': 'integer',
+            }),
+            'offset': dict({
+              'default': 0,
+              'minimum': 0,
+              'title': 'Offset',
+              'type': 'integer',
+            }),
+          }),
+          'title': 'Input',
+          'type': 'object',
+        }),
         'NotFoundError': dict({
           'properties': dict({
             'detail': dict({
@@ -747,6 +835,27 @@
             'sendDecisionViaEService',
           ]),
           'title': 'Objection',
+          'type': 'object',
+        }),
+        'PagedDeliveryReportSchema': dict({
+          'properties': dict({
+            'count': dict({
+              'title': 'Count',
+              'type': 'integer',
+            }),
+            'items': dict({
+              'items': dict({
+                '$ref': '#/components/schemas/DeliveryReportSchema',
+              }),
+              'title': 'Items',
+              'type': 'array',
+            }),
+          }),
+          'required': list([
+            'items',
+            'count',
+          ]),
+          'title': 'PagedDeliveryReportSchema',
           'type': 'object',
         }),
         'TransferDataResponse': dict({
@@ -1069,6 +1178,73 @@
           'summary': 'Get User Info',
           'tags': list([
             'GDPR API',
+          ]),
+        }),
+      }),
+      '/api/v1/getDeliveryReports': dict({
+        'get': dict({
+          'operationId': 'api_api_get_delivery_reports',
+          'parameters': list([
+            dict({
+              'in': 'query',
+              'name': 'transaction_id',
+              'required': False,
+              'schema': dict({
+                'anyOf': list([
+                  dict({
+                    'type': 'string',
+                  }),
+                  dict({
+                    'type': 'null',
+                  }),
+                ]),
+                'title': 'Transaction Id',
+              }),
+            }),
+            dict({
+              'in': 'query',
+              'name': 'limit',
+              'required': False,
+              'schema': dict({
+                'default': 100,
+                'minimum': 1,
+                'title': 'Limit',
+                'type': 'integer',
+              }),
+            }),
+            dict({
+              'in': 'query',
+              'name': 'offset',
+              'required': False,
+              'schema': dict({
+                'default': 0,
+                'minimum': 0,
+                'title': 'Offset',
+                'type': 'integer',
+              }),
+            }),
+          ]),
+          'responses': dict({
+            '200': dict({
+              'content': dict({
+                'application/json': dict({
+                  'schema': dict({
+                    '$ref': '#/components/schemas/PagedDeliveryReportSchema',
+                  }),
+                }),
+              }),
+              'description': 'OK',
+            }),
+          }),
+          'security': list([
+            dict({
+              'ApiKeyAuth': list([
+              ]),
+            }),
+          ]),
+          'summary': 'Get Delivery Reports',
+          'tags': list([
+            'Pysaköinnin asiointi',
           ]),
         }),
       }),

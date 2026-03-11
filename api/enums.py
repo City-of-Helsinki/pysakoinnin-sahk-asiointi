@@ -1,4 +1,4 @@
-from enum import Enum
+from enum import Enum, StrEnum
 
 
 class Operation(Enum):
@@ -19,3 +19,11 @@ class Status(Enum):
     SUCCESS = "SUCCESS"
     FAILED = "FAILED"
     FORBIDDEN = "FORBIDDEN"
+
+
+class DocumentStatusEnum(StrEnum):
+    sent = "sent"
+    received = "received"
+    handling = "handling"
+    resolvedViaEService = "resolvedViaEService"  # noqa: N815
+    resolvedViaMail = "resolvedViaMail"  # noqa: N815

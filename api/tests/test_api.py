@@ -7,7 +7,8 @@ from django.urls import reverse
 from ninja import Schema, errors
 
 from api import api
-from api.schemas import DocumentStatusEnum, DocumentStatusRequest
+from api.enums import DocumentStatusEnum
+from api.schemas import DocumentStatusRequest
 from api.tests.mocks import (
     MOCK_ATV_DOCUMENT_RESPONSE,
     MOCK_DUEDATE,

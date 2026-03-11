@@ -6,23 +6,13 @@ from resilient_logger.models import ResilientLogEntry
 from suomifi_messages.errors import SuomiFiAPIError
 from suomifi_messages.schemas import EventType
 
+from message_service.enums import DeliveryStatus
 from message_service.models import DeliveryReport, Message, SuomifiPersistence
 from message_service.utils import (
     TransactionContactInformationError,
     check_suomifi_events,
     get_user_details_by_transaction_id,
 )
-
-
-@pytest.fixture
-def message(db):
-    return Message.objects.create(
-        transaction_id="113148474",
-        subject="Test subject",
-        body_text="Test body",
-        body_html="<p>Test body</p>",
-        audit_action="extend-due-date",
-    )
 
 
 @pytest.fixture
@@ -108,6 +98,11 @@ def test_send_message_via_suomifi(
 
     client.send_electronic_message.assert_called_once()
 
+    report = DeliveryReport.objects.get(transaction_id=message.transaction_id)
+    assert report.status == DeliveryStatus.SENT_SUOMIFI
+    assert report.suomifi_id == 42
+    assert report.sent_at is not None
+
     assert ResilientLogEntry.objects.filter(
         context__actor__name="SYSTEM",
         context__target__name="user_id",
@@ -132,6 +127,11 @@ def test_send_message_via_email_fallback(
     message.send()
 
     email_backend.send.assert_called_once()
+
+    report = DeliveryReport.objects.get(transaction_id=message.transaction_id)
+    assert report.status == DeliveryStatus.SENT_EMAIL
+    assert report.sent_at is not None
+
     assert ResilientLogEntry.objects.filter(
         context__actor__name="SYSTEM",
         context__target__name="user_id",
@@ -146,7 +146,7 @@ def test_send_message_via_email_fallback(
 @pytest.mark.django_db
 def test_send_message_contact_info_error(message, get_document_by_transaction_id_mock):
     get_document_by_transaction_id_mock.return_value = ATV_RESPONSE_NOT_FOUND
-    message.send()  # must not raise
+    message.send()
 
     message.refresh_from_db()
     assert message.send_attempt_count == 1
@@ -160,7 +160,7 @@ def test_send_message_suomifi_error_queues_and_does_not_raise(
     get_document_by_transaction_id_mock.return_value = ATV_RESPONSE_OK
     client.check_mailbox.side_effect = SuomiFiAPIError("boom")
 
-    message.send()  # must not raise
+    message.send()
 
     message.refresh_from_db()
     assert message.send_attempt_count == 1
@@ -174,7 +174,7 @@ def test_send_message_unexpected_error_queues_and_increments(
     get_document_by_transaction_id_mock.return_value = ATV_RESPONSE_OK
     client.check_mailbox.side_effect = RuntimeError("unexpected")
 
-    message.send()  # must not raise
+    message.send()
 
     message.refresh_from_db()
     assert message.send_attempt_count == 1
@@ -206,6 +206,7 @@ def test_check_suomifi_events_marks_read(client):
 
     report.refresh_from_db()
     assert report.read_at == read_time
+    assert report.status == DeliveryStatus.READ_SUOMIFI
     assert SuomifiPersistence.objects.get(pk=1).continuation_token == "next-token"
 
 
@@ -214,7 +215,20 @@ def test_check_suomifi_events_ignores_unknown_event_type(client):
     unknown_event = _make_event("some-other-type", 999, datetime.datetime.now())
     client.get_events.return_value = ([unknown_event], "token-xyz")
 
-    check_suomifi_events()  # must not raise
+    check_suomifi_events()
 
     assert not DeliveryReport.objects.filter(suomifi_id=999).exists()
     assert SuomifiPersistence.objects.get(pk=1).continuation_token == "token-xyz"
+
+
+@pytest.mark.django_db
+def test_check_suomifi_events_nop_if_no_matching_report(client):
+    read_time = datetime.datetime(2025, 6, 1, 12, 0, tzinfo=datetime.timezone.utc)
+    client.get_events.return_value = (
+        [_make_event(EventType.ELECTRONIC_MESSAGE_READ, 999, read_time)],
+        "next-token",
+    )
+
+    check_suomifi_events()
+
+    assert not DeliveryReport.objects.filter(suomifi_id=999).exists()
