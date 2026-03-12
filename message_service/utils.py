@@ -93,8 +93,9 @@ def check_suomifi_events():
                 delivery_report.save()
             except DeliveryReport.DoesNotExist:
                 logger.warning(
-                    f"Not updating DeliveryReport for message {suomifi_id} because it "
-                    "does not exist in the database."
+                    f"Suomi.fi message with suomifi_id={suomifi_id} was reported as "
+                    "read but no associated DeliveryReport was found. Therefore the "
+                    "read status has not been added into the database."
                 )
 
     persistence.continuation_token = continuation_token
