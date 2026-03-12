@@ -5,6 +5,7 @@ import pytest
 from syrupy.assertion import SnapshotAssertion
 
 from api.enums import DocumentStatusEnum
+from message_service.enums import DeliveryStatus
 from message_service.models import Message
 
 
@@ -52,3 +53,4 @@ def test_queue_retry_past_retry_window(message, freezer, settings):
     message.refresh_from_db()
     assert message.queued is False
     assert message.send_attempt_count == 1
+    assert message.delivery_report.status == DeliveryStatus.FAILED

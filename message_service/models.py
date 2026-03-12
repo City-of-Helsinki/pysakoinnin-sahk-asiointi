@@ -125,6 +125,9 @@ class Message(models.Model):
             hours=settings.SUOMIFI_SEND_RETRY_HOURS
         ):
             self.queued = False
+            report = self.get_or_create_delivery_report()
+            report.status = DeliveryStatus.FAILED
+            report.save()
             logger.error(
                 f"Message {self.pk} for transaction {self.transaction_id} "
                 "has been removed from the queue as it exceeded the retry window of "
