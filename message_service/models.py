@@ -57,12 +57,12 @@ class Message(models.Model):
                 message_type=self.message_type,
             )
 
-    def send(self):
+    def send(self) -> bool:
         """
         Attempts to send the message via Suomi.fi or email fallback.
 
-        In case sending fails the message is conditionally queued for retry. See
-        `_queue_retry` for details.
+        Returns True on success, False on failure. In case sending fails the
+        message is conditionally queued for retry. See `_queue_retry` for details.
         """
 
         try:
@@ -72,7 +72,7 @@ class Message(models.Model):
         except utils.TransactionContactInformationError:
             logger.exception("Unable to send: contact information error")
             self._queue_retry()
-            return
+            return False
 
         client = utils.create_suomifi_client()
         try:
@@ -113,6 +113,8 @@ class Message(models.Model):
         except (SuomiFiAPIError, smtplib.SMTPException, Exception):
             logger.exception("Error sending message")
             self._queue_retry()
+            return False
+        return True
 
     def _queue_retry(self):
         """

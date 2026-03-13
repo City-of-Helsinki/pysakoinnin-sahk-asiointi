@@ -94,7 +94,7 @@ def test_send_message_via_suomifi(
     client.check_mailbox.return_value = True
     client.send_electronic_message.return_value = (42, None)
 
-    message.send()
+    assert message.send() is True
 
     client.send_electronic_message.assert_called_once()
 
@@ -124,7 +124,7 @@ def test_send_message_via_email_fallback(
     get_document_by_transaction_id_mock.return_value = ATV_RESPONSE_OK
     client.check_mailbox.return_value = False
 
-    message.send()
+    assert message.send() is True
 
     email_backend.send.assert_called_once()
 
@@ -146,7 +146,7 @@ def test_send_message_via_email_fallback(
 @pytest.mark.django_db
 def test_send_message_contact_info_error(message, get_document_by_transaction_id_mock):
     get_document_by_transaction_id_mock.return_value = ATV_RESPONSE_NOT_FOUND
-    message.send()
+    assert message.send() is False
 
     message.refresh_from_db()
     assert message.send_attempt_count == 1
@@ -160,7 +160,7 @@ def test_send_message_suomifi_error_queues_and_does_not_raise(
     get_document_by_transaction_id_mock.return_value = ATV_RESPONSE_OK
     client.check_mailbox.side_effect = SuomiFiAPIError("boom")
 
-    message.send()
+    assert message.send() is False
 
     message.refresh_from_db()
     assert message.send_attempt_count == 1
@@ -174,7 +174,7 @@ def test_send_message_unexpected_error_queues_and_increments(
     get_document_by_transaction_id_mock.return_value = ATV_RESPONSE_OK
     client.check_mailbox.side_effect = RuntimeError("unexpected")
 
-    message.send()
+    assert message.send() is False
 
     message.refresh_from_db()
     assert message.send_attempt_count == 1
