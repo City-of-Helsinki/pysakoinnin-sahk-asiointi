@@ -301,9 +301,7 @@
               'type': 'string',
             }),
             'message_type': dict({
-              'default': 'other',
-              'title': 'Message Type',
-              'type': 'string',
+              '$ref': '#/components/schemas/MessageType',
             }),
             'read_at': dict({
               'anyOf': list([
@@ -330,9 +328,7 @@
               'title': 'Sent At',
             }),
             'status': dict({
-              'default': 'queued',
-              'title': 'Status',
-              'type': 'string',
+              '$ref': '#/components/schemas/DeliveryStatus',
             }),
             'suomifi_id': dict({
               'anyOf': list([
@@ -356,12 +352,25 @@
             }),
           }),
           'required': list([
+            'status',
+            'message_type',
             'transaction_id',
             'created_at',
             'updated_at',
           ]),
           'title': 'DeliveryReportSchema',
           'type': 'object',
+        }),
+        'DeliveryStatus': dict({
+          'enum': list([
+            'queued',
+            'sent_suomifi',
+            'sent_email',
+            'read_suomifi',
+            'failed',
+          ]),
+          'title': 'DeliveryStatus',
+          'type': 'string',
         }),
         'DocumentStatusEnum': dict({
           'enum': list([
@@ -692,6 +701,19 @@
           }),
           'title': 'Input',
           'type': 'object',
+        }),
+        'MessageType': dict({
+          'enum': list([
+            'other',
+            'due_date_extended',
+            'status_sent',
+            'status_received',
+            'status_handling',
+            'status_resolved_via_e_service',
+            'status_resolved_via_mail',
+          ]),
+          'title': 'MessageType',
+          'type': 'string',
         }),
         'NotFoundError': dict({
           'properties': dict({

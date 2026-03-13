@@ -1,9 +1,13 @@
 from ninja import ModelSchema
 
+from message_service.enums import DeliveryStatus, MessageType
 from message_service.models import DeliveryReport
 
 
 class DeliveryReportSchema(ModelSchema):
+    status: DeliveryStatus
+    message_type: MessageType
+
     class Meta:
         model = DeliveryReport
         fields = [
