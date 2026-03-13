@@ -35,7 +35,7 @@ class Message(models.Model):
     body_text = models.TextField()
     body_html = models.TextField()
     send_attempt_count = models.IntegerField(default=0)
-    external_id = models.UUIDField(default=uuid.uuid4)
+    external_id = models.UUIDField(default=uuid.uuid4, unique=True)
     audit_action = models.CharField(max_length=64, default="")
     message_type = models.TextField(choices=MessageType, default=MessageType.OTHER)
 
