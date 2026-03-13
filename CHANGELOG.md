@@ -1,5 +1,21 @@
 # Changelog
 
+## [3.1.0](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v3.0.0...pysakoinnin-sahk-asiointi-v3.1.0) (2026-03-13)
+
+
+### Features
+
+* Add DeliveryReport API view ([0b066f9](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/0b066f9b2e0e645f8bcae1c2730fa2f5947760a7))
+* Add support for sending suomifi messages ([97dbc55](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/97dbc55798a4cfa365954e33ac2c03c119c46448))
+
+
+### Bug Fixes
+
+* Improve DeliveryReportSchema type information ([109ed78](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/109ed78882bcc719efa6c0abd4327f915cfa6e87))
+* Improve warning log ([cd11bea](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/cd11bea0a69262b79020bac297af96158f1b9bd2))
+* Make Message.external_id be unique ([33e1284](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/33e12845e1fef15193d5d6927245e975a5d9abc0))
+* Update DeliveryReport status to Failed ([6f77b37](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/6f77b371dc59364f56ee9d9a2a1d0dde391f67ce))
+
 ## [3.0.0](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v2.6.1...pysakoinnin-sahk-asiointi-v3.0.0) (2026-03-10)
 
 
