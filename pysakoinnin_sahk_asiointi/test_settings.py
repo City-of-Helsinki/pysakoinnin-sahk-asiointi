@@ -34,3 +34,4 @@ OIDC_API_TOKEN_AUTH = {
 
 EMAIL_BACKEND = "django.core.mail.backends.locmem.EmailBackend"
 MAILER_EMAIL_BACKEND = "django.core.mail.backends.locmem.EmailBackend"
+SUOMIFI_MESSAGES_ENABLED = False
