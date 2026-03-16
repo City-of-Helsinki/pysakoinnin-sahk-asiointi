@@ -1,6 +1,5 @@
 import datetime
 import logging
-import smtplib
 import uuid
 from datetime import timedelta
 from typing import Self
@@ -13,12 +12,12 @@ from django.template.loader import render_to_string
 from django.utils import timezone, translation
 from django.utils.translation import gettext_lazy as _
 from resilient_logger.sources import ResilientLogSource
-from suomifi_messages.errors import SuomiFiAPIError
 from suomifi_messages.schemas import BodyFormat
 
 from api.enums import DocumentStatusEnum
 from message_service import utils
 from message_service.enums import DeliveryStatus, MessageType
+from message_service.utils import EmailSendReturnedZeroError
 
 logger = logging.getLogger(__name__)
 
@@ -103,14 +102,17 @@ class Message(models.Model):
                     connection=send_immediately_connection,
                 )
                 msg.attach_alternative(self.body_html, "text/html")
-                msg.send()
+                sent_count = msg.send()
+                if not sent_count:
+                    # Probably a bug or a misconfiguration if we end up here
+                    raise EmailSendReturnedZeroError()
                 report = self.get_or_create_delivery_report()
                 report.sent_at = timezone.now()
                 report.status = DeliveryStatus.SENT_EMAIL
                 report.save()
                 self.commit_to_audit_log(user_id, self.audit_action, "SEND_MAIL")
                 self.delete()
-        except (SuomiFiAPIError, smtplib.SMTPException, Exception):
+        except Exception:
             logger.exception("Error sending message")
             self._queue_retry()
             return False
