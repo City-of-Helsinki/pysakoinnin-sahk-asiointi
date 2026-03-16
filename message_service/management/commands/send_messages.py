@@ -19,6 +19,6 @@ class Command(BaseCommand):
                 self.stdout.write(
                     self.style.WARNING(
                         f"Message (pk={message.pk}) failed (attempt "
-                        f"{message.send_attempt_count})"
+                        f"{message.send_failure_count})"
                     )
                 )
