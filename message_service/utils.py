@@ -42,6 +42,10 @@ def create_suomifi_client() -> SuomiFiClient:
     return client
 
 
+class EmailSendReturnedZeroError(Exception):
+    pass
+
+
 class TransactionContactInformationError(Exception):
     pass
 
