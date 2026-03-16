@@ -39,7 +39,7 @@ def test_queue_retry_within_retry_window(message, freezer, settings):
 
     message.refresh_from_db()
     assert message.queued is True
-    assert message.send_attempt_count == 1
+    assert message.send_failure_count == 1
 
 
 @pytest.mark.django_db
@@ -52,5 +52,5 @@ def test_queue_retry_past_retry_window(message, freezer, settings):
 
     message.refresh_from_db()
     assert message.queued is False
-    assert message.send_attempt_count == 1
+    assert message.send_failure_count == 1
     assert message.delivery_report.status == DeliveryStatus.FAILED

@@ -149,7 +149,7 @@ def test_send_message_contact_info_error(message, get_document_by_transaction_id
     assert message.send() is False
 
     message.refresh_from_db()
-    assert message.send_attempt_count == 1
+    assert message.send_failure_count == 1
     assert message.queued is True
 
 
@@ -163,7 +163,7 @@ def test_send_message_suomifi_error_queues_and_does_not_raise(
     assert message.send() is False
 
     message.refresh_from_db()
-    assert message.send_attempt_count == 1
+    assert message.send_failure_count == 1
     assert message.queued is True
 
 
@@ -177,7 +177,7 @@ def test_send_message_unexpected_error_queues_and_increments(
     assert message.send() is False
 
     message.refresh_from_db()
-    assert message.send_attempt_count == 1
+    assert message.send_failure_count == 1
     assert message.queued is True
 
 

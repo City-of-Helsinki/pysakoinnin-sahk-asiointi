@@ -33,7 +33,7 @@ class Message(models.Model):
     subject = models.TextField()
     body_text = models.TextField()
     body_html = models.TextField()
-    send_attempt_count = models.IntegerField(default=0)
+    send_failure_count = models.IntegerField(default=0)
     external_id = models.UUIDField(default=uuid.uuid4, unique=True)
     audit_action = models.CharField(max_length=64, default="")
     message_type = models.TextField(choices=MessageType, default=MessageType.OTHER)
@@ -124,7 +124,7 @@ class Message(models.Model):
         If the message is older than SUOMIFI_SEND_RETRY_HOURS it will be removed from
         the queue.
         """
-        self.send_attempt_count += 1
+        self.send_failure_count += 1
         if timezone.now() - self.created_at > timedelta(
             hours=settings.SUOMIFI_SEND_RETRY_HOURS
         ):
