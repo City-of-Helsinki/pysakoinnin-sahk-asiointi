@@ -5,11 +5,9 @@ from zoneinfo import ZoneInfo
 from django.conf import settings
 from django.utils.translation import gettext as _
 from suomifi_messages.client import SuomiFiClient
-from suomifi_messages.schemas import EventType
 
 from api.enums import DocumentStatusEnum
 from api.views import ATVHandler
-from message_service.enums import DeliveryStatus
 
 logger = logging.getLogger(__name__)
 
@@ -75,32 +73,3 @@ def get_user_details_by_transaction_id(transaction_id: str) -> tuple[str, str, s
     raise TransactionContactInformationError(
         f"Transaction ({transaction_id}) did not contain user_id, SSN and email"
     )
-
-
-def check_suomifi_events():
-    # TODO: This method will be moved and used in a management command
-    from message_service.models import DeliveryReport, SuomifiPersistence
-
-    persistence, _ = SuomifiPersistence.objects.get_or_create(pk=1)
-    client = create_suomifi_client()
-    events, continuation_token = client.get_events(
-        persistence.continuation_token or None
-    )
-
-    for event in events:
-        if event.type == EventType.ELECTRONIC_MESSAGE_READ:
-            suomifi_id = event.metadata.message_id
-            try:
-                delivery_report = DeliveryReport.objects.get(suomifi_id=suomifi_id)
-                delivery_report.read_at = event.event_time
-                delivery_report.status = DeliveryStatus.READ_SUOMIFI
-                delivery_report.save()
-            except DeliveryReport.DoesNotExist:
-                logger.warning(
-                    f"Suomi.fi message with suomifi_id={suomifi_id} was reported as "
-                    "read but no associated DeliveryReport was found. Therefore the "
-                    "read status has not been added into the database."
-                )
-
-    persistence.continuation_token = continuation_token
-    persistence.save()

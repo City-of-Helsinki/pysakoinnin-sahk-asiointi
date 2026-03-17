@@ -1,16 +1,13 @@
-import datetime
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 import pytest
 from resilient_logger.models import ResilientLogEntry
 from suomifi_messages.errors import SuomiFiAPIError
-from suomifi_messages.schemas import EventType
 
 from message_service.enums import DeliveryStatus
-from message_service.models import DeliveryReport, Message, SuomifiPersistence
+from message_service.models import DeliveryReport, Message
 from message_service.utils import (
     TransactionContactInformationError,
-    check_suomifi_events,
     get_user_details_by_transaction_id,
 )
 
@@ -179,56 +176,3 @@ def test_send_message_unexpected_error_queues_and_increments(
     message.refresh_from_db()
     assert message.send_failure_count == 1
     assert message.queued is True
-
-
-# check_suomifi_events tests
-
-
-def _make_event(event_type, message_id, event_time):
-    event = MagicMock()
-    event.type = event_type
-    event.metadata.message_id = message_id
-    event.event_time = event_time
-    return event
-
-
-@pytest.mark.django_db
-def test_check_suomifi_events_marks_read(client):
-    report = DeliveryReport.objects.create(transaction_id="tx1", suomifi_id=99)
-    read_time = datetime.datetime(2025, 6, 1, 12, 0, tzinfo=datetime.timezone.utc)
-
-    client.get_events.return_value = (
-        [_make_event(EventType.ELECTRONIC_MESSAGE_READ, 99, read_time)],
-        "next-token",
-    )
-
-    check_suomifi_events()
-
-    report.refresh_from_db()
-    assert report.read_at == read_time
-    assert report.status == DeliveryStatus.READ_SUOMIFI
-    assert SuomifiPersistence.objects.get(pk=1).continuation_token == "next-token"
-
-
-@pytest.mark.django_db
-def test_check_suomifi_events_ignores_unknown_event_type(client):
-    unknown_event = _make_event("some-other-type", 999, datetime.datetime.now())
-    client.get_events.return_value = ([unknown_event], "token-xyz")
-
-    check_suomifi_events()
-
-    assert not DeliveryReport.objects.filter(suomifi_id=999).exists()
-    assert SuomifiPersistence.objects.get(pk=1).continuation_token == "token-xyz"
-
-
-@pytest.mark.django_db
-def test_check_suomifi_events_nop_if_no_matching_report(client):
-    read_time = datetime.datetime(2025, 6, 1, 12, 0, tzinfo=datetime.timezone.utc)
-    client.get_events.return_value = (
-        [_make_event(EventType.ELECTRONIC_MESSAGE_READ, 999, read_time)],
-        "next-token",
-    )
-
-    check_suomifi_events()
-
-    assert not DeliveryReport.objects.filter(suomifi_id=999).exists()
