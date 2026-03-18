@@ -1,7 +1,7 @@
 [project]
 name = "pysakoinnin-sahk-asiointi"
 requires-python = ">=3.12, <3.13"
-version = "3.1.0"
+version = "3.2.0"
 
 [tool.ruff]
 target-version = "py312"
