@@ -23,8 +23,9 @@ TEST_DOCUMENT_ID = "123"
 
 # These classes are based on schemas defined in api.schemas
 class User:
-    def __init__(self, uuid):
+    def __init__(self, uuid, email=None):
         self.uuid = uuid
+        self.email = email
 
 
 class Request:
@@ -74,7 +75,7 @@ class FoulRequest(Schema):
 
 class TestApiFunctions(TestCase):
     def setUp(self):
-        self.user = User("fakeid")
+        self.user = User("fakeid", email="string")
         self.request = Request(user=self.user)
 
     @patch("api.views.PASIHandler.get_foul_data")

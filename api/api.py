@@ -115,6 +115,17 @@ def save_objection(request, objection: Objection):
     """
     Send a new objection to PASI
     """
+    request_user_email = getattr(request.user, "email", None)
+    objection_email = str(objection.email)
+
+    if not request_user_email:
+        raise ninja.errors.HttpError(422, message="Authenticated user email missing")
+
+    if request_user_email.strip().lower() != objection_email.strip().lower():
+        raise ninja.errors.HttpError(
+            422,
+            message="Objection email must match authenticated user email",
+        )
 
     if hasattr(objection, "foulNumber") and objection.foulNumber is not None:
         objection_id = objection.foulNumber

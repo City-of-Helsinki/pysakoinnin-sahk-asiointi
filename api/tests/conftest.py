@@ -13,7 +13,10 @@ def api_client():
 
 @pytest.fixture
 def user():
-    return User.objects.create(uuid=uuid.uuid4())
+    return User.objects.create(
+        uuid=uuid.uuid4(),
+        email="john.doe@example.com",
+    )
 
 
 @pytest.fixture
