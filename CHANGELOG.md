@@ -1,5 +1,25 @@
 # Changelog
 
+## [3.2.0](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v3.1.0...pysakoinnin-sahk-asiointi-v3.2.0) (2026-03-18)
+
+
+### Features
+
+* Add send_messages management command ([0a97e4b](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/0a97e4bbb7f2a070ffa8e35b018629c27073e85f))
+* Make Message.send return boolean indicating success ([9e7da3e](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/9e7da3e1566a68412f31bd1959d982ce2834f9f5))
+* Retrieve_suomifi_read_status command ([c106898](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/c106898b59bb131f8b9350b40af89e800a030461))
+
+
+### Bug Fixes
+
+* Handle email send returning zero ([465283f](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/465283fe8fca84ac568c79c2a60b7541ca91d526))
+* Rename send_attempt_count -&gt; send_failure_count ([ae1c5ee](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/ae1c5ee592c6a84cb4b74e7ef12918653218b630))
+
+
+### Dependencies
+
+* Bump pyasn1 from 0.6.2 to 0.6.3 ([74d866f](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/74d866f8b162fc55a8018184fdbcded1c79c3522))
+
 ## [3.1.0](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v3.0.0...pysakoinnin-sahk-asiointi-v3.1.0) (2026-03-13)
 
 
