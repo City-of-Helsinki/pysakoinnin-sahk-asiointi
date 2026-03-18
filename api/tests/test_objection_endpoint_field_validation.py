@@ -119,6 +119,51 @@ class TestSaveObjectionEndpoint:
         handler_mock.assert_not_called()
         add_doc_mock.assert_not_called()
 
+    def test_save_objection_missing_authenticated_user_email(
+        self, handler_mock, add_doc_mock, auth_mock, authenticated_client, user
+    ):
+        """Test saveObjection returns 422 when authenticated user email is missing."""
+        user.email = ""
+        user.save(update_fields=["email"])
+        auth_mock.return_value = MagicMock(user=user)
+
+        objection_data = {
+            **self.VALID_OBJECTION_DATA,
+            "description": "Missing authenticated user email",
+        }
+
+        handler_mock.return_value = MockResponse(200, {})
+        add_doc_mock.return_value = MockResponse(200, {})
+
+        response = post_objection(authenticated_client, objection_data)
+
+        assert response.status_code == 422
+        handler_mock.assert_not_called()
+        add_doc_mock.assert_not_called()
+
+    def test_save_objection_email_must_match_authenticated_user(
+        self, handler_mock, add_doc_mock, auth_mock, authenticated_client, user
+    ):
+        """Test saveObjection returns 422 when objection email differs from authenticated user email."""
+        user.email = "user@example.com"
+        user.save(update_fields=["email"])
+        auth_mock.return_value = MagicMock(user=user)
+
+        objection_data = {
+            **self.VALID_OBJECTION_DATA,
+            "email": "other@example.com",
+            "description": "Mismatched objection email",
+        }
+
+        handler_mock.return_value = MockResponse(200, {})
+        add_doc_mock.return_value = MockResponse(200, {})
+
+        response = post_objection(authenticated_client, objection_data)
+
+        assert response.status_code == 422
+        handler_mock.assert_not_called()
+        add_doc_mock.assert_not_called()
+
     def test_save_objection_with_metadata(
         self, handler_mock, add_doc_mock, auth_mock, authenticated_client, user
     ):
@@ -292,7 +337,7 @@ class TestSaveObjectionEndpoint:
         auth_mock.return_value = MagicMock(user=user)
 
         objection_data = self.VALID_OBJECTION_DATA
-        objection_data["email"] = "test@example.com"
+        objection_data["email"] = "john.doe@example.com"
 
         handler_mock.return_value = MockResponse(200, {})
         add_doc_mock.return_value = MockResponse(200, {})
