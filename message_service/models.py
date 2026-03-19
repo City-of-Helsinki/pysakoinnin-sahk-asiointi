@@ -12,6 +12,7 @@ from django.utils import timezone, translation
 from django.utils.translation import gettext_lazy as _
 from resilient_logger.sources import ResilientLogSource
 from suomifi_messages.client import SuomiFiClient
+from suomifi_messages.errors import SuomiFiClientError, SuomiFiDuplicateMessageError
 from suomifi_messages.schemas import BodyFormat
 
 from api.enums import DocumentStatusEnum
@@ -87,7 +88,25 @@ class Message(models.Model):
             else:
                 self._send_email(user_id, email)
 
+        except SuomiFiDuplicateMessageError:
+            logger.exception(
+                "Suomi.fi reported a duplicate message: considering message as sent."
+            )
+
+            report = self.get_or_create_delivery_report()
+            if report.status not in (
+                DeliveryStatus.SENT_SUOMIFI,
+                DeliveryStatus.READ_SUOMIFI,
+            ):
+                report.status = DeliveryStatus.SENT_SUOMIFI
+                report.sent_at = timezone.now()
+                report.save()
+                self.commit_to_audit_log(user_id, "SEND_SUOMIFI")
+
+            self.delete()
+
         except (
+            SuomiFiClientError,
             TransactionContactInformationError,
             EmailSendReturnedZeroError,
         ) as ex:

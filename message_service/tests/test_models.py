@@ -6,6 +6,8 @@ from ninja.errors import HttpError
 from resilient_logger.models import ResilientLogEntry
 from suomifi_messages.errors import (
     SuomiFiAPIError,
+    SuomiFiClientError,
+    SuomiFiDuplicateMessageError,
 )
 from syrupy.assertion import SnapshotAssertion
 
@@ -158,6 +160,42 @@ def test_send_message_suomifi_error_is_transient(
 
     message.refresh_from_db()
     assert message.send_failure_count == 1
+
+
+@pytest.mark.django_db
+def test_send_message_suomifi_client_error_is_permanent(
+    message,
+    get_user_details_by_transaction_id_mock,
+    client,
+):
+    client.check_mailbox.side_effect = SuomiFiClientError("boom")
+
+    with pytest.raises(PermanentSendError):
+        message.send()
+
+    message.refresh_from_db()
+    assert message.send_failure_count == 1
+
+
+@pytest.mark.django_db
+def test_send_message_suomifi_duplicate_is_not_an_error(
+    message,
+    get_user_details_by_transaction_id_mock,
+    client,
+):
+    client.check_mailbox.side_effect = SuomiFiDuplicateMessageError(
+        "boom", message_id=None
+    )
+
+    report = message.get_or_create_delivery_report()
+    message.send()
+
+    with pytest.raises(Message.DoesNotExist):
+        message.refresh_from_db()
+
+    report.refresh_from_db()
+    assert report.status == DeliveryStatus.SENT_SUOMIFI
+    assert report.sent_at is not None
 
 
 @pytest.mark.django_db
