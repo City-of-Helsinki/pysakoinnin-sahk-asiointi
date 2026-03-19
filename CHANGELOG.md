@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.3.0](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v3.2.0...pysakoinnin-sahk-asiointi-v3.3.0) (2026-03-19)
+
+
+### Features
+
+* Add handling for new suomi.fi client errors ([ca89a13](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/ca89a13d260e49983f33eb948b4c9b6d4b7bc10b))
+* Enforce saveObjection to use authenticated Helsinki profile email ([06e6808](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/06e6808aa0b495b028589383cae22ba46284a821))
+
 ## [3.2.0](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v3.1.0...pysakoinnin-sahk-asiointi-v3.2.0) (2026-03-18)
 
 
