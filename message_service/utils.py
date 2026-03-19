@@ -4,6 +4,7 @@ from zoneinfo import ZoneInfo
 
 from django.conf import settings
 from django.utils.translation import gettext as _
+from ninja.errors import HttpError
 from suomifi_messages.client import SuomiFiClient
 
 from api.enums import DocumentStatusEnum
@@ -48,16 +49,23 @@ class TransactionContactInformationError(Exception):
     pass
 
 
+class TransientSendError(Exception):
+    pass
+
+
+class PermanentSendError(Exception):
+    pass
+
+
 def get_user_details_by_transaction_id(transaction_id: str) -> tuple[str, str, str]:
     try:
         response = ATVHandler.get_document_by_transaction_id(transaction_id)
-    except Exception as ex:
-        raise TransactionContactInformationError("ATV error") from ex
-
-    if not response.get("count"):
-        raise TransactionContactInformationError(
-            f"Transaction ({transaction_id}) not found"
-        )
+    except HttpError as ex:
+        if ex.status_code == 404:
+            raise TransactionContactInformationError(
+                "No data was found from ATV"
+            ) from ex
+        raise
 
     for result in response["results"]:
         user_id = result.get("user_id")
