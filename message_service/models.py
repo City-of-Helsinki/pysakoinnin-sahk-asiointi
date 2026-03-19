@@ -1,7 +1,6 @@
 import datetime
 import logging
 import uuid
-from datetime import timedelta
 from typing import Self
 
 from django.conf import settings
@@ -12,12 +11,18 @@ from django.template.loader import render_to_string
 from django.utils import timezone, translation
 from django.utils.translation import gettext_lazy as _
 from resilient_logger.sources import ResilientLogSource
+from suomifi_messages.client import SuomiFiClient
 from suomifi_messages.schemas import BodyFormat
 
 from api.enums import DocumentStatusEnum
 from message_service import utils
 from message_service.enums import DeliveryStatus, MessageType
-from message_service.utils import EmailSendReturnedZeroError
+from message_service.utils import (
+    EmailSendReturnedZeroError,
+    PermanentSendError,
+    TransactionContactInformationError,
+    TransientSendError,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -56,99 +61,90 @@ class Message(models.Model):
                 message_type=self.message_type,
             )
 
-    def send(self) -> bool:
+    def send(self) -> None:
         """
         Attempts to send the message via Suomi.fi or email fallback.
 
-        Returns True on success, False on failure. In case sending fails the
-        message is conditionally queued for retry. See `_queue_retry` for details.
+        If message is sent successfully, the delivery report will be created/updated,
+        audit log will be written and the instance will delete itself.
+
+        If sending is unsuccessful, the delivery report will not be created/updated,
+        send_failure_count will be incremented and the method will raise either
+        TransientSendError or PermanentSendError.
+
+        :raises TransientSendError: If send failed but a retry might succeed
+        :raises PermanentSendError: If send failed but retry will not succeed
+
         """
 
         try:
             user_id, ssn, email = utils.get_user_details_by_transaction_id(
                 self.transaction_id
             )
-        except utils.TransactionContactInformationError:
-            logger.exception("Unable to send: contact information error")
-            self._queue_retry()
-            return False
-
-        client = utils.create_suomifi_client()
-        try:
+            client = utils.create_suomifi_client()
             if client.check_mailbox(ssn):
-                suomifi_id, _ = client.send_electronic_message(
-                    title=self.subject,
-                    body=self.body_text,
-                    body_format=BodyFormat.TEXT,
-                    recipient_id=ssn,
-                    external_id=str(self.external_id),
-                )
-                report = self.get_or_create_delivery_report()
-                report.sent_at = timezone.now()
-                report.status = DeliveryStatus.SENT_SUOMIFI
-                report.suomifi_id = suomifi_id
-                report.save()
-                self.commit_to_audit_log(user_id, self.audit_action, "SEND_SUOMIFI")
-                self.delete()
+                self._send_suomifi(client, user_id, ssn)
             else:
-                send_immediately_connection = get_connection(
-                    settings.MAILER_EMAIL_BACKEND
-                )
-                msg = EmailMultiAlternatives(
-                    self.subject,
-                    self.body_text,
-                    f"Pysäköinnin Asiointi <{settings.DEFAULT_FROM_EMAIL}>",
-                    [email],
-                    connection=send_immediately_connection,
-                )
-                msg.attach_alternative(self.body_html, "text/html")
-                sent_count = msg.send()
-                if not sent_count:
-                    # Probably a bug or a misconfiguration if we end up here
-                    raise EmailSendReturnedZeroError()
-                report = self.get_or_create_delivery_report()
-                report.sent_at = timezone.now()
-                report.status = DeliveryStatus.SENT_EMAIL
-                report.save()
-                self.commit_to_audit_log(user_id, self.audit_action, "SEND_MAIL")
-                self.delete()
-        except Exception:
-            logger.exception("Error sending message")
-            self._queue_retry()
-            return False
-        return True
+                self._send_email(user_id, email)
 
-    def _queue_retry(self):
-        """
-        Increments the attempt count and ensures that the message is in the queue.
-        If the message is older than SUOMIFI_SEND_RETRY_HOURS it will be removed from
-        the queue.
-        """
-        self.send_failure_count += 1
-        if timezone.now() - self.created_at > timedelta(
-            hours=settings.SUOMIFI_SEND_RETRY_HOURS
-        ):
-            self.queued = False
-            report = self.get_or_create_delivery_report()
-            report.status = DeliveryStatus.FAILED
-            report.save()
-            logger.error(
-                f"Message {self.pk} for transaction {self.transaction_id} "
-                "has been removed from the queue as it exceeded the retry window of "
-                f"{settings.SUOMIFI_SEND_RETRY_HOURS} hours."
-            )
-        else:
-            self.queued = True
-        self.save()
+        except (
+            TransactionContactInformationError,
+            EmailSendReturnedZeroError,
+        ) as ex:
+            self.send_failure_count += 1
+            self.save()
+            raise PermanentSendError from ex
 
-    def commit_to_audit_log(self, user_id: str, action: str, operation: str):
+        except Exception as ex:
+            self.send_failure_count += 1
+            self.save()
+            raise TransientSendError from ex
+
+    def commit_to_audit_log(self, user_id: str, operation: str):
         ResilientLogSource.create_structured(
             level=logging.NOTSET,
-            message=action,
+            message=self.audit_action,
             actor={"name": "SYSTEM", "value": ""},
             target={"name": "user_id", "value": user_id},
             operation=operation,
         )
+
+    def _send_suomifi(self, client: SuomiFiClient, user_id: str, ssn: str) -> None:
+        suomifi_id, _ = client.send_electronic_message(
+            title=self.subject,
+            body=self.body_text,
+            body_format=BodyFormat.TEXT,
+            recipient_id=ssn,
+            external_id=str(self.external_id),
+        )
+        report = self.get_or_create_delivery_report()
+        report.sent_at = timezone.now()
+        report.status = DeliveryStatus.SENT_SUOMIFI
+        report.suomifi_id = suomifi_id
+        report.save()
+        self.commit_to_audit_log(user_id, "SEND_SUOMIFI")
+        self.delete()
+
+    def _send_email(self, user_id: str, email: str) -> None:
+        send_immediately_connection = get_connection(settings.MAILER_EMAIL_BACKEND)
+        msg = EmailMultiAlternatives(
+            self.subject,
+            self.body_text,
+            f"Pysäköinnin Asiointi <{settings.DEFAULT_FROM_EMAIL}>",
+            [email],
+            connection=send_immediately_connection,
+        )
+        msg.attach_alternative(self.body_html, "text/html")
+        sent_count = msg.send()
+        if not sent_count:
+            # Probably a bug or a misconfiguration if we end up here
+            raise EmailSendReturnedZeroError()
+        report = self.get_or_create_delivery_report()
+        report.sent_at = timezone.now()
+        report.status = DeliveryStatus.SENT_EMAIL
+        report.save()
+        self.commit_to_audit_log(user_id, "SEND_MAIL")
+        self.delete()
 
     @classmethod
     def event_message(

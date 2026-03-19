@@ -1,4 +1,5 @@
 import copy
+import logging
 
 import ninja.errors
 from django.conf import settings
@@ -23,7 +24,9 @@ from mail_service.audit_log import _commit_to_audit_log
 from mail_service.utils import extend_due_date_mail_constructor, mail_constructor
 from message_service.models import DeliveryReport, Message
 from message_service.schemas import DeliveryReportSchema
+from message_service.utils import PermanentSendError, TransientSendError
 
+logger = logging.getLogger(__name__)
 router = Router()
 
 
@@ -95,7 +98,16 @@ def extend_due_date(request, foul_data: FoulRequest):
         message = Message.due_date_extended_message(
             str(foul_data.foul_number), response_json["dueDate"], lang
         )
-        message.send()
+        try:
+            message.send()
+        except TransientSendError:
+            message.queued = True
+            message.save()
+            logger.exception(
+                "Transiently failed to send extend due date message, queued for retry."
+            )
+        except PermanentSendError:
+            logger.exception("Permanently failed to send extend due date message.")
     else:
         mail = extend_due_date_mail_constructor(
             new_due_date=response_json["dueDate"],
@@ -191,7 +203,18 @@ def set_document_status(request, status_request: DocumentStatusRequest):
         lang = find_document_by_id["results"][0]["metadata"]["lang"]
         message = Message.event_message(status_request.id, status_request.status, lang)
         if status_request.status == DocumentStatusEnum.received:
-            message.send()
+            try:
+                message.send()
+            except TransientSendError:
+                message.queued = True
+                message.save()
+                logger.exception(
+                    "Transiently failed to send document status message, queued for "
+                    "retry."
+                )
+            except PermanentSendError:
+                logger.exception("Permanently failed to send document status message.")
+
         else:
             message.queued = True
             message.save()
