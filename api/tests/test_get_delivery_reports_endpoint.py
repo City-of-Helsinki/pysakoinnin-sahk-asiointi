@@ -61,6 +61,7 @@ def test_get_delivery_reports_response_shape(client):
     assert response.status_code == 200
     item = response.json()["items"][0]
     assert set(item.keys()) == {
+        "id",
         "transaction_id",
         "suomifi_id",
         "created_at",

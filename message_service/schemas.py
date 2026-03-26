@@ -11,6 +11,7 @@ class DeliveryReportSchema(ModelSchema):
     class Meta:
         model = DeliveryReport
         fields = [
+            "id",
             "transaction_id",
             "suomifi_id",
             "created_at",
