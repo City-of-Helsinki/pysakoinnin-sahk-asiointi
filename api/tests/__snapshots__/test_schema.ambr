@@ -300,6 +300,17 @@
               'title': 'Created At',
               'type': 'string',
             }),
+            'id': dict({
+              'anyOf': list([
+                dict({
+                  'type': 'integer',
+                }),
+                dict({
+                  'type': 'null',
+                }),
+              ]),
+              'title': 'ID',
+            }),
             'message_type': dict({
               '$ref': '#/components/schemas/MessageType',
             }),
