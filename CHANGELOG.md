@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.4.0](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v3.3.1...pysakoinnin-sahk-asiointi-v3.4.0) (2026-03-26)
+
+
+### Features
+
+* Add id to DeliveryReportSchema ([4108932](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/4108932c685105f039d2e862862d290b165b0b38))
+
 ## [3.3.1](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v3.3.0...pysakoinnin-sahk-asiointi-v3.3.1) (2026-03-20)
 
 
