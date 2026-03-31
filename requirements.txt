@@ -297,6 +297,7 @@ django==5.2.12 \
     #   django-anymail
     #   django-cors-headers
     #   django-csp
+    #   django-helsinki-health-endpoints
     #   django-helsinki-suomifi-messages
     #   django-helusers
     #   django-logger-extra
@@ -319,6 +320,10 @@ django-csp==4.0 \
 django-environ==0.12.0 \
     --hash=sha256:227dc891453dd5bde769c3449cf4a74b6f2ee8f7ab2361c93a07068f4179041a \
     --hash=sha256:92fb346a158abda07ffe6eb23135ce92843af06ecf8753f43adf9d2366dcc0ca
+    # via -r requirements.in
+django-helsinki-health-endpoints==1.0.0 \
+    --hash=sha256:75670113e99bfd1fc23e317a3a22cff563140f495655c2a5f6ab219389dafd52 \
+    --hash=sha256:eebf1baa6917d7b0e11123aec191df773883102ec1653025a86d7037dba389e2
     # via -r requirements.in
 django-helsinki-suomifi-messages==1.0.0 \
     --hash=sha256:1e4d86f2e0da31db5d45535f8fd21265e09c3656e5f3e4a05ea155e88c15e811 \

@@ -1,9 +1,7 @@
 """pysakoinnin_sahk_asiointi URL Configuration"""
 
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest
 from django.urls import include, path
-from django.views.decorators.cache import never_cache
-from django.views.decorators.http import require_safe
 from helusers.oidc import RequestJWTAuthentication
 from ninja import NinjaAPI
 from ninja.errors import HttpError
@@ -37,40 +35,8 @@ api.add_router("/", api_router)
 api.add_router("/gdpr", gdrp_api_router)
 
 
-#
-# Kubernetes liveness & readiness probes
-#
-@require_safe
-@never_cache
-def health(*_, **__):
-    return HttpResponse("OK", status=200)
-
-
-@require_safe
-@never_cache
-def readiness(*_, **__):
-    failed_check = False
-    try:
-        from django.db import connections
-
-        for name in connections:
-            cursor = connections[name].cursor()
-            cursor.execute("SELECT 1;")
-            row = cursor.fetchone()
-            if row is None:
-                failed_check = True
-    except Exception:
-        failed_check = True
-
-    if failed_check:
-        raise HttpError(500, message="Database issue")
-
-    return HttpResponse("OK", status=200)
-
-
 urlpatterns = [
-    path("health/", health),
-    path("readiness/", readiness),
     path("api/v1/", api.urls),
     path("helauth/", include("helusers.urls")),
+    path("", include("helsinki_health_endpoints.urls")),
 ]
