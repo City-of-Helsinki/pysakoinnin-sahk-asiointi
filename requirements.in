@@ -5,6 +5,7 @@ django-cors-headers
 django-csp
 django-environ
 django-helusers
+django-helsinki-health-endpoints
 django-logger-extra
 django-mailer
 django-ninja
