@@ -1,5 +1,19 @@
 # Changelog
 
+## [3.4.1](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v3.4.0...pysakoinnin-sahk-asiointi-v3.4.1) (2026-04-14)
+
+
+### Dependencies
+
+* Bump cryptography from 46.0.5 to 46.0.6 ([ef6f062](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/ef6f062fc3450558e80906dcb5672b5b1b1e4110))
+* Bump cryptography from 46.0.6 to 46.0.7 ([c78d8c3](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/c78d8c33638fe77c5e22fa31662d38ba5dfe24f5))
+* Bump django from 5.2.12 to 5.2.13 ([a380ef2](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/a380ef28f7084b550dac32e9f6eac558e9bea531))
+* Bump ecdsa from 0.19.1 to 0.19.2 ([1d83050](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/1d8305074cdef149483e88b9a40f26586856bf97))
+* Bump pygments from 2.19.2 to 2.20.0 ([f75121d](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/f75121dde366edb5c00b3a1c06929d97f11d6bb3))
+* Bump pytest from 8.4.2 to 9.0.3 ([4774cf5](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/4774cf505cb1270e413a846aef9d36f11b5d8607))
+* Bump requests from 2.32.5 to 2.33.1 ([38cf2ab](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/38cf2abf70bb485a44ae492d5349257b705b320a))
+* Bump urllib3 from 2.5.0 to 2.6.3 ([042d0e3](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/042d0e34bc8c5a64df888003ea7d0a510b089ab6))
+
 ## [3.4.0](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v3.3.1...pysakoinnin-sahk-asiointi-v3.4.0) (2026-03-26)
 
 
