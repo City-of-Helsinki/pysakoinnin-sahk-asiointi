@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.5.0](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v3.4.1...pysakoinnin-sahk-asiointi-v3.5.0) (2026-04-29)
+
+
+### Features
+
+* Use django-helsinki-health-endpoints for readiness and healthz ([be1bc0d](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/be1bc0d1eacf64602527a582ad455efbd1811af2))
+
 ## [3.4.1](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v3.4.0...pysakoinnin-sahk-asiointi-v3.4.1) (2026-04-14)
 
 
