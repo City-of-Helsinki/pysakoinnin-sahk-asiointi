@@ -7,8 +7,8 @@ accesslog = "-"  # Log access to stdout
 errorlog = "-"  # Log errors to stderr
 limit_request_field_size = 65536  # Limit request header size
 capture_output = True  # Capture stdout/stderr in logs
-timeout = 30  # Timeout for requests in seconds
-graceful_timeout = 30  # Timeout for graceful shutdown
+timeout = 60  # Timeout for requests in seconds
+graceful_timeout = 60  # Timeout for graceful shutdown
 keepalive = 2  # Keep-alive time for connections in seconds
 enable_stdio_inheritance = True  # Inherit stdio from the parent process
 # Worker Restart Settings
