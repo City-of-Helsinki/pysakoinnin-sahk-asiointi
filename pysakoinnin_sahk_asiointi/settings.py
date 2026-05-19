@@ -52,6 +52,7 @@ env = Env(
     PASI_AUTH_KEY=(str, ""),
     PASI_API_KEY=(str, ""),
     OUTGOING_REQUEST_TIMEOUT=(int, 30),
+    DB_CONNECT_TIMEOUT=(int, 10),
     CSP_ENFORCE=(bool, False),
     CSP_REPORT_URI=(str, None),
     STALE_MESSAGE_THRESHOLD_DAYS=(int, 2),
@@ -238,6 +239,8 @@ DATABASES = {"default": env.db()}
 
 if env("DATABASE_PASSWORD"):
     DATABASES["default"]["PASSWORD"] = env("DATABASE_PASSWORD")
+
+DATABASES["default"].setdefault("OPTIONS", {})["connect_timeout"] = env("DB_CONNECT_TIMEOUT")
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
