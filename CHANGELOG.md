@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.6.0](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v3.5.1...pysakoinnin-sahk-asiointi-v3.6.0) (2026-05-21)
+
+
+### Features
+
+* Increase gunicorn worker timeout from 30s to 60s ([1d21428](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/1d2142897643b4eb22577e610e96d7e6d76581fb))
+
 ## [3.5.1](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v3.5.0...pysakoinnin-sahk-asiointi-v3.5.1) (2026-05-11)
 
 
