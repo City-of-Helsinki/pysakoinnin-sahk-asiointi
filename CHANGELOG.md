@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.6.1](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v3.6.0...pysakoinnin-sahk-asiointi-v3.6.1) (2026-06-03)
+
+
+### Dependencies
+
+* Bump idna from 3.11 to 3.15 ([bd48eff](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/bd48eff224f1dabc4ddf28b3522a9d3e91f7a4cc))
+* Bump urllib3 from 2.6.3 to 2.7.0 ([cd24fc9](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/cd24fc93db15f6d16d3f44309cec99cc325a9dbd))
+
 ## [3.6.0](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v3.5.1...pysakoinnin-sahk-asiointi-v3.6.0) (2026-05-21)
 
 
