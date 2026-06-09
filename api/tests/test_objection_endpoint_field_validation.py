@@ -49,7 +49,6 @@ class TestSaveObjectionEndpoint:
         },
         "description": "I object to this fine",
         "type": 0,
-        "sendDecisionViaEService": True,
         "metadata": {},
     }
 
@@ -72,6 +71,9 @@ class TestSaveObjectionEndpoint:
         # Verify the objection_id used was the foulNumber
         call_kwargs = add_doc_mock.call_args.kwargs
         assert call_kwargs.get("document_id") == 12345
+
+        pasi_objection = handler_mock.call_args.args[0]
+        assert pasi_objection.sendDecisionViaEService is True
 
     def test_save_objection_with_transfer_number(
         self, handler_mock, add_doc_mock, auth_mock, authenticated_client, user

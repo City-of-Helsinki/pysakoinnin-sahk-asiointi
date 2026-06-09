@@ -80,7 +80,7 @@ class AddressField(Schema):
     countryName: str | None = None
 
 
-class Objection(Schema):
+class ObjectionRequest(Schema):
     foulNumber: int | None = None
     transferNumber: int | None = None
     folderID: str | None = None
@@ -96,8 +96,11 @@ class Objection(Schema):
     description: str
     attachments: list[AttachmentSchema] | None = None
     type: int
-    sendDecisionViaEService: bool
     metadata: dict | None = None
+
+
+class Objection(ObjectionRequest):
+    sendDecisionViaEService: bool
 
 
 class TransferDataResponse(Schema):
