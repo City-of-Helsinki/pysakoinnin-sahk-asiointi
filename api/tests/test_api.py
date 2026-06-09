@@ -62,7 +62,6 @@ class Objection(Schema):
     address: Address = Address()
     description: str = "string"
     type: int = 0
-    sendDecisionViaEService: bool = True
     metadata: dict = Metadata().dict()
     attachments: list = []
 

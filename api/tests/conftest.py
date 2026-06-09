@@ -101,6 +101,5 @@ def valid_objection_data():
         },
         "description": "I object to this fine",
         "type": 0,
-        "sendDecisionViaEService": True,
         "metadata": {},
     }

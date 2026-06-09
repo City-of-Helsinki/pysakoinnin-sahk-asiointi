@@ -737,7 +737,7 @@
           'title': 'NotFoundError',
           'type': 'object',
         }),
-        'Objection': dict({
+        'ObjectionRequest': dict({
           'properties': dict({
             'address': dict({
               '$ref': '#/components/schemas/AddressField',
@@ -830,10 +830,6 @@
               'title': 'Mobilephone',
               'type': 'string',
             }),
-            'sendDecisionViaEService': dict({
-              'title': 'Senddecisionviaeservice',
-              'type': 'boolean',
-            }),
             'ssn': dict({
               'title': 'Ssn',
               'type': 'string',
@@ -865,9 +861,8 @@
             'address',
             'description',
             'type',
-            'sendDecisionViaEService',
           ]),
-          'title': 'Objection',
+          'title': 'ObjectionRequest',
           'type': 'object',
         }),
         'PagedDeliveryReportSchema': dict({
@@ -1441,7 +1436,7 @@
             'content': dict({
               'application/json': dict({
                 'schema': dict({
-                  '$ref': '#/components/schemas/Objection',
+                  '$ref': '#/components/schemas/ObjectionRequest',
                 }),
               }),
             }),

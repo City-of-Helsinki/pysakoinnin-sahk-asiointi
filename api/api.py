@@ -15,6 +15,7 @@ from api.schemas import (
     FoulDataResponse,
     FoulRequest,
     Objection,
+    ObjectionRequest,
     TransferDataResponse,
 )
 from api.utils import send_document_status_notification, virus_scan_attachment_file
@@ -122,7 +123,7 @@ def extend_due_date(request, foul_data: FoulRequest):
 @router.post(
     "/saveObjection", response={200: None, 204: None, 422: None}, tags=["PASI"]
 )
-def save_objection(request, objection: Objection):
+def save_objection(request, objection: ObjectionRequest):
     """
     Send a new objection to PASI
     """
@@ -169,7 +170,10 @@ def save_objection(request, objection: Objection):
     except Exception as error:
         raise ninja.errors.HttpError(500, message=str(error))
 
-    response = PASIHandler.save_objection(objection, objection_id)
+    internal_objection = Objection.model_construct(
+        **objection.model_dump(), sendDecisionViaEService=True
+    )
+    response = PASIHandler.save_objection(internal_objection, objection_id)
     return response.status_code
 
 
