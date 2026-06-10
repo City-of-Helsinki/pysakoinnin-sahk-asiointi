@@ -69,8 +69,8 @@ msgstr "Uusi tapahtuma Pysäköinnin Asioinnissa"
 
 #: message_service/templates/message_service/due_date_extended_body.html:10
 #: message_service/templates/message_service/due_date_extended_body.txt:2
-msgid "The due date has been postponed. New due date is"
-msgstr "Eräpäivää siirretty, uusi eräpäivä on"
+msgid "The due date has been postponed."
+msgstr "Eräpäivää siirretty."
 
 #: message_service/templates/message_service/event_body.html:9
 #: message_service/templates/message_service/event_body.txt:2
@@ -100,6 +100,46 @@ msgstr ""
 #: message_service/templates/message_service/event_body.txt:6
 msgid "Do not reply to this message."
 msgstr "Älä vastaa tähän viestiin."
+
+#: message_service/templates/message_service/event_body.html
+#: message_service/templates/message_service/event_body.txt
+msgid "Hello,"
+msgstr "Hei,"
+
+#: message_service/templates/message_service/event_body.html
+#: message_service/templates/message_service/event_body.txt
+msgid "you have received a message in the Parking e-services:"
+msgstr "sinulle on saapunut viesti pysäköinnin sähköisestä asioinnista:"
+
+#: message_service/templates/message_service/event_body.html
+#: message_service/templates/message_service/event_body.txt
+msgid "Kind regards,"
+msgstr "Terveisin"
+
+#: message_service/templates/message_service/event_body.html
+#: message_service/templates/message_service/event_body.txt
+msgid "Parking Enforcement and Parking Services"
+msgstr "Pysäköinninvalvonta ja pysäköintipalvelut"
+
+#: message_service/models.py
+msgid "City of Helsinki"
+msgstr "Helsingin kaupunki"
+
+#: message_service/models.py
+msgid ""
+"Your claim for rectification has been received. You do not have to pay the "
+"parking fine before you have received a decision."
+msgstr ""
+"Oikaisuvaatimuksesi on vastaanotettu. Pysäköintivirhemaksua ei tarvitse "
+"maksaa ennen kuin olet saanut päätöksen."
+
+#: message_service/models.py
+msgid ""
+"You have received a decision on your claim for rectification. You can read "
+"the decision by logging in to the Parking e services."
+msgstr ""
+"Olet saanut päätöksen tekemääsi oikaisuvaatimukseen. Pääset lukemaan "
+"päätöksen kirjautumalla Pysäköinnin asiointiin."
 
 #: message_service/utils.py:24
 msgid "Sent"
