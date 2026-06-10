@@ -2,7 +2,7 @@
 {% if msg_body %}{% translate "Hello," %}
 
 {% translate "you have received a message in the Parking e-services:" %}
-{{ msg_body }}
+{{ msg_body|wordwrap:76 }}
 
 {% translate "Kind regards," %}
 
@@ -10,6 +10,5 @@
 {% else %}{% translate "New event has arrived in the Parking e-service" %}: {{event}}  {% translate "at" %} {{now}}.
 {% translate "Sign in to parking e-services" %} {{ url }}
 
-({% translate "This is an automated message sent by the City of Helsinki parking control e-service." %}
-{% translate "Do not reply to this message." %})
+({% filter wordwrap:76 %}{% translate "This is an automated message sent by the City of Helsinki parking control e-service." %} {% translate "Do not reply to this message." %}{% endfilter %})
 {% endif %}
