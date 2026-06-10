@@ -8,7 +8,6 @@ from ninja import Router, Schema
 from ninja.pagination import paginate
 from ninja.security import HttpBearer
 
-from api.enums import DocumentStatusEnum
 from api.schemas import (
     ATVDocumentResponse,
     DocumentStatusRequest,
@@ -18,10 +17,10 @@ from api.schemas import (
     Objection,
     TransferDataResponse,
 )
-from api.utils import virus_scan_attachment_file
+from api.utils import send_document_status_notification, virus_scan_attachment_file
 from api.views import ATVHandler, DocumentHandler, PASIHandler
 from mail_service.audit_log import _commit_to_audit_log
-from mail_service.utils import extend_due_date_mail_constructor, mail_constructor
+from mail_service.utils import extend_due_date_mail_constructor
 from message_service.models import DeliveryReport, Message
 from message_service.schemas import DeliveryReportSchema
 from message_service.utils import PermanentSendError, TransientSendError
@@ -199,34 +198,9 @@ def set_document_status(request, status_request: DocumentStatusRequest):
 
     DocumentHandler.set_document_status(document_id, status_request)
 
-    if settings.SUOMIFI_MESSAGES_ENABLED:
-        lang = find_document_by_id["results"][0]["metadata"]["lang"]
-        message = Message.event_message(status_request.id, status_request.status, lang)
-        if status_request.status == DocumentStatusEnum.received:
-            try:
-                message.send()
-            except TransientSendError:
-                message.queued = True
-                message.save()
-                logger.exception(
-                    "Transiently failed to send document status message, queued for "
-                    "retry."
-                )
-            except PermanentSendError:
-                logger.exception("Permanently failed to send document status message.")
+    if status_request.status in settings.NOTIFIABLE_DOCUMENT_STATUSES:
+        send_document_status_notification(find_document_by_id, status_request)
 
-        else:
-            message.queued = True
-            message.save()
-
-    else:
-        mail = mail_constructor(
-            event=status_request.status,
-            lang=find_document_by_id["results"][0]["metadata"]["lang"],
-            mail_to=find_document_by_id["results"][0]["content"]["email"],
-        )
-        mail.send()
-        _commit_to_audit_log(mail.to[0], "set-document-status")
     return HttpResponse(200)
 
 

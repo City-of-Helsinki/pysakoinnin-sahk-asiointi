@@ -375,6 +375,7 @@ def test_set_document_status_with_suomifi(
     queued,
     settings,
 ):
+    settings.NOTIFIABLE_DOCUMENT_STATUSES = [status]
     settings.SUOMIFI_MESSAGES_ENABLED = True
     request = MagicMock(Request)
     status_request = DocumentStatusRequest(id="1", status=status)
@@ -384,3 +385,22 @@ def test_set_document_status_with_suomifi(
     assert len(messages) == 1
     assert messages[0].queued == queued
     assert message_send_mock.called != queued
+
+
+@pytest.mark.django_db
+@patch("api.api.DocumentHandler.set_document_status")
+@patch("api.api.ATVHandler.get_document_by_transaction_id")
+def test_set_document_status_not_in_notifiable_statuses(
+    get_document_by_transaction_id_mock,
+    document_status_mock,
+    settings,
+    mailoutbox,
+):
+    settings.NOTIFIABLE_DOCUMENT_STATUSES = []
+    request = MagicMock(Request)
+    status_request = DocumentStatusRequest(id="1", status=DocumentStatusEnum.received)
+    api.set_document_status(request, status_request)
+
+    assert Message.objects.count() == 0
+    assert len(mailoutbox) == 0
+    document_status_mock.assert_called_once()
