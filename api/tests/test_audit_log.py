@@ -109,7 +109,7 @@ class TestAuditLogMiddleware:
 
     @patch("api.views.ATVHandler.get_document_by_transaction_id")
     @patch("api.views.DocumentHandler.set_document_status")
-    @patch("api.api.mail_constructor")
+    @patch("api.utils.mail_constructor")
     def test_patch_request_is_audit_logged_with_update_operation(
         self,
         mail_mock,

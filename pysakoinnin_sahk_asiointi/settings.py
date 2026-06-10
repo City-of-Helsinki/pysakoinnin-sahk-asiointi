@@ -1,3 +1,4 @@
+import logging
 import os
 from pathlib import Path
 
@@ -11,7 +12,10 @@ from sentry_sdk.integrations.django import DjangoIntegration
 from sentry_sdk.scrubber import DEFAULT_DENYLIST, EventScrubber
 from sentry_sdk.types import SamplingContext
 
+from api.enums import DocumentStatusEnum
 from pysakoinnin_sahk_asiointi.utils import sentry_scrubber
+
+logger = logging.getLogger(__name__)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,6 +41,10 @@ env = Env(
     GDPR_API_DELETE_SCOPE=(str, "gdprdelete"),
     GDPR_API_QUERY_SCOPE=(str, "gdprquery"),
     HELUSERS_BACK_CHANNEL_LOGOUT_ENABLED=(bool, True),
+    NOTIFIABLE_DOCUMENT_STATUSES=(
+        list,
+        [DocumentStatusEnum.received.name, DocumentStatusEnum.resolvedViaEService.name],
+    ),
     OUTGOING_REQUEST_TIMEOUT=(int, 30),
     PASI_API_KEY=(str, ""),
     PASI_AUTH_KEY=(str, ""),
@@ -423,3 +431,10 @@ SUOMIFI_USERNAME = env("SUOMIFI_USERNAME")
 SUOMIFI_PASSWORD = env("SUOMIFI_PASSWORD")
 SUOMIFI_SERVICE_ID = env("SUOMIFI_SERVICE_ID")
 SUOMIFI_SEND_RETRY_HOURS = env("SUOMIFI_SEND_RETRY_HOURS")
+
+NOTIFIABLE_DOCUMENT_STATUSES = []
+for status in env("NOTIFIABLE_DOCUMENT_STATUSES"):
+    try:
+        NOTIFIABLE_DOCUMENT_STATUSES.append(DocumentStatusEnum(status))
+    except ValueError:
+        logger.exception(f"Unknown document status '{status}'")
