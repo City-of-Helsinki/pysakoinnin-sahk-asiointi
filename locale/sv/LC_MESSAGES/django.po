@@ -69,8 +69,8 @@ msgstr "Nya händelser i parkering e-tjänsten"
 
 #: message_service/templates/message_service/due_date_extended_body.html:10
 #: message_service/templates/message_service/due_date_extended_body.txt:2
-msgid "The due date has been postponed. New due date is"
-msgstr "Förfallodagen har skjutits upp. Nytt förfallodag är"
+msgid "The due date has been postponed."
+msgstr "Förfallodagen har skjutits upp."
 
 #: message_service/templates/message_service/event_body.html:9
 #: message_service/templates/message_service/event_body.txt:2
@@ -100,6 +100,46 @@ msgstr ""
 #: message_service/templates/message_service/event_body.txt:6
 msgid "Do not reply to this message."
 msgstr "Svara inte på detta meddelande."
+
+#: message_service/templates/message_service/event_body.html
+#: message_service/templates/message_service/event_body.txt
+msgid "Hello,"
+msgstr "Hej,"
+
+#: message_service/templates/message_service/event_body.html
+#: message_service/templates/message_service/event_body.txt
+msgid "you have received a message in the Parking e-services:"
+msgstr "du har fått ett meddelande i parkeringens e tjänst:"
+
+#: message_service/templates/message_service/event_body.html
+#: message_service/templates/message_service/event_body.txt
+msgid "Kind regards,"
+msgstr "Med vänlig hälsning"
+
+#: message_service/templates/message_service/event_body.html
+#: message_service/templates/message_service/event_body.txt
+msgid "Parking Enforcement and Parking Services"
+msgstr "Parkeringsövervakningen och parkeringstjänster"
+
+#: message_service/models.py
+msgid "City of Helsinki"
+msgstr "Helsingfors stad"
+
+#: message_service/models.py
+msgid ""
+"Your claim for rectification has been received. You do not have to pay the "
+"parking fine before you have received a decision."
+msgstr ""
+"Din begäran om omprövning har mottagits. Du behöver inte betala "
+"felparkeringsavgiften innan du har fått ett beslut."
+
+#: message_service/models.py
+msgid ""
+"You have received a decision on your claim for rectification. You can read "
+"the decision by logging in to the Parking e services."
+msgstr ""
+"Du har fått ett beslut om din begäran om omprövning. Du kan läsa beslutet "
+"genom att logga in i parkeringens e tjänst."
 
 #: message_service/utils.py:24
 msgid "Sent"

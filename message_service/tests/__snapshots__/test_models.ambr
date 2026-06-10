@@ -1,7 +1,7 @@
 # serializer version: 1
 # name: test_due_date_extended_message[en]
   tuple(
-    'New event in Parking e-service',
+    'City of Helsinki',
     '''
       
       <!DOCTYPE html>
@@ -12,7 +12,7 @@
             New event in Parking e-service
           </h1>
           <p>
-            The due date has been postponed. New due date is 01.07.2025
+            The due date has been postponed.
           </p>
         </body>
       </html>
@@ -20,14 +20,14 @@
     ''',
     '''
       
-      The due date has been postponed. New due date is 01.07.2025
+      The due date has been postponed.
   
     ''',
   )
 # ---
 # name: test_due_date_extended_message[fi]
   tuple(
-    'Uusi tapahtuma Pysäköinnin Asioinnissa',
+    'Helsingin kaupunki',
     '''
       
       <!DOCTYPE html>
@@ -38,7 +38,7 @@
             Uusi tapahtuma Pysäköinnin Asioinnissa
           </h1>
           <p>
-            Eräpäivää siirretty, uusi eräpäivä on 01.07.2025
+            Eräpäivää siirretty.
           </p>
         </body>
       </html>
@@ -46,14 +46,14 @@
     ''',
     '''
       
-      Eräpäivää siirretty, uusi eräpäivä on 01.07.2025
+      Eräpäivää siirretty.
   
     ''',
   )
 # ---
 # name: test_due_date_extended_message[sv]
   tuple(
-    'Nya händelser i parkering e-tjänsten',
+    'Helsingfors stad',
     '''
       
       <!DOCTYPE html>
@@ -64,7 +64,7 @@
             Nya händelser i parkering e-tjänsten
           </h1>
           <p>
-            Förfallodagen har skjutits upp. Nytt förfallodag är 01.07.2025
+            Förfallodagen har skjutits upp.
           </p>
         </body>
       </html>
@@ -72,14 +72,14 @@
     ''',
     '''
       
-      Förfallodagen har skjutits upp. Nytt förfallodag är 01.07.2025
+      Förfallodagen har skjutits upp.
   
     ''',
   )
 # ---
 # name: test_event_message[handling-en]
   tuple(
-    'New event in Parking e-service',
+    'City of Helsinki',
     '''
       
       <!DOCTYPE html>
@@ -87,7 +87,8 @@
       <body>
       <h2><img alt="Logo" src="cid:{logo}" height="24px" style="margin-right: 12px;"/>Pysäköinnin
           Asiointi</h2>
-      <h1>New event in Parking e-service</h1>
+      
+        <h1>New event in Parking e-service</h1>
         <p>
           New event has arrived in the Parking e-service: <i>In process</i>  at 15:30.
           <br>
@@ -97,6 +98,7 @@
           (This is an automated message sent by the City of Helsinki parking control e-service.
           Do not reply to this message.)
         </p>
+      
       </body>
       </html>
   
@@ -108,13 +110,14 @@
       
       (This is an automated message sent by the City of Helsinki parking control e-service.
       Do not reply to this message.)
+      
   
     ''',
   )
 # ---
 # name: test_event_message[handling-fi]
   tuple(
-    'Uusi tapahtuma Pysäköinnin Asioinnissa',
+    'Helsingin kaupunki',
     '''
       
       <!DOCTYPE html>
@@ -122,7 +125,8 @@
       <body>
       <h2><img alt="Logo" src="cid:{logo}" height="24px" style="margin-right: 12px;"/>Pysäköinnin
           Asiointi</h2>
-      <h1>Uusi tapahtuma Pysäköinnin Asioinnissa</h1>
+      
+        <h1>Uusi tapahtuma Pysäköinnin Asioinnissa</h1>
         <p>
           Pysäköinnin asiointiin on saapunut uusi tapahtuma: <i>Käsittelyssä</i>  klo 15:30.
           <br>
@@ -132,6 +136,7 @@
           (Tämä on automaattinen viesti jonka on lähettänyt Helsingin kaupungin pysäköinninvalvonnan sähköinen asiointipalvelu.
           Älä vastaa tähän viestiin.)
         </p>
+      
       </body>
       </html>
   
@@ -143,13 +148,14 @@
       
       (Tämä on automaattinen viesti jonka on lähettänyt Helsingin kaupungin pysäköinninvalvonnan sähköinen asiointipalvelu.
       Älä vastaa tähän viestiin.)
+      
   
     ''',
   )
 # ---
 # name: test_event_message[handling-sv]
   tuple(
-    'Nya händelser i parkering e-tjänsten',
+    'Helsingfors stad',
     '''
       
       <!DOCTYPE html>
@@ -157,7 +163,8 @@
       <body>
       <h2><img alt="Logo" src="cid:{logo}" height="24px" style="margin-right: 12px;"/>Pysäköinnin
           Asiointi</h2>
-      <h1>Nya händelser i parkering e-tjänsten</h1>
+      
+        <h1>Nya händelser i parkering e-tjänsten</h1>
         <p>
           Nya händelser har kommit in i parkering e-tjänsten: <i>Bearbetning</i>  på 15:30.
           <br>
@@ -167,6 +174,7 @@
           (Detta är ett automatiskt meddelande som skickas av Helsingfors stads parkeringsövervaknings e-tjänst.
           Svara inte på detta meddelande.)
         </p>
+      
       </body>
       </html>
   
@@ -178,13 +186,14 @@
       
       (Detta är ett automatiskt meddelande som skickas av Helsingfors stads parkeringsövervaknings e-tjänst.
       Svara inte på detta meddelande.)
+      
   
     ''',
   )
 # ---
 # name: test_event_message[received-en]
   tuple(
-    'New event in Parking e-service',
+    'City of Helsinki',
     '''
       
       <!DOCTYPE html>
@@ -192,34 +201,42 @@
       <body>
       <h2><img alt="Logo" src="cid:{logo}" height="24px" style="margin-right: 12px;"/>Pysäköinnin
           Asiointi</h2>
-      <h1>New event in Parking e-service</h1>
+      
+        <p>Hello,</p>
         <p>
-          New event has arrived in the Parking e-service: <i>Received</i>  at 15:30.
+          you have received a message in the Parking e-services:
           <br>
-          Sign in to parking e-services https://pysakoinninasiointi.hel.fi
-          <br>
-          <br>
-          (This is an automated message sent by the City of Helsinki parking control e-service.
-          Do not reply to this message.)
+          Your claim for rectification has been received. You do not have to pay the parking fine before you have received a decision.
         </p>
+        <p>
+          Kind regards,
+          <br>
+          <br>
+          Parking Enforcement and Parking Services
+        </p>
+      
       </body>
       </html>
   
     ''',
     '''
       
-      New event has arrived in the Parking e-service: Received  at 15:30.
-      Sign in to parking e-services https://pysakoinninasiointi.hel.fi
+      Hello,
       
-      (This is an automated message sent by the City of Helsinki parking control e-service.
-      Do not reply to this message.)
+      you have received a message in the Parking e-services:
+      Your claim for rectification has been received. You do not have to pay the parking fine before you have received a decision.
+      
+      Kind regards,
+      
+      Parking Enforcement and Parking Services
+      
   
     ''',
   )
 # ---
 # name: test_event_message[received-fi]
   tuple(
-    'Uusi tapahtuma Pysäköinnin Asioinnissa',
+    'Helsingin kaupunki',
     '''
       
       <!DOCTYPE html>
@@ -227,34 +244,42 @@
       <body>
       <h2><img alt="Logo" src="cid:{logo}" height="24px" style="margin-right: 12px;"/>Pysäköinnin
           Asiointi</h2>
-      <h1>Uusi tapahtuma Pysäköinnin Asioinnissa</h1>
+      
+        <p>Hei,</p>
         <p>
-          Pysäköinnin asiointiin on saapunut uusi tapahtuma: <i>Vastaanotettu</i>  klo 15:30.
+          sinulle on saapunut viesti pysäköinnin sähköisestä asioinnista:
           <br>
-          Kirjaudu pysäköinnin sähköiseen asiointiin https://pysakoinninasiointi.hel.fi
-          <br>
-          <br>
-          (Tämä on automaattinen viesti jonka on lähettänyt Helsingin kaupungin pysäköinninvalvonnan sähköinen asiointipalvelu.
-          Älä vastaa tähän viestiin.)
+          Oikaisuvaatimuksesi on vastaanotettu. Pysäköintivirhemaksua ei tarvitse maksaa ennen kuin olet saanut päätöksen.
         </p>
+        <p>
+          Terveisin
+          <br>
+          <br>
+          Pysäköinninvalvonta ja pysäköintipalvelut
+        </p>
+      
       </body>
       </html>
   
     ''',
     '''
       
-      Pysäköinnin asiointiin on saapunut uusi tapahtuma: Vastaanotettu  klo 15:30.
-      Kirjaudu pysäköinnin sähköiseen asiointiin https://pysakoinninasiointi.hel.fi
+      Hei,
       
-      (Tämä on automaattinen viesti jonka on lähettänyt Helsingin kaupungin pysäköinninvalvonnan sähköinen asiointipalvelu.
-      Älä vastaa tähän viestiin.)
+      sinulle on saapunut viesti pysäköinnin sähköisestä asioinnista:
+      Oikaisuvaatimuksesi on vastaanotettu. Pysäköintivirhemaksua ei tarvitse maksaa ennen kuin olet saanut päätöksen.
+      
+      Terveisin
+      
+      Pysäköinninvalvonta ja pysäköintipalvelut
+      
   
     ''',
   )
 # ---
 # name: test_event_message[received-sv]
   tuple(
-    'Nya händelser i parkering e-tjänsten',
+    'Helsingfors stad',
     '''
       
       <!DOCTYPE html>
@@ -262,34 +287,42 @@
       <body>
       <h2><img alt="Logo" src="cid:{logo}" height="24px" style="margin-right: 12px;"/>Pysäköinnin
           Asiointi</h2>
-      <h1>Nya händelser i parkering e-tjänsten</h1>
+      
+        <p>Hej,</p>
         <p>
-          Nya händelser har kommit in i parkering e-tjänsten: <i>Mottaget</i>  på 15:30.
+          du har fått ett meddelande i parkeringens e tjänst:
           <br>
-          Logga in på parkerings e-tjänster https://pysakoinninasiointi.hel.fi
-          <br>
-          <br>
-          (Detta är ett automatiskt meddelande som skickas av Helsingfors stads parkeringsövervaknings e-tjänst.
-          Svara inte på detta meddelande.)
+          Din begäran om omprövning har mottagits. Du behöver inte betala felparkeringsavgiften innan du har fått ett beslut.
         </p>
+        <p>
+          Med vänlig hälsning
+          <br>
+          <br>
+          Parkeringsövervakningen och parkeringstjänster
+        </p>
+      
       </body>
       </html>
   
     ''',
     '''
       
-      Nya händelser har kommit in i parkering e-tjänsten: Mottaget  på 15:30.
-      Logga in på parkerings e-tjänster https://pysakoinninasiointi.hel.fi
+      Hej,
       
-      (Detta är ett automatiskt meddelande som skickas av Helsingfors stads parkeringsövervaknings e-tjänst.
-      Svara inte på detta meddelande.)
+      du har fått ett meddelande i parkeringens e tjänst:
+      Din begäran om omprövning har mottagits. Du behöver inte betala felparkeringsavgiften innan du har fått ett beslut.
+      
+      Med vänlig hälsning
+      
+      Parkeringsövervakningen och parkeringstjänster
+      
   
     ''',
   )
 # ---
 # name: test_event_message[resolvedViaEService-en]
   tuple(
-    'New event in Parking e-service',
+    'City of Helsinki',
     '''
       
       <!DOCTYPE html>
@@ -297,34 +330,42 @@
       <body>
       <h2><img alt="Logo" src="cid:{logo}" height="24px" style="margin-right: 12px;"/>Pysäköinnin
           Asiointi</h2>
-      <h1>New event in Parking e-service</h1>
+      
+        <p>Hello,</p>
         <p>
-          New event has arrived in the Parking e-service: <i>Decision in e-services</i>  at 15:30.
+          you have received a message in the Parking e-services:
           <br>
-          Sign in to parking e-services https://pysakoinninasiointi.hel.fi
-          <br>
-          <br>
-          (This is an automated message sent by the City of Helsinki parking control e-service.
-          Do not reply to this message.)
+          You have received a decision on your claim for rectification. You can read the decision by logging in to the Parking e services.
         </p>
+        <p>
+          Kind regards,
+          <br>
+          <br>
+          Parking Enforcement and Parking Services
+        </p>
+      
       </body>
       </html>
   
     ''',
     '''
       
-      New event has arrived in the Parking e-service: Decision in e-services  at 15:30.
-      Sign in to parking e-services https://pysakoinninasiointi.hel.fi
+      Hello,
       
-      (This is an automated message sent by the City of Helsinki parking control e-service.
-      Do not reply to this message.)
+      you have received a message in the Parking e-services:
+      You have received a decision on your claim for rectification. You can read the decision by logging in to the Parking e services.
+      
+      Kind regards,
+      
+      Parking Enforcement and Parking Services
+      
   
     ''',
   )
 # ---
 # name: test_event_message[resolvedViaEService-fi]
   tuple(
-    'Uusi tapahtuma Pysäköinnin Asioinnissa',
+    'Helsingin kaupunki',
     '''
       
       <!DOCTYPE html>
@@ -332,34 +373,42 @@
       <body>
       <h2><img alt="Logo" src="cid:{logo}" height="24px" style="margin-right: 12px;"/>Pysäköinnin
           Asiointi</h2>
-      <h1>Uusi tapahtuma Pysäköinnin Asioinnissa</h1>
+      
+        <p>Hei,</p>
         <p>
-          Pysäköinnin asiointiin on saapunut uusi tapahtuma: <i>Päätös asioinnissa</i>  klo 15:30.
+          sinulle on saapunut viesti pysäköinnin sähköisestä asioinnista:
           <br>
-          Kirjaudu pysäköinnin sähköiseen asiointiin https://pysakoinninasiointi.hel.fi
-          <br>
-          <br>
-          (Tämä on automaattinen viesti jonka on lähettänyt Helsingin kaupungin pysäköinninvalvonnan sähköinen asiointipalvelu.
-          Älä vastaa tähän viestiin.)
+          Olet saanut päätöksen tekemääsi oikaisuvaatimukseen. Pääset lukemaan päätöksen kirjautumalla Pysäköinnin asiointiin.
         </p>
+        <p>
+          Terveisin
+          <br>
+          <br>
+          Pysäköinninvalvonta ja pysäköintipalvelut
+        </p>
+      
       </body>
       </html>
   
     ''',
     '''
       
-      Pysäköinnin asiointiin on saapunut uusi tapahtuma: Päätös asioinnissa  klo 15:30.
-      Kirjaudu pysäköinnin sähköiseen asiointiin https://pysakoinninasiointi.hel.fi
+      Hei,
       
-      (Tämä on automaattinen viesti jonka on lähettänyt Helsingin kaupungin pysäköinninvalvonnan sähköinen asiointipalvelu.
-      Älä vastaa tähän viestiin.)
+      sinulle on saapunut viesti pysäköinnin sähköisestä asioinnista:
+      Olet saanut päätöksen tekemääsi oikaisuvaatimukseen. Pääset lukemaan päätöksen kirjautumalla Pysäköinnin asiointiin.
+      
+      Terveisin
+      
+      Pysäköinninvalvonta ja pysäköintipalvelut
+      
   
     ''',
   )
 # ---
 # name: test_event_message[resolvedViaEService-sv]
   tuple(
-    'Nya händelser i parkering e-tjänsten',
+    'Helsingfors stad',
     '''
       
       <!DOCTYPE html>
@@ -367,34 +416,42 @@
       <body>
       <h2><img alt="Logo" src="cid:{logo}" height="24px" style="margin-right: 12px;"/>Pysäköinnin
           Asiointi</h2>
-      <h1>Nya händelser i parkering e-tjänsten</h1>
+      
+        <p>Hej,</p>
         <p>
-          Nya händelser har kommit in i parkering e-tjänsten: <i>Beslut i e-tjänster</i>  på 15:30.
+          du har fått ett meddelande i parkeringens e tjänst:
           <br>
-          Logga in på parkerings e-tjänster https://pysakoinninasiointi.hel.fi
-          <br>
-          <br>
-          (Detta är ett automatiskt meddelande som skickas av Helsingfors stads parkeringsövervaknings e-tjänst.
-          Svara inte på detta meddelande.)
+          Du har fått ett beslut om din begäran om omprövning. Du kan läsa beslutet genom att logga in i parkeringens e tjänst.
         </p>
+        <p>
+          Med vänlig hälsning
+          <br>
+          <br>
+          Parkeringsövervakningen och parkeringstjänster
+        </p>
+      
       </body>
       </html>
   
     ''',
     '''
       
-      Nya händelser har kommit in i parkering e-tjänsten: Beslut i e-tjänster  på 15:30.
-      Logga in på parkerings e-tjänster https://pysakoinninasiointi.hel.fi
+      Hej,
       
-      (Detta är ett automatiskt meddelande som skickas av Helsingfors stads parkeringsövervaknings e-tjänst.
-      Svara inte på detta meddelande.)
+      du har fått ett meddelande i parkeringens e tjänst:
+      Du har fått ett beslut om din begäran om omprövning. Du kan läsa beslutet genom att logga in i parkeringens e tjänst.
+      
+      Med vänlig hälsning
+      
+      Parkeringsövervakningen och parkeringstjänster
+      
   
     ''',
   )
 # ---
 # name: test_event_message[resolvedViaMail-en]
   tuple(
-    'New event in Parking e-service',
+    'City of Helsinki',
     '''
       
       <!DOCTYPE html>
@@ -402,7 +459,8 @@
       <body>
       <h2><img alt="Logo" src="cid:{logo}" height="24px" style="margin-right: 12px;"/>Pysäköinnin
           Asiointi</h2>
-      <h1>New event in Parking e-service</h1>
+      
+        <h1>New event in Parking e-service</h1>
         <p>
           New event has arrived in the Parking e-service: <i>Decision has been mailed</i>  at 15:30.
           <br>
@@ -412,6 +470,7 @@
           (This is an automated message sent by the City of Helsinki parking control e-service.
           Do not reply to this message.)
         </p>
+      
       </body>
       </html>
   
@@ -423,13 +482,14 @@
       
       (This is an automated message sent by the City of Helsinki parking control e-service.
       Do not reply to this message.)
+      
   
     ''',
   )
 # ---
 # name: test_event_message[resolvedViaMail-fi]
   tuple(
-    'Uusi tapahtuma Pysäköinnin Asioinnissa',
+    'Helsingin kaupunki',
     '''
       
       <!DOCTYPE html>
@@ -437,7 +497,8 @@
       <body>
       <h2><img alt="Logo" src="cid:{logo}" height="24px" style="margin-right: 12px;"/>Pysäköinnin
           Asiointi</h2>
-      <h1>Uusi tapahtuma Pysäköinnin Asioinnissa</h1>
+      
+        <h1>Uusi tapahtuma Pysäköinnin Asioinnissa</h1>
         <p>
           Pysäköinnin asiointiin on saapunut uusi tapahtuma: <i>Päätös postitettu</i>  klo 15:30.
           <br>
@@ -447,6 +508,7 @@
           (Tämä on automaattinen viesti jonka on lähettänyt Helsingin kaupungin pysäköinninvalvonnan sähköinen asiointipalvelu.
           Älä vastaa tähän viestiin.)
         </p>
+      
       </body>
       </html>
   
@@ -458,13 +520,14 @@
       
       (Tämä on automaattinen viesti jonka on lähettänyt Helsingin kaupungin pysäköinninvalvonnan sähköinen asiointipalvelu.
       Älä vastaa tähän viestiin.)
+      
   
     ''',
   )
 # ---
 # name: test_event_message[resolvedViaMail-sv]
   tuple(
-    'Nya händelser i parkering e-tjänsten',
+    'Helsingfors stad',
     '''
       
       <!DOCTYPE html>
@@ -472,7 +535,8 @@
       <body>
       <h2><img alt="Logo" src="cid:{logo}" height="24px" style="margin-right: 12px;"/>Pysäköinnin
           Asiointi</h2>
-      <h1>Nya händelser i parkering e-tjänsten</h1>
+      
+        <h1>Nya händelser i parkering e-tjänsten</h1>
         <p>
           Nya händelser har kommit in i parkering e-tjänsten: <i>Beslutsbrev postat</i>  på 15:30.
           <br>
@@ -482,6 +546,7 @@
           (Detta är ett automatiskt meddelande som skickas av Helsingfors stads parkeringsövervaknings e-tjänst.
           Svara inte på detta meddelande.)
         </p>
+      
       </body>
       </html>
   
@@ -493,13 +558,14 @@
       
       (Detta är ett automatiskt meddelande som skickas av Helsingfors stads parkeringsövervaknings e-tjänst.
       Svara inte på detta meddelande.)
+      
   
     ''',
   )
 # ---
 # name: test_event_message[sent-en]
   tuple(
-    'New event in Parking e-service',
+    'City of Helsinki',
     '''
       
       <!DOCTYPE html>
@@ -507,7 +573,8 @@
       <body>
       <h2><img alt="Logo" src="cid:{logo}" height="24px" style="margin-right: 12px;"/>Pysäköinnin
           Asiointi</h2>
-      <h1>New event in Parking e-service</h1>
+      
+        <h1>New event in Parking e-service</h1>
         <p>
           New event has arrived in the Parking e-service: <i>Sent</i>  at 15:30.
           <br>
@@ -517,6 +584,7 @@
           (This is an automated message sent by the City of Helsinki parking control e-service.
           Do not reply to this message.)
         </p>
+      
       </body>
       </html>
   
@@ -528,13 +596,14 @@
       
       (This is an automated message sent by the City of Helsinki parking control e-service.
       Do not reply to this message.)
+      
   
     ''',
   )
 # ---
 # name: test_event_message[sent-fi]
   tuple(
-    'Uusi tapahtuma Pysäköinnin Asioinnissa',
+    'Helsingin kaupunki',
     '''
       
       <!DOCTYPE html>
@@ -542,7 +611,8 @@
       <body>
       <h2><img alt="Logo" src="cid:{logo}" height="24px" style="margin-right: 12px;"/>Pysäköinnin
           Asiointi</h2>
-      <h1>Uusi tapahtuma Pysäköinnin Asioinnissa</h1>
+      
+        <h1>Uusi tapahtuma Pysäköinnin Asioinnissa</h1>
         <p>
           Pysäköinnin asiointiin on saapunut uusi tapahtuma: <i>Lähetetty</i>  klo 15:30.
           <br>
@@ -552,6 +622,7 @@
           (Tämä on automaattinen viesti jonka on lähettänyt Helsingin kaupungin pysäköinninvalvonnan sähköinen asiointipalvelu.
           Älä vastaa tähän viestiin.)
         </p>
+      
       </body>
       </html>
   
@@ -563,13 +634,14 @@
       
       (Tämä on automaattinen viesti jonka on lähettänyt Helsingin kaupungin pysäköinninvalvonnan sähköinen asiointipalvelu.
       Älä vastaa tähän viestiin.)
+      
   
     ''',
   )
 # ---
 # name: test_event_message[sent-sv]
   tuple(
-    'Nya händelser i parkering e-tjänsten',
+    'Helsingfors stad',
     '''
       
       <!DOCTYPE html>
@@ -577,7 +649,8 @@
       <body>
       <h2><img alt="Logo" src="cid:{logo}" height="24px" style="margin-right: 12px;"/>Pysäköinnin
           Asiointi</h2>
-      <h1>Nya händelser i parkering e-tjänsten</h1>
+      
+        <h1>Nya händelser i parkering e-tjänsten</h1>
         <p>
           Nya händelser har kommit in i parkering e-tjänsten: <i>Skickat</i>  på 15:30.
           <br>
@@ -587,6 +660,7 @@
           (Detta är ett automatiskt meddelande som skickas av Helsingfors stads parkeringsövervaknings e-tjänst.
           Svara inte på detta meddelande.)
         </p>
+      
       </body>
       </html>
   
@@ -598,6 +672,7 @@
       
       (Detta är ett automatiskt meddelande som skickas av Helsingfors stads parkeringsövervaknings e-tjänst.
       Svara inte på detta meddelande.)
+      
   
     ''',
   )

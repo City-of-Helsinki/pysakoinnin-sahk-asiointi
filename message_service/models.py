@@ -1,4 +1,3 @@
-import datetime
 import logging
 import uuid
 from typing import Self
@@ -173,9 +172,31 @@ class Message(models.Model):
             lang = "fi"
 
         with translation.override(lang):
+            if event == DocumentStatusEnum.received:
+                msg_body = str(
+                    _(
+                        "Your claim for rectification has been received. You do not "
+                        "have to pay the parking fine before you have received a "
+                        "decision."
+                    )
+                )
+            elif event == DocumentStatusEnum.resolvedViaEService:
+                msg_body = str(
+                    _(
+                        "You have received a decision on your claim for "
+                        "rectification. You can read the decision by logging in to "
+                        "the Parking e services."
+                    )
+                )
+            else:
+                msg_body = None
+
+            subject = str(_("City of Helsinki"))
+
             context = {
                 "event": utils.status_label(event),
                 "lang": lang,
+                "msg_body": msg_body,
                 "now": timezone.now().astimezone(utils.helsinki_tz).strftime("%H:%M"),
                 "url": "https://pysakoinninasiointi.hel.fi",
             }
@@ -183,7 +204,7 @@ class Message(models.Model):
             msg = cls(
                 transaction_id=transaction_id,
                 audit_action="set-document-status",
-                subject=str(_("New event in Parking e-service")),
+                subject=subject,
                 body_text=render_to_string("message_service/event_body.txt", context),
                 body_html=render_to_string("message_service/event_body.html", context),
                 message_type=MessageType.from_document_status(event),
@@ -195,22 +216,18 @@ class Message(models.Model):
     def due_date_extended_message(
         cls, transaction_id: str, new_due_date: str, lang: str
     ) -> Self:
-        date = datetime.datetime.strptime(new_due_date, "%Y-%m-%dT%H:%M:%S")
-        formatted_due_date = datetime.datetime.strftime(date, "%d.%m.%Y")
-
         if lang not in ("fi", "sv", "en"):
             lang = "fi"
 
         with translation.override(lang):
             context = {
-                "formatted_due_date": formatted_due_date,
                 "lang": lang,
                 "url": "https://pysakoinninasiointi.hel.fi",
             }
             msg = cls(
                 transaction_id=transaction_id,
                 audit_action="extend-due-date",
-                subject=str(_("New event in Parking e-service")),
+                subject=str(_("City of Helsinki")),
                 body_text=render_to_string(
                     "message_service/due_date_extended_body.txt", context
                 ),

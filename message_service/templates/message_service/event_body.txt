@@ -1,6 +1,15 @@
 {% load i18n %}
-{% translate "New event has arrived in the Parking e-service" %}: {{event}}  {% translate "at" %} {{now}}.
+{% if msg_body %}{% translate "Hello," %}
+
+{% translate "you have received a message in the Parking e-services:" %}
+{{ msg_body }}
+
+{% translate "Kind regards," %}
+
+{% translate "Parking Enforcement and Parking Services" %}
+{% else %}{% translate "New event has arrived in the Parking e-service" %}: {{event}}  {% translate "at" %} {{now}}.
 {% translate "Sign in to parking e-services" %} {{ url }}
 
 ({% translate "This is an automated message sent by the City of Helsinki parking control e-service." %}
 {% translate "Do not reply to this message." %})
+{% endif %}
