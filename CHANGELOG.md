@@ -1,5 +1,19 @@
 # Changelog
 
+## [4.0.0](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v3.6.1...pysakoinnin-sahk-asiointi-v4.0.0) (2026-06-11)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove sendDecisionViaEService from external API
+
+### Features
+
+* Add line wrapping to message_service plaintext messages ([a5a2d5f](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/a5a2d5fa704a066699a48b2b47e65e14a9ba6302))
+* Configurable status updates ([8e6fd94](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/8e6fd94d1284efb2e6dde34aec3b91d91dcd617b))
+* Remove sendDecisionViaEService from external API ([bf2073a](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/bf2073a66e9938d940dd411c6a4543a6269ec21e))
+* Update message_service templates with new format ([7dd9873](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/7dd987302fb9fc1268d02ca7b36a9007cc092236))
+
 ## [3.6.1](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v3.6.0...pysakoinnin-sahk-asiointi-v3.6.1) (2026-06-03)
 
 
