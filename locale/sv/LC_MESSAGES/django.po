@@ -127,11 +127,11 @@ msgstr "Helsingfors stad"
 
 #: message_service/models.py
 msgid ""
-"Your claim for rectification has been received. You do not have to pay the "
-"parking fine before you have received a decision."
+"Your claim for rectification has been received. You do not have to pay any "
+"potential fee before you have received a decision in the matter."
 msgstr ""
-"Din begäran om omprövning har mottagits. Du behöver inte betala "
-"felparkeringsavgiften innan du har fått ett beslut."
+"Din begäran om omprövning har mottagits. Du behöver inte betala eventuell "
+"avgift innan du har fått ett beslut i ärendet."
 
 #: message_service/models.py
 msgid ""
