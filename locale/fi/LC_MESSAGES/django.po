@@ -127,11 +127,11 @@ msgstr "Helsingin kaupunki"
 
 #: message_service/models.py
 msgid ""
-"Your claim for rectification has been received. You do not have to pay the "
-"parking fine before you have received a decision."
+"Your claim for rectification has been received. You do not have to pay any "
+"potential fee before you have received a decision in the matter."
 msgstr ""
-"Oikaisuvaatimuksesi on vastaanotettu. Pysäköintivirhemaksua ei tarvitse "
-"maksaa ennen kuin olet saanut päätöksen."
+"Oikaisuvaatimuksesi on vastaanotettu. Mahdollista maksua ei tarvitse "
+"suorittaa ennen kuin olet saanut asiassa päätöksen."
 
 #: message_service/models.py
 msgid ""

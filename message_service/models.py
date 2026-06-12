@@ -176,8 +176,8 @@ class Message(models.Model):
                 msg_body = str(
                     _(
                         "Your claim for rectification has been received. You do not "
-                        "have to pay the parking fine before you have received a "
-                        "decision."
+                        "have to pay any potential fee before you have received a "
+                        "decision in the matter."
                     )
                 )
             elif event == DocumentStatusEnum.resolvedViaEService:

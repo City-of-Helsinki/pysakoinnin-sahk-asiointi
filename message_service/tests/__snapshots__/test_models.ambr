@@ -206,7 +206,7 @@
         <p>
           you have received a message in the Parking e-services:
           <br>
-          Your claim for rectification has been received. You do not have to pay the parking fine before you have received a decision.
+          Your claim for rectification has been received. You do not have to pay any potential fee before you have received a decision in the matter.
         </p>
         <p>
           Kind regards,
@@ -224,8 +224,9 @@
       Hello,
       
       you have received a message in the Parking e-services:
-      Your claim for rectification has been received. You do not have to pay the
-      parking fine before you have received a decision.
+      
+      Your claim for rectification has been received. You do not have to pay any
+      potential fee before you have received a decision in the matter.
       
       Kind regards,
       
@@ -250,7 +251,7 @@
         <p>
           sinulle on saapunut viesti pysäköinnin sähköisestä asioinnista:
           <br>
-          Oikaisuvaatimuksesi on vastaanotettu. Pysäköintivirhemaksua ei tarvitse maksaa ennen kuin olet saanut päätöksen.
+          Oikaisuvaatimuksesi on vastaanotettu. Mahdollista maksua ei tarvitse suorittaa ennen kuin olet saanut asiassa päätöksen.
         </p>
         <p>
           Terveisin
@@ -268,8 +269,9 @@
       Hei,
       
       sinulle on saapunut viesti pysäköinnin sähköisestä asioinnista:
-      Oikaisuvaatimuksesi on vastaanotettu. Pysäköintivirhemaksua ei tarvitse
-      maksaa ennen kuin olet saanut päätöksen.
+      
+      Oikaisuvaatimuksesi on vastaanotettu. Mahdollista maksua ei tarvitse
+      suorittaa ennen kuin olet saanut asiassa päätöksen.
       
       Terveisin
       
@@ -294,7 +296,7 @@
         <p>
           du har fått ett meddelande i parkeringens e tjänst:
           <br>
-          Din begäran om omprövning har mottagits. Du behöver inte betala felparkeringsavgiften innan du har fått ett beslut.
+          Din begäran om omprövning har mottagits. Du behöver inte betala eventuell avgift innan du har fått ett beslut i ärendet.
         </p>
         <p>
           Med vänlig hälsning
@@ -312,8 +314,9 @@
       Hej,
       
       du har fått ett meddelande i parkeringens e tjänst:
-      Din begäran om omprövning har mottagits. Du behöver inte betala
-      felparkeringsavgiften innan du har fått ett beslut.
+      
+      Din begäran om omprövning har mottagits. Du behöver inte betala eventuell
+      avgift innan du har fått ett beslut i ärendet.
       
       Med vänlig hälsning
       
@@ -356,6 +359,7 @@
       Hello,
       
       you have received a message in the Parking e-services:
+      
       You have received a decision on your claim for rectification. You can read
       the decision by logging in to the Parking e services.
       
@@ -400,6 +404,7 @@
       Hei,
       
       sinulle on saapunut viesti pysäköinnin sähköisestä asioinnista:
+      
       Olet saanut päätöksen tekemääsi oikaisuvaatimukseen. Pääset lukemaan
       päätöksen kirjautumalla Pysäköinnin asiointiin.
       
@@ -444,6 +449,7 @@
       Hej,
       
       du har fått ett meddelande i parkeringens e tjänst:
+      
       Du har fått ett beslut om din begäran om omprövning. Du kan läsa beslutet
       genom att logga in i parkeringens e tjänst.
       

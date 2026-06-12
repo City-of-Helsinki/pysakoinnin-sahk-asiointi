@@ -2,6 +2,7 @@
 {% if msg_body %}{% translate "Hello," %}
 
 {% translate "you have received a message in the Parking e-services:" %}
+
 {{ msg_body|wordwrap:76 }}
 
 {% translate "Kind regards," %}
