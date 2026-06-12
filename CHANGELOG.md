@@ -1,5 +1,17 @@
 # Changelog
 
+## [4.1.0](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v4.0.0...pysakoinnin-sahk-asiointi-v4.1.0) (2026-06-12)
+
+
+### Features
+
+* Remove suomi.fi messages from due date extension ([c9f15f0](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/c9f15f023242ab8ef1fcde86d2eb53303acf88b1))
+
+
+### Bug Fixes
+
+* Adjust translations and template layout ([6303c22](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/6303c220d67b91d910ceac22658d26b478e6b9ea))
+
 ## [4.0.0](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v3.6.1...pysakoinnin-sahk-asiointi-v4.0.0) (2026-06-11)
 
 
