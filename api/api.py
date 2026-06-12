@@ -22,9 +22,8 @@ from api.utils import send_document_status_notification, virus_scan_attachment_f
 from api.views import ATVHandler, DocumentHandler, PASIHandler
 from mail_service.audit_log import _commit_to_audit_log
 from mail_service.utils import extend_due_date_mail_constructor
-from message_service.models import DeliveryReport, Message
+from message_service.models import DeliveryReport
 from message_service.schemas import DeliveryReportSchema
-from message_service.utils import PermanentSendError, TransientSendError
 
 logger = logging.getLogger(__name__)
 router = Router()
@@ -93,29 +92,13 @@ def extend_due_date(request, foul_data: FoulRequest):
         {**response_json}, foul_data.foul_number, request.user.uuid, metadata={}
     )
 
-    if settings.SUOMIFI_MESSAGES_ENABLED:
-        lang = foul_data.metadata.lang
-        message = Message.due_date_extended_message(
-            str(foul_data.foul_number), response_json["dueDate"], lang
-        )
-        try:
-            message.send()
-        except TransientSendError:
-            message.queued = True
-            message.save()
-            logger.exception(
-                "Transiently failed to send extend due date message, queued for retry."
-            )
-        except PermanentSendError:
-            logger.exception("Permanently failed to send extend due date message.")
-    else:
-        mail = extend_due_date_mail_constructor(
-            new_due_date=response_json["dueDate"],
-            lang=foul_data.metadata.lang,
-            mail_to=foul_data.metadata.email,
-        )
-        mail.send()
-        _commit_to_audit_log(mail.to[0], "extend-due-date")
+    mail = extend_due_date_mail_constructor(
+        new_due_date=response_json["dueDate"],
+        lang=foul_data.metadata.lang,
+        mail_to=foul_data.metadata.email,
+    )
+    mail.send()
+    _commit_to_audit_log(mail.to[0], "extend-due-date")
 
     return response_json
 

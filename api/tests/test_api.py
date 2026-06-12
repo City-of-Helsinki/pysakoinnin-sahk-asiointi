@@ -158,36 +158,6 @@ class TestApiFunctions(TestCase):
         extend_foul_due_date_mock.side_effect = errors.HttpError(500, "message")
         self.assertRaises(errors.HttpError, extend)
 
-    @patch("message_service.models.Message.send")
-    @patch("api.views.ATVHandler.add_document")
-    @patch("api.views.PASIHandler.extend_foul_due_date")
-    @override_settings(SUOMIFI_MESSAGES_ENABLED=True)
-    def test_extend_due_date_with_suomifi(
-        self, extend_foul_due_date_mock, add_document_mock, message_send_mock
-    ):
-        add_document_mock.return_value = MockResponse(200, {})
-        extend_foul_due_date_mock.return_value = MockResponse(200, MOCK_DUEDATE)
-
-        foul_obj = FoulRequest()
-
-        def extend():
-            return api.extend_due_date(request=self.request, foul_data=foul_obj)
-
-        response = extend()
-        assert response == MOCK_DUEDATE
-        messages = Message.objects.all()
-        assert len(messages) == 1
-        assert not messages[0].queued
-        assert message_send_mock.called
-
-        foul_obj = FoulRequest()
-        del foul_obj.foul_number
-        self.assertRaises(AttributeError, extend)
-
-        foul_obj = FoulRequest()
-        extend_foul_due_date_mock.side_effect = errors.HttpError(500, "message")
-        self.assertRaises(errors.HttpError, extend)
-
 
 @pytest.mark.django_db
 @patch("pysakoinnin_sahk_asiointi.urls.AuthBearer.authenticate")
