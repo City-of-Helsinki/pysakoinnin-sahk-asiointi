@@ -180,6 +180,9 @@ def set_document_status(request, status_request: DocumentStatusRequest):
     """
     Update document status with ID and status
     """
+    logger.info(
+        f"Setting status {status_request.status} for document {status_request.id!r}."
+    )
     find_document_by_id = ATVHandler.get_document_by_transaction_id(status_request.id)
     document_id = find_document_by_id["results"][0]["id"]
 
