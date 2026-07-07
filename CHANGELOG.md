@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.2.0](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v4.1.1...pysakoinnin-sahk-asiointi-v4.2.0) (2026-07-07)
+
+
+### Features
+
+* Log document status changes ([9935171](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/993517106a44792359d66e2fc5f5a4e09e6ca885))
+
 ## [4.1.1](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v4.1.0...pysakoinnin-sahk-asiointi-v4.1.1) (2026-06-22)
 
 
