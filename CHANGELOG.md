@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.2.1](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v4.2.0...pysakoinnin-sahk-asiointi-v4.2.1) (2026-07-09)
+
+
+### Bug Fixes
+
+* Add root logger for Django ([8b6ff43](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/8b6ff4344c8ff17b5c8a9df178f6bd97a3b71e93))
+
 ## [4.2.0](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v4.1.1...pysakoinnin-sahk-asiointi-v4.2.0) (2026-07-07)
 
 
