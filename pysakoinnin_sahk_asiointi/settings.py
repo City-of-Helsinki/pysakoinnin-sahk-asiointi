@@ -338,6 +338,10 @@ LOGGING = {
             "()": "logger_extra.formatter.JSONFormatter",
         }
     },
+    "root": {
+        "handlers": ["console"],
+        "level": "INFO",
+    },
     "loggers": {
         "django": {
             "handlers": ["console"],
