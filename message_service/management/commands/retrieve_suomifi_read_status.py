@@ -1,6 +1,7 @@
 import logging
 
-from django.core.management.base import BaseCommand
+from django.conf import settings
+from django.core.management.base import BaseCommand, CommandError
 from suomifi_messages.schemas import EventType
 
 from message_service.enums import DeliveryStatus
@@ -28,6 +29,12 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
+        if not settings.SUOMIFI_MESSAGES_ENABLED:
+            raise CommandError(
+                "Suomi.fi messages disabled, aborting. To run this "
+                "command, set SUOMIFI_MESSAGES_ENABLED to true."
+            )
+
         persistence, _ = SuomifiPersistence.objects.get_or_create(pk=1)
 
         if options["all"]:

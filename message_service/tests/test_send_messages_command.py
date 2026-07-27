@@ -3,11 +3,24 @@ from io import StringIO
 from unittest.mock import patch
 
 import pytest
-from django.core.management import call_command
+from django.core.management import CommandError, call_command
 
 from message_service.enums import DeliveryStatus
 from message_service.models import Message
 from message_service.utils import PermanentSendError, TransientSendError
+
+
+@pytest.fixture(autouse=True)
+def setup_settings(settings):
+    settings.SUOMIFI_MESSAGES_ENABLED = True
+
+
+@pytest.mark.django_db
+def test_raises_command_error_if_feature_not_enabled(settings):
+    settings.SUOMIFI_MESSAGES_ENABLED = False
+
+    with pytest.raises(CommandError, match="Suomi.fi messages disabled, aborting."):
+        call_command("send_messages")
 
 
 @pytest.mark.django_db

@@ -2,11 +2,16 @@ import datetime
 from unittest.mock import MagicMock, patch
 
 import pytest
-from django.core.management import call_command
+from django.core.management import CommandError, call_command
 from suomifi_messages.schemas import EventType
 
 from message_service.enums import DeliveryStatus
 from message_service.models import DeliveryReport, SuomifiPersistence
+
+
+@pytest.fixture(autouse=True)
+def setup_settings(settings):
+    settings.SUOMIFI_MESSAGES_ENABLED = True
 
 
 @pytest.fixture
@@ -21,6 +26,14 @@ def _make_event(event_type, suomifi_id, event_time):
     event.metadata.message_id = suomifi_id
     event.event_time = event_time
     return event
+
+
+@pytest.mark.django_db
+def test_raises_command_error_if_feature_not_enabled(settings):
+    settings.SUOMIFI_MESSAGES_ENABLED = False
+
+    with pytest.raises(CommandError, match="Suomi.fi messages disabled, aborting."):
+        call_command("retrieve_suomifi_read_status")
 
 
 @pytest.mark.django_db
