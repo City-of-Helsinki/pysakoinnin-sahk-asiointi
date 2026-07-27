@@ -2,7 +2,7 @@ from datetime import timedelta
 
 import sentry_sdk
 from django.conf import settings
-from django.core.management.base import BaseCommand
+from django.core.management.base import BaseCommand, CommandError
 from django.utils import timezone
 
 from message_service.enums import DeliveryStatus
@@ -14,6 +14,12 @@ class Command(BaseCommand):
     help = "Send all queued messages."
 
     def handle(self, *args, **options):
+        if not settings.SUOMIFI_MESSAGES_ENABLED:
+            raise CommandError(
+                "Suomi.fi messages disabled, aborting. To run this "
+                "command, set SUOMIFI_MESSAGES_ENABLED to true."
+            )
+
         messages = Message.objects.filter(queued=True)
         self.stdout.write(f"Queued message count: {messages.count()}")
 
