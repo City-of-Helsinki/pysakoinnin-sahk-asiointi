@@ -29,14 +29,14 @@ class Command(BaseCommand):
             if timezone.now() - message.created_at > timedelta(
                 hours=settings.SUOMIFI_SEND_RETRY_HOURS
             ):
-                self.stdout.write(
-                    self.style.WARNING(
-                        f"Message {message.pk} for transaction "
-                        f"{message.transaction_id} has been removed from the queue as "
-                        "it exceeded the retry window of "
-                        f"{settings.SUOMIFI_SEND_RETRY_HOURS} hours."
-                    )
+                error_message = (
+                    f"Message {message.pk} for transaction "
+                    f"{message.transaction_id} has been removed from the queue as "
+                    "it exceeded the retry window of "
+                    f"{settings.SUOMIFI_SEND_RETRY_HOURS} hours."
                 )
+                sentry_sdk.capture_message(error_message, level="error")
+                self.stdout.write(self.style.WARNING(error_message))
                 self.unqueue_and_report_failed(message)
                 continue
             try:
