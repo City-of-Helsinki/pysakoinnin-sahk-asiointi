@@ -80,7 +80,15 @@ def test_send_messages_past_retry_window(message, freezer, settings):
         message.created_at + timedelta(hours=settings.SUOMIFI_SEND_RETRY_HOURS + 1)
     )
     out = StringIO()
-    call_command("send_messages", stdout=out)
+    with patch(
+        "message_service.management.commands.send_messages.sentry_sdk.capture_message"
+    ) as mock_sentry:
+        call_command("send_messages", stdout=out)
+
+        mock_sentry.assert_called_once()
+        call_args = mock_sentry.call_args
+        assert "removed from the queue" in call_args[0][0]
+        assert call_args[1]["level"] == "error"
 
     output = out.getvalue()
     assert (
