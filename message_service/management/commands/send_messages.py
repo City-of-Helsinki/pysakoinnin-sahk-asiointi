@@ -21,7 +21,9 @@ class Command(BaseCommand):
             )
 
         messages = Message.objects.filter(queued=True)
-        self.stdout.write(f"Queued message count: {messages.count()}")
+        send_count = 0
+        queued_count = messages.count()
+        self.stdout.write(f"Queued message count: {queued_count}")
 
         for message in messages:
             if timezone.now() - message.created_at > timedelta(
@@ -39,7 +41,7 @@ class Command(BaseCommand):
                 continue
             try:
                 message.send()
-                self.stdout.write(self.style.SUCCESS(f"Message (pk={message.pk}) sent"))
+                send_count += 1
             except TransientSendError as ex:
                 sentry_sdk.capture_exception(ex)
                 self.stdout.write(
@@ -57,6 +59,9 @@ class Command(BaseCommand):
                     )
                 )
                 self.unqueue_and_report_failed(message)
+
+        if queued_count:
+            self.stdout.write(self.style.SUCCESS(f"Sent {send_count} message(s)"))
 
     def unqueue_and_report_failed(self, message: Message) -> None:
         message.queued = False

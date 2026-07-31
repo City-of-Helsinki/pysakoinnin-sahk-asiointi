@@ -34,7 +34,7 @@ def test_send_messages_command_send_success(message):
 
     mock_send.assert_called_once()
     output = out.getvalue()
-    assert f"Message (pk={message.pk}) sent" in output
+    assert "Sent 1 message(s)" in output
 
 
 @pytest.mark.django_db
