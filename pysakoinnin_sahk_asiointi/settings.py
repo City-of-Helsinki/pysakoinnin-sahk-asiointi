@@ -21,10 +21,10 @@ logger = logging.getLogger(__name__)
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 env = Env(
-    # Resilient logger config
     ALLOWED_HOSTS=(list, []),
     ATV_API_KEY=(str, ""),
     ATV_ENDPOINT=(str, ""),
+    # Resilient logger config
     AUDIT_LOG_ENV=(str, ""),
     AUDIT_LOG_ES_INDEX=(str, ""),
     AUDIT_LOG_ES_PASSWORD=(str, ""),
