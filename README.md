@@ -17,22 +17,47 @@ Note that running the app with Docker proxies the application to port `8080`
 
 ### Running the application with hot-reload (recommended for active development)
 
-1. Install a Python virtual environment of your choice (for example [venv](https://docs.python.org/3/tutorial/venv.html))
-  with Python 3.x
+1. Install [uv](https://docs.astral.sh/uv/getting-started/installation/)
 2. In a new terminal window start a local database instance with
   `docker run --name parking-service-db -p 5432:5432 -e POSTGRES_USER=parking-user -e POSTGRES_PASSWORD=root -e POSTGRES_DB=parking-service postgres:alpine`
-3. Activate virtual environment
-    - if you are using venv, the command is `source [insert your venv directory name here]/bin/activate` on Mac and Unix and `[insert your venv directory name here]\Scripts\activate.bat` on Windows
-    - the virtual environment can be deactivated with `deactivate`
-4. Install dependencies with `pip install -r requirements.in`
-5. Run migrations `python manage.py migrate`
-6. Run server `python manage.py runserver`
-7. you can open `http://localhost:8000/api/v1/docs` to view the API endpoints in browser
+3. Install dependencies with `uv sync`
+4. Run migrations `uv run manage.py migrate`
+5. Run server `uv run manage.py runserver`
+6. you can open `http://localhost:8000/api/v1/docs` to view the API endpoints in browser
 
 
-- Alternatively you can run server with `gunicorn pysakoinnin_sahk_asiointi.wsgi:application --bind 0.0.0.0:8000`
+- Alternatively you can run server with `uv run --group prod gunicorn pysakoinnin_sahk_asiointi.wsgi:application --bind 0.0.0.0:8000`
 
-## Generating a new requirements.txt
+## Managing dependencies
 
-- Install [pip-tools](https://github.com/jazzband/pip-tools)
-- Run `pip-compile` to generate a new requirements.txt file
+Dependencies are managed with [uv](https://docs.astral.sh/uv/) and defined in `pyproject.toml`.
+Production dependencies live in `[project.dependencies]`, development-only dependencies in the
+`dev` group and production-only dependencies (e.g. `gunicorn`) in the `prod` group under
+`[dependency-groups]`.
+
+- Add or update a dependency: `uv add <package>` (use `--group dev` or `--group prod` for the
+  respective groups)
+- Regenerate `uv.lock` after manually editing `pyproject.toml`: `uv lock`
+- Install everything needed for local development: `uv sync --all-groups`
+
+## Code format
+
+This project uses [Ruff](https://docs.astral.sh/ruff/) for code formatting and quality checking.
+Ruff needs to be explicitly installed in your Python environment, as it is not included in the `uv` setup.
+
+Basic `ruff` commands:
+
+* lint: `ruff check`
+* apply safe lint fixes: `ruff check --fix`
+* check formatting: `ruff format --check`
+* format: `ruff format`
+
+[`pre-commit`](https://pre-commit.com/) can be used to install and
+run all the formatting tools as git hooks automatically before a
+commit.
+
+Set up the git hooks with `uvx pre-commit install`. To run all hooks
+manually, use `uvx pre-commit run --all-files`.
+
+If `pre-commit` is installed in the uv environment, the same commands
+can be run with `uv run pre-commit` instead.
