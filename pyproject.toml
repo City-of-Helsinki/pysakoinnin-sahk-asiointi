@@ -15,7 +15,7 @@ dependencies = [
     "django-logger-extra",
     "django-mailer",
     "django-ninja~=1.4.5",
-    "django-resilient-logger~=1.1.1",
+    "django-resilient-logger",
     "psycopg[c]",
     "pyclamd",
     "pydantic[email]",

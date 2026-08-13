@@ -324,15 +324,15 @@ wheels = [
 
 [[package]]
 name = "django-resilient-logger"
-version = "1.1.1"
+version = "2.3.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "django" },
-    { name = "elasticsearch" },
+    { name = "elasticsearch8" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/6b/4f/d8f3bc05c0b858eb5637d9d711d911d1ee797f3d2fbb3d14c3a9b0d10f7d/django_resilient_logger-1.1.1.tar.gz", hash = "sha256:3e007683d8d1e2fb1c87f81e843ce5cfbaaa9b2202428b2ba30444a69519549a", size = 20953, upload-time = "2025-11-28T13:31:59.364Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/80/72/23015ce1edbf1c409f14c5fda5e59d60287c23bf0c9645ead832afeb3c81/django_resilient_logger-2.3.0.tar.gz", hash = "sha256:4ed7790574964971c0d6300a1dca81f9ec16e5566340047788fb022fc588b13c", size = 24260, upload-time = "2026-05-27T07:24:01.745Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/01/39/e2e0793be5f8cd93272eb45f08c2e05a8615b9925b1b9f911138d118bdac/django_resilient_logger-1.1.1-py2.py3-none-any.whl", hash = "sha256:7d68fc14f3c67158653e08c3007875682b031c70ab43998b30be3f451bac07bd", size = 21612, upload-time = "2025-11-28T13:31:57.682Z" },
+    { url = "https://files.pythonhosted.org/packages/85/37/a7984d971692f759c0f46dd2078d1e1f464814b6d79c691f18d72753d0e8/django_resilient_logger-2.3.0-py2.py3-none-any.whl", hash = "sha256:542d2a83f4e8ecc92555bcac1e5d9a10d257e5ba99338e4553e16fe167c6f91e", size = 23692, upload-time = "2026-05-27T07:24:00.109Z" },
 ]
 
 [[package]]
@@ -358,7 +358,7 @@ wheels = [
 ]
 
 [[package]]
-name = "elasticsearch"
+name = "elasticsearch8"
 version = "8.19.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
@@ -366,9 +366,9 @@ dependencies = [
     { name = "python-dateutil" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/6b/79/365e306017a9fcfbbefab1a3b588d2404bea8806b36766ff0f886509a20e/elasticsearch-8.19.3.tar.gz", hash = "sha256:e84dd618a220cac25b962790085045dd27ac72e01c0a5d81bd29a2d47a71f03f", size = 800298, upload-time = "2025-12-23T12:56:00.72Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/53/6a/1a7d54c1aee0a96870aa54375da4b4a6d5390dd767c917de58242d3d49b8/elasticsearch8-8.19.3.tar.gz", hash = "sha256:7effe95b360241b6d56ef68219037a90ad0f56723614db54bbe57d33058402f4", size = 800428, upload-time = "2025-12-23T12:56:01.961Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/56/0f/ac126833c385b06166d41c486e4911f58ad7791fd1a53dd6e0b8d16ff214/elasticsearch-8.19.3-py3-none-any.whl", hash = "sha256:fe1db2555811192e8a1be78b01234d0a49d32b185ea7eeeb6f059331dee32838", size = 952820, upload-time = "2025-12-23T12:55:56.796Z" },
+    { url = "https://files.pythonhosted.org/packages/90/ff/1033bf0048d8492c1bcfcf058511dff119895ba50888c7a6e364aa3b168f/elasticsearch8-8.19.3-py3-none-any.whl", hash = "sha256:4b52e59e68aea6f59bf37c28f6f4512333302dd8a52e26c17d0f10c076d833a1", size = 953171, upload-time = "2025-12-23T12:55:58.781Z" },
 ]
 
 [[package]]
@@ -745,7 +745,7 @@ requires-dist = [
     { name = "django-logger-extra" },
     { name = "django-mailer" },
     { name = "django-ninja", specifier = "~=1.4.5" },
-    { name = "django-resilient-logger", specifier = "~=1.1.1" },
+    { name = "django-resilient-logger" },
     { name = "psycopg", extras = ["c"] },
     { name = "pyclamd" },
     { name = "pydantic", extras = ["email"] },
