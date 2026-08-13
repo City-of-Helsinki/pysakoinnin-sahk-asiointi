@@ -1,6 +1,8 @@
 from .settings import *  # noqa
+from .settings import RESILIENT_LOGGER as _RESILIENT_LOGGER
 
 SECRET_KEY = "test"
+RESILIENT_LOGGER = {**_RESILIENT_LOGGER, "environment": "test"}
 VALIDATE_PASI_CERTIFICATION = False
 TOKEN_AUTH_AUTHORIZATION_FIELD = [
     "https://api.hel.fi/auth",

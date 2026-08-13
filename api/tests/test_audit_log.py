@@ -33,10 +33,15 @@ class TestAuditLogMiddleware:
         assert log_entry.context["actor"]["name"] == "user_id"
         assert log_entry.context["actor"]["value"] == user_uuid
 
-        document = ResilientLogSource(log_entry).get_document()
+        source_entry = next(
+            entry
+            for entry in ResilientLogSource().get_unsent_entries(chunk_size=500)
+            if entry.get_id() == log_entry.id
+        )
+        document = source_entry.get_document()
         assert document["audit_event"]["origin"] == origin
 
-        document = ResilientLogSource(log_entry).get_document()
+        document = source_entry.get_document()
         assert document["audit_event"]["origin"] == origin
         assert document["audit_event"]["level"] == logging.NOTSET
 
@@ -362,7 +367,13 @@ class TestAuditLogMiddleware:
         # Verify audit log entry includes correct origin
         log_entries = ResilientLogEntry.objects.all()
         assert log_entries.count() == 1
-        document = ResilientLogSource(log_entries.first()).get_document()
+        log_entry = log_entries.first()
+        source_entry = next(
+            entry
+            for entry in ResilientLogSource().get_unsent_entries(chunk_size=500)
+            if entry.get_id() == log_entry.id
+        )
+        document = source_entry.get_document()
         assert document["audit_event"]["origin"] == "pysakoinnin-sahkoinen-asiointi-api"
 
     @patch("api.views.PASIHandler.get_transfer_data")
