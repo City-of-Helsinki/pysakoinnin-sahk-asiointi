@@ -1,8 +1,11 @@
 import datetime
 
+import jwt
+from cryptography.hazmat.primitives import serialization
 from helusers.settings import api_token_auth_settings
-from jose import jwk, jwt
-from jose.constants import ALGORITHMS
+from jwt.algorithms import RSAAlgorithm
+
+RS256 = "RS256"
 
 
 def _build_key(private_pem, public_pem):
@@ -10,16 +13,14 @@ def _build_key(private_pem, public_pem):
         pass
 
     key = _Key()
-    key.jose_algorithm = ALGORITHMS.RS256
+    key.algorithm = RS256
     key.private_key_pem = private_pem
     key.public_key_pem = public_pem
-    key.public_key_jwk = jwk.construct(public_pem, key.jose_algorithm).to_dict()
 
-    # Ensure values are strings and not bytes
-    for name in ["n", "e"]:
-        value = key.public_key_jwk[name]
-        if isinstance(value, bytes):
-            key.public_key_jwk[name] = value.decode("utf-8")
+    public_key = serialization.load_pem_public_key(public_pem.encode("utf-8"))
+    key.public_key_jwk = RSAAlgorithm(RSAAlgorithm.SHA256).to_jwk(
+        public_key, as_dict=True
+    )
 
     return key
 
@@ -96,7 +97,7 @@ def get_api_token_for_user_with_scopes(
     if amr:
         jwt_data["amr"] = amr
     encoded_jwt = jwt.encode(
-        jwt_data, key=rsa_key.private_key_pem, algorithm=rsa_key.jose_algorithm
+        jwt_data, key=rsa_key.private_key_pem, algorithm=rsa_key.algorithm
     )
 
     requests_mock.get(config_url, json=configuration)

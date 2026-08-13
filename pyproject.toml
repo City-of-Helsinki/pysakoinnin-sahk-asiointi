@@ -11,7 +11,7 @@ dependencies = [
     "django-environ",
     "django-helsinki-health-endpoints",
     "django-helsinki-suomifi-messages",
-    "django-helusers~=0.14.0",
+    "django-helusers",
     "django-logger-extra",
     "django-mailer",
     "django-ninja~=1.4.5",
