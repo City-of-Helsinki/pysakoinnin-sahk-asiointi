@@ -8,7 +8,16 @@ WORKDIR /app
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-COPY requirements.txt .
+COPY --from=ghcr.io/astral-sh/uv:0.12.3@sha256:2d890623d310b57771ce840f0da5eed5fc6d657da05ffaa45d82797b53fa3abc /uv /uvx /usr/local/bin/
+
+ENV UV_PROJECT_ENVIRONMENT=/opt/app-root/venv \
+    UV_COMPILE_BYTECODE=1 \
+    UV_LINK_MODE=copy \
+    UV_NO_CACHE=1 \
+    UV_PYTHON_DOWNLOADS=never
+ENV PATH="/opt/app-root/venv/bin:${PATH}"
+
+COPY pyproject.toml uv.lock ./
 
 RUN dnf update -y  \
     && dnf install -y \
@@ -21,9 +30,7 @@ RUN dnf update -y  \
     gcc \
     && ln -sf /usr/bin/python3.12 /usr/local/bin/python3 \
     && ln -sf /usr/bin/python3.12 /usr/local/bin/python \
-    && python -m ensurepip --upgrade --default-pip \
-    && pip install --upgrade pip setuptools wheel \
-    && pip install --no-cache-dir -r ./requirements.txt \
+    && uv sync --locked --no-dev --group prod \
     && dnf remove -y \
     libpq-devel \
     python3.12-devel \
@@ -41,17 +48,14 @@ RUN groupadd -g 1000 appuser \
     && useradd -u 1000 -g appuser -ms /bin/bash appuser \
     && chown -R appuser:root /app
 
-COPY requirements-dev.txt .
-
 RUN dnf install -y \
     libpq-devel \
     python3.12-devel \
     gcc \
-    && pip install --no-cache-dir -r /app/requirements-dev.txt \
+    && uv sync --locked --group dev \
     && dnf clean all
 
 ENV DEV_SERVER=1
-ENV PIP_TOOLS_CACHE_DIR="/tmp/pip-tools-cache"
 
 COPY --chown=appuser:root . .
 
