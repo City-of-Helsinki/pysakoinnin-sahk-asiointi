@@ -1,5 +1,25 @@
 # Changelog
 
+## [4.2.2](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v4.2.1...pysakoinnin-sahk-asiointi-v4.2.2) (2026-08-14)
+
+
+### Bug Fixes
+
+* Abort suomifi command calls if feature is disabled ([8ac1f31](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/8ac1f31e04bee2937eb1424632c3e59c658c6adc))
+* **deps:** Replace python-jose with pyjwt via django-helusers upgrade ([871a223](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/871a22341e207652fab1268c9ffcc52b20a6071e))
+* **deps:** Update django-resilient-logger compatibility for v.2.3.0 ([d2252ed](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/d2252ed4ffbbdf3674d42ab835f21eeff078fd3c))
+
+
+### Dependencies
+
+* Bump cryptography from 48.0.1 to 50.0.0 ([e52cd6f](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/e52cd6fe543e888fcfcf74318bbbed08e43163c5))
+* Bump django from 5.2.14 to 5.2.15 ([3e1d9e4](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/3e1d9e419e6ecda70918a4930c146341b395e398))
+* Bump django from 5.2.15 to 5.2.16 ([90c7613](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/90c7613fb1004e44a405a15cabc47219d7a5619f))
+* Bump pip from 26.1 to 26.1.2 ([8074a44](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/8074a44842286314e779b2a8bfbc88a425430fc7))
+* Bump pyasn1 from 0.6.3 to 0.6.4 ([c515d93](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/c515d935e2343d1af9ea4fe8b9bdf3ad9966a4cd))
+* Bump setuptools from 80.9.0 to 83.0.0 ([c91d9d2](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/c91d9d2fcc2068ce8aa37b0eca8bc08bdb0592a2))
+* Update pre-commit tool versions ([b9f62be](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/b9f62be45e5460b111ec74515d680b96813b2c9f))
+
 ## [4.2.1](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v4.2.0...pysakoinnin-sahk-asiointi-v4.2.1) (2026-07-09)
 
 
