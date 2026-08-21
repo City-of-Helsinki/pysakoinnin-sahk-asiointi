@@ -3,6 +3,15 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+def _scrub_frame_vars(frame_vars, lookup_objects):
+    for var in frame_vars:
+        if var in lookup_objects:
+            frame_vars[var] = "Scrubbed"
+        for val in (values := frame_vars.get("values", [])):
+            if val in lookup_objects:
+                values[val] = "Scrubbed"
+
+
 def sentry_scrubber(*args, **kwargs):
     event = args[0]
 
@@ -19,12 +28,7 @@ def sentry_scrubber(*args, **kwargs):
     try:
         for value in event.get("exception", {}).get("values", []):
             for frame in value.get("stacktrace", {}).get("frames", []):
-                for var in (frame_vars := frame.get("vars", [])):
-                    if var in lookup_objects:
-                        frame_vars[var] = "Scrubbed"
-                    for val in (values := frame_vars.get("values", [])):
-                        if val in lookup_objects:
-                            values[val] = "Scrubbed"
+                _scrub_frame_vars(frame.get("vars", []), lookup_objects)
     except BaseException as e:  # noqa
         logger.warning("Failed to scrub objection data", exc_info=e)
 
