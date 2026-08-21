@@ -6,6 +6,9 @@ config.env
 .idea/
 .vscode/*
 
+# Personal GitHub skills
+.github/skills
+
 # Mac stuff
 .DS_STORE
 
