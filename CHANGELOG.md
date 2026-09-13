@@ -1,5 +1,20 @@
 # Changelog
 
+## [4.2.3](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v4.2.2...pysakoinnin-sahk-asiointi-v4.2.3) (2026-09-13)
+
+
+### Bug Fixes
+
+* Capture sentry message when a message exceeds retry time ([3da136c](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/3da136c67f862e8e23d5c9ecc386c74331668a1d))
+* Ignore personal github skills directory ([de62888](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/de62888413f8f8a1a38a92a0b430118eb86b6dbe))
+* Reduce sentry scrubber nesting for maintainability ([68a9258](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/68a9258521ebe795250be3fa5a9286db6c44b67b))
+* Remove useless log when message is sent ([3aca1bf](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/3aca1bf548eecfee7b0f6edfaf1899b702de2fa0))
+
+
+### Dependencies
+
+* Bump sqlparse from 0.5.5 to 0.6.0 ([1eb5f44](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/1eb5f44bdb3f7097841345c0376ddf859b01d69c))
+
 ## [4.2.2](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v4.2.1...pysakoinnin-sahk-asiointi-v4.2.2) (2026-08-14)
 
 
