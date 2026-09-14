@@ -1,7 +1,7 @@
 [project]
 name = "pysakoinnin-sahk-asiointi"
 requires-python = ">=3.12, <3.13"
-version = "4.2.2"
+version = "4.2.3"
 dependencies = [
     "django~=5.2",
     "cryptography",
