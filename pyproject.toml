@@ -21,6 +21,7 @@ dependencies = [
     "pydantic[email]",
     "python-dateutil",
     "sentry-sdk[django]",
+    "social-auth-app-django",
 ]
 
 [dependency-groups]
