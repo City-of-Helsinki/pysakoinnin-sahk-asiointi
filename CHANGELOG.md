@@ -1,5 +1,14 @@
 # Changelog
 
+## [4.2.4](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v4.2.3...pysakoinnin-sahk-asiointi-v4.2.4) (2026-10-13)
+
+
+### Dependencies
+
+* Bump pyjwt from 2.13.0 to 2.15.0 ([d1c2c69](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/d1c2c6968335e8e3d29ddb416ba085c67352ba53))
+* Bump urllib3 from 2.7.0 to 2.8.0 ([0bada38](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/0bada385b984d5703ab29cda52a872582d9e86e8))
+* Upgrade django-helusers and add social auth dependencies ([6215474](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/621547473664b5fcc4a4f76dc892a417a0dd7a12))
+
 ## [4.2.3](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v4.2.2...pysakoinnin-sahk-asiointi-v4.2.3) (2026-09-14)
 
 
