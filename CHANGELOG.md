@@ -1,5 +1,17 @@
 # Changelog
 
+## [4.2.5](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v4.2.4...pysakoinnin-sahk-asiointi-v4.2.5) (2026-10-23)
+
+
+### Bug Fixes
+
+* Bump uv version to 0.13.5 ([bb4d044](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/bb4d04471fef197107019eded8b84701f2d36fa6))
+
+
+### Dependencies
+
+* Bump certifi to 2026.10.19 ([2d47301](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/2d473019127258142ea6a9e04011e5b51b4aaefc))
+
 ## [4.2.4](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v4.2.3...pysakoinnin-sahk-asiointi-v4.2.4) (2026-10-13)
 
 
