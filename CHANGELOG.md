@@ -1,5 +1,15 @@
 # Changelog
 
+## [4.2.6](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v4.2.5...pysakoinnin-sahk-asiointi-v4.2.6) (2026-11-10)
+
+
+### Dependencies
+
+* Bump django-helusers from 1.3.0 to 1.3.2 ([a3839a1](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/a3839a18a3e3d819049631b41968ce8c8b0a1572))
+* Bump dnspython from 2.8.0 to 2.9.0 ([0a5d95b](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/0a5d95be77fa195199420dd13294ce147921d79f))
+* Bump oauthlib from 4.0.0 to 4.0.1 ([8c06025](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/8c06025c0f25ed5f38e7981c25318832c85aefd4))
+* Bump social-auth-core from 5.2.0 to 6.2.0 ([c5b1df2](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/commit/c5b1df2642b6b1887e09ee15c1be851890a64496))
+
 ## [4.2.5](https://github.com/City-of-Helsinki/pysakoinnin-sahk-asiointi/compare/pysakoinnin-sahk-asiointi-v4.2.4...pysakoinnin-sahk-asiointi-v4.2.5) (2026-10-23)
 
 
