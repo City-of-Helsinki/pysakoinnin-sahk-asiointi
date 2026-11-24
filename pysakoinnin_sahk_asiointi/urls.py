@@ -1,5 +1,6 @@
 """pysakoinnin_sahk_asiointi URL Configuration"""
 
+from django.contrib import admin
 from django.http import HttpRequest
 from django.urls import include, path
 from helusers.oidc import RequestJWTAuthentication
@@ -36,7 +37,9 @@ api.add_router("/gdpr", gdrp_api_router)
 
 
 urlpatterns = [
+    path("admin/", admin.site.urls),
     path("api/v1/", api.urls),
+    path("pysocial/", include("social_django.urls", namespace="social")),
     path("helauth/", include("helusers.urls")),
     path("", include("helsinki_health_endpoints.urls")),
 ]
