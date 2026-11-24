@@ -51,6 +51,9 @@ class Message(models.Model):
             )
         ]
 
+    def __str__(self) -> str:
+        return f"{self.transaction_id} ({self.get_message_type_display()})"
+
     def get_or_create_delivery_report(self):
         try:
             return self.delivery_report
@@ -255,6 +258,12 @@ class DeliveryReport(models.Model):
 
     status = models.TextField(choices=DeliveryStatus, default=DeliveryStatus.QUEUED)
     message_type = models.TextField(choices=MessageType, default=MessageType.OTHER)
+
+    def __str__(self) -> str:
+        return (
+            f"{self.transaction_id} - {self.get_status_display()} "
+            f"({self.get_message_type_display()})"
+        )
 
 
 class SuomifiPersistence(models.Model):

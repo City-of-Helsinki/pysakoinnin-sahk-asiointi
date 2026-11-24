@@ -3,6 +3,7 @@ import os
 from pathlib import Path
 
 import django.conf.global_settings
+import helusers.defaults
 import sentry_sdk
 from corsheaders.defaults import default_headers
 from csp.constants import NONE, SELF
@@ -35,12 +36,14 @@ env = Env(
     CORS_ALLOWED_ORIGINS=(list, []),
     CSP_ENFORCE=(bool, False),
     CSP_REPORT_URI=(str, None),
+    CSRF_TRUSTED_ORIGINS=(list, []),
     DATABASE_PASSWORD=(str, ""),
     DATABASE_URL=(str, "postgres://parking-user:root@localhost:5432/parking-service"),
     DEBUG=(bool, False),
     GDPR_API_DELETE_SCOPE=(str, "gdprdelete"),
     GDPR_API_QUERY_SCOPE=(str, "gdprquery"),
     HELUSERS_BACK_CHANNEL_LOGOUT_ENABLED=(bool, True),
+    HELUSERS_PASSWORD_LOGIN_DISABLED=(bool, False),
     NOTIFIABLE_DOCUMENT_STATUSES=(
         list,
         [DocumentStatusEnum.received.name, DocumentStatusEnum.resolvedViaEService.name],
@@ -56,6 +59,9 @@ env = Env(
     SENTRY_RELEASE=(str, None),
     SENTRY_TRACES_IGNORE_PATHS=(list, ["/healthz", "/readiness"]),
     SENTRY_TRACES_SAMPLE_RATE=(float, None),
+    SOCIAL_AUTH_TUNNISTAMO_KEY=(str, ""),
+    SOCIAL_AUTH_TUNNISTAMO_OIDC_ENDPOINT=(str, ""),
+    SOCIAL_AUTH_TUNNISTAMO_SECRET=(str, ""),
     STALE_MESSAGE_THRESHOLD_DAYS=(int, 2),
     STATIC_ROOT=(str, str(BASE_DIR / "static/")),
     SUOMIFI_ENVIRONMENT=(str, "qa"),
@@ -146,6 +152,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "social_django",
     "csp",
     "pysakoinnin_sahk_asiointi",
     "api",
@@ -182,12 +189,25 @@ CORS_ALLOW_HEADERS = (
     "baggage",
     "sentry-trace",
 )
+CSRF_TRUSTED_ORIGINS = env("CSRF_TRUSTED_ORIGINS")
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 ROOT_URLCONF = "pysakoinnin_sahk_asiointi.urls"
 
 AUTH_USER_MODEL = "pysakoinnin_sahk_asiointi.User"
+AUTHENTICATION_BACKENDS = [
+    "helusers.tunnistamo_oidc.TunnistamoOIDCAuth",
+    "helusers.auth.HelusersModelBackend",
+]
 
 HELUSERS_BACK_CHANNEL_LOGOUT_ENABLED = env("HELUSERS_BACK_CHANNEL_LOGOUT_ENABLED")
+HELUSERS_PASSWORD_LOGIN_DISABLED = env("HELUSERS_PASSWORD_LOGIN_DISABLED")
+LOGOUT_REDIRECT_URL = "/admin/"
+SESSION_SERIALIZER = "helusers.sessions.TunnistamoOIDCSerializer"
+SOCIAL_AUTH_PIPELINE = helusers.defaults.SOCIAL_AUTH_PIPELINE
+SOCIAL_AUTH_TUNNISTAMO_KEY = env("SOCIAL_AUTH_TUNNISTAMO_KEY")
+SOCIAL_AUTH_TUNNISTAMO_OIDC_ENDPOINT = env("SOCIAL_AUTH_TUNNISTAMO_OIDC_ENDPOINT")
+SOCIAL_AUTH_TUNNISTAMO_SECRET = env("SOCIAL_AUTH_TUNNISTAMO_SECRET")
 
 OIDC_API_TOKEN_AUTH = {
     # Audience that must be present in the token for it to be
