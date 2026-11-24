@@ -190,6 +190,7 @@ CORS_ALLOW_HEADERS = (
     "sentry-trace",
 )
 CSRF_TRUSTED_ORIGINS = env("CSRF_TRUSTED_ORIGINS")
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 ROOT_URLCONF = "pysakoinnin_sahk_asiointi.urls"
 

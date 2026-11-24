@@ -90,3 +90,10 @@ def test_logout_clears_authenticated_session(client, staff_user):
     assert response.status_code == 302
     assert response["Location"] == reverse("admin:index")
     assert SESSION_KEY not in client.session
+
+
+def test_forwarded_proto_header_marks_request_secure(rf):
+    request = rf.get(reverse("admin:login"), HTTP_X_FORWARDED_PROTO="https")
+
+    assert request.is_secure() is True
+    assert request.build_absolute_uri(reverse("admin:login")).startswith("https://")
